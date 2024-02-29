@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, rename this file to "pre-commit".
+
+export LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+# Array of protected branches
+protected_branches=(
+  "main"
+  "stage"
+  "dev"
+)
+
+
+
+
+for branch in "${protected_branches[@]}"; do
+    if [[ "$LOCAL_BRANCH" == "$branch"* ]]; then
+        echo "Pre-commit hook: Attempt to commit to a protected branch: ${LOCAL_BRANCH}"
+        echo ""
+        echo "Checkout a new feature/branchname and push from there."
+        echo "Then go to github and create a pull request."
+        exit 1
+    fi
+done
+
+
+exit 0

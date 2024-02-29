@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# An example hook script to verify what is about to be pushed.  Called by "git
+# push" after it has checked the remote status, but before anything has been
+# pushed.  If this script exits with a non-zero status nothing will be pushed.
+#
+# This hook is called with the following parameters:
+#
+# $1 -- Name of the remote to which the push is being done
+# $2 -- URL to which the push is being done
+#
+# If pushing without using a named remote those arguments will be equal.
+#
+# Information about the commits which are being pushed is supplied as lines to
+# the standard input in the form:
+#
+#   <local ref> <local oid> <remote ref> <remote oid>
+#
+# This sample shows how to prevent push of commits where the log message starts
+# with "WIP" (work in progress).
+
+remote="$1"
+url="$2"
+
+# Array of protected branches
+protected_branches=(
+  "refs/heads/main/"
+  "refs/heads/main"
+  "refs/heads/stage/"
+  "refs/heads/stage"
+  "refs/heads/dev/"
+  "refs/heads/dev"
+  "refs/heads/testing/precommit"
+)
+
+while read local_ref local_sha remote_ref remote_sha; do
+    for branch in "${protected_branches[@]}"; do
+        if [[ "$remote_ref" == "$branch"* ]]; then
+        echo "Pre-push hook: Attempt to commit to a protected branch: ${LOCAL_BRANCH}"
+        echo ""
+        echo "Checkout a new feature/branchname and push from there."
+		echo ""
+		echo "You can use the following commands to place the changes on a new branch:"
+		echo "git reset --soft HEAD"
+		echo "git checkout -b feature/branchname"
+		echo "git add ."
+		echo "git commit -m 'Your commit message'"
+		echo "git push origin feature/branchname"
+        echo "Then go to github and create a pull request."
+        exit 1
+            exit 1
+        fi
+    done
+done
+
+exit 0
+
+exit 0

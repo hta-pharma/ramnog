@@ -1,0 +1,76 @@
+# All available hooks: https://pre-commit.com/hooks.html
+# R specific hooks: https://github.com/lorenzwalthert/precommit
+repos:
+-   repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.3.2.9027
+    hooks: 
+    # -   id: style-files
+    #     args: [--style_pkg=styler, --style_fun=tidyverse_style]    
+    # -   id: roxygenize
+    # codemeta must be above use-tidy-description when both are used
+    # -   id: codemeta-description-updated
+    # -   id: use-tidy-description
+    # -   id: spell-check
+    #     exclude: >
+    #       (?x)^(
+    #       .*\.[rR]|
+    #       .*\.feather|
+    #       .*\.jpeg|
+    #       .*\.pdf|
+    #       .*\.png|
+    #       .*\.py|
+    #       .*\.RData|
+    #       .*\.rds|
+    #       .*\.Rds|
+    #       .*\.Rproj|
+    #       .*\.sh|
+    #       (.*/|)\.gitignore|
+    #       (.*/|)\.gitlab-ci\.yml|
+    #       (.*/|)\.lintr|
+    #       (.*/|)\.pre-commit-.*|
+    #       (.*/|)\.Rbuildignore|
+    #       (.*/|)\.Renviron|
+    #       (.*/|)\.Rprofile|
+    #       (.*/|)\.travis\.yml|
+    #       (.*/|)appveyor\.yml|
+    #       (.*/|)NAMESPACE|
+    #       (.*/|)renv/settings\.dcf|
+    #       (.*/|)renv\.lock|
+    #       (.*/|)WORDLIST|
+    #       \.github/workflows/.*|
+    #       data/.*|
+    #       )$
+    # -   id: lintr
+    -   id: readme-rmd-rendered
+    -   id: parsable-R
+    -   id: no-browser-statement
+    -   id: no-print-statement
+    -   id: no-debug-statement
+        exclude: "R/try_and_validate.R"
+    -   id: deps-in-desc
+        args: [--allow_private_imports]
+        exclude: "tests/testthat/test-fetch_db_data.R"
+    -   id: pkgdown
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks: 
+    -   id: no-commit-to-branch
+        args: [--branch, staging, --branch, main, --branch, dev]
+    -   id: check-added-large-files
+        args: ['--maxkb=200']
+    # -   id: file-contents-sorter
+    #     files: '^\.Rbuildignore$'
+    -   id: end-of-file-fixer
+        exclude: >
+          '\.Rd'
+          'tests/testthat/_snaps'
+    - id: detect-private-key
+    # - id: detect-aws-credentials
+-   repo: local
+    hooks:
+    -   id: forbid-to-commit
+        name: Don't commit common R artifacts
+        entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
+        language: fail
+        files: '\.(Rhistory|RData|Rds|rds)$'
+        # `exclude: <regex>` to allow committing specific files

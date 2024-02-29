@@ -1,0 +1,47 @@
+
+
+
+on:
+  push:
+    branches: [main, stage, dev]
+  pull_request:
+    branches: [main, stage, dev]
+  workflow_dispatch:
+
+name: Check
+
+jobs:
+  audit:
+    name: Audit Dependencies 🕵️‍♂️
+    uses: insightsengineering/r.pkg.template/.github/workflows/audit.yaml@main
+
+  licenses:
+    name: License Check 🃏
+    uses: insightsengineering/r.pkg.template/.github/workflows/licenses.yaml@main
+
+  check-reuse:
+    name: RMD check 📦
+    uses: ./.github/workflows/R-CMD-check.yaml
+
+  test:
+    name: Test 🧪
+    uses: ./.github/workflows/Test.yaml
+
+  gitleaks:
+    name: gitleaks 💧
+    uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main
+    with:
+      check-for-pii: true
+
+  vbump:
+    name: Version Bump 🤜🤛
+    if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+    uses: insightsengineering/r.pkg.template/.github/workflows/version-bump.yaml@main
+    secrets:
+      REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # roxygen:
+  #   name: Roxygen 📦
+  #   uses: ./.github/workflows/Roxygen.yaml
+
+  
