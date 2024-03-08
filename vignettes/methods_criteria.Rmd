@@ -1,0 +1,392 @@
+---
+title: "Criteria Methods"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Criteria Methods}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r, include = FALSE}
+library(magrittr)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+This vignette provides a short introduction to the idea of analysis criteria.
+
+<!-- For a more detailed description of how to make new criteria functions, see the companion **{chefcriterion}** package -->
+
+The analysis request from the authorities will detail an overall set of endpoints, irrespective of the underlying study data. For example, they might request an analysis of serious adverse events by system organ class, by gender. Such an analyses may contain many cells with zeros, or very low counts. To ensure only analyses that contain meaningfully amounts of data are included, the request may additionally include certain criteria for the inclusion of an analysis, such as a threshold for the minimum number of records, events, or subjects. 
+
+The logic for these analysis inclusion criteria are handled by the functions supplied to the  `crit_endpoint`, `crit_by_strata_by_trt`, and `crit_by_strata_across_trt` arguments when defining an endpoint in `mk_endpoints_str()`.
+
+## Criteria levels
+Currently, {chef} supports analysis inclusion criteria for three parts of the analysis output, with colors corresponding to the figure below:
+
+<ol type="A">
+<li><span style="background-color: #f7947e">The entire endpoint</span></li>
+<li><span style="background-color: #9fed8c">The `stat_by_strata_by_trt`</span></li>
+<li><span style="background-color: #03b6fc">The `stat_by_strata_across_trt` and `stat_across_strata_across_trt`</span></li>
+</ol>
+```{r criteria1, echo=FALSE, out.width="100%"}
+knitr::include_graphics("./figures/criteria_levels.png")
+```
+  
+The criteria functions are hierarchical; failure to meet criteria at Level A (Entire Endpoint) implies automatic failure at Levels B and C. Similarly, passing Level A but failing Level B results in failure at Level C.
+
+If an endpoint does not satisfy a certain criterion, the associated statistical functions will not execute to reduce compute time. For instance, if an endpoint does not meet the criteria at Level B, by strata and across treatment arms analyses will not be performed. However, the analyses for the Totals will still proceed.
+
+It is important to note that these criteria are optional. Not every endpoint definition needs to incorporate all three levels of criteria. Some analyses may have no criteria, while others might require criteria only at the endpoint or strata.
+
+**NOTE** that the `crit_by_strata_across_trt` criterion gate-keep both `stat_by_strata_across_trt` and `stat_across_strata_across_trt` (stippled box). The `stat_across_strata_across_trt` is seen as lower on the hierarchical criteria ladder than `stat_by_strata_across_trt` - however it does not have a seperate criterion at this time and will therefore be included by default.
+
+```{r criteria2, echo=FALSE, out.width="100%"}
+knitr::include_graphics("./figures/criteria_eval.png")
+```
+
+## Function formals
+
+Chef supplies a number of parameters the criterion functions. The parameters vary according to the statistical method.
+Note that for `crit_by_strata_by_trt`, and `crit_by_strata_across_trt` the formals of the functions are identical. 
+
+### Input specifications {.tabset .tabset-fade .tabset-pills}
+
+The criteria functions are served broad set of parameters. This reflects the need for flexibility in the criteria functions.
+
+The flexibility allows you to set criteria that affect specific stratum based on that specific stratum or on information shared across multiple strata.
+
+This allows you to create criteria functions which only target one stratum or act across the whole strata:
+
+
+* Criteria1 requires that in the endpoint the strata GENDER must be balanced. (ie approx 50/50 distribution.) (requires only the `stratify_by` parameter)
+* Criteria2 requires that for the endpoint all strata (GENDER, AGE) must be balanced. (requires the `stratify_by` parameter)
+* *You may also also design criteria for endpoints, which only includes in the case where there is enough subjects in relevant strata.*
+
+*See [Examples](#example-functions)*
+
+_NB_ Similar to the stat methods we require that criteria function include ellipses (`...`) as a wildcard parameter.
+This is both a convenience, since you then only need to explicitly state the used parameters in your function definition. However, more importantly it will ensure that a criteria function you define today will also work tomorrow, where {chef} may supply more parameters to the criteria functions.
+
+
+#### endpoint criteria functions
+
+<style type="text/css">
+  .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;border-style:solid;border-width:1px;}
+  .tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
+    font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
+    font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+  .tg .tg-buh4{background-color:#f9f9f9;text-align:left;vertical-align:top}
+  .tg .tg-btxf{background-color:#f9f9f9;border-color:inherit;text-align:left;vertical-align:top}
+  .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+  .tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-1wig">Parameter</th>
+    <th class="tg-1wig">Type</th>
+    <th class="tg-1wig">Example</th>
+    <th class="tg-1wig">Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-btxf">dat</td>
+    <td class="tg-btxf">data.table::data.table</td>
+    <td class="tg-buh4"></td>
+    <td class="tg-btxf">Dataset containing the [Analysis population] (ep_spec_poplation_def.html)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">event_index,</td>
+    <td class="tg-0pky">List(Integer)</td>
+    <td class="tg-0lax">`[1, 3, 5]`</td>
+    <td class="tg-0pky">Index (pointing to the `INDEX_` column) of rows with an [Event](ep_spec_event.html)</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">subjectid_var</td>
+    <td class="tg-btxf">Character</td>
+    <td class="tg-buh4">`"USUBJID"`</td>
+    <td class="tg-btxf">The column containing the subject id.</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">treatment_var,</td>
+    <td class="tg-btxf">Character</td>
+    <td class="tg-buh4">`"treatment_name"`</td>
+    <td class="tg-btxf">The column name describing treatment type</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">treatment_refval,</td>
+    <td class="tg-0pky">Character</td>
+    <td class="tg-0lax">`"Placebo"`</td>
+    <td class="tg-0pky">The treatment refval for the `treatment_var` column for the endpoint.</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">period_var,</td>
+    <td class="tg-btxf">Character</td>
+    <td class="tg-buh4">`"period_block"`</td>
+    <td class="tg-btxf">The column name describing the periods</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">period_value,</td>
+    <td class="tg-0pky">Character</td>
+    <td class="tg-0lax">`"within_trial_period"`</td>
+    <td class="tg-0pky">The value in the `period_var` which is of interest to the endpoint.</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">endpoint_filter</td>
+    <td class="tg-btxf">Character (escaped)</td>
+    <td class="tg-buh4">`"\"someColumn\" == \"someValue\""`</td>
+    <td class="tg-btxf">Specific endpoint filter</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">endpoint_group_metadata</td>
+    <td class="tg-0pky">List</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0pky">Named list containing by_group metadata</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">stratify_by</td>
+    <td class="tg-btxf">List(Character)</td>
+    <td class="tg-buh4">`['Sex', 'Gender']`</td>
+    <td class="tg-btxf">The [strata](ep_spec_strata_def.html) which the endpoint is sliced by.</td>
+  </tr>
+</tbody>
+</table>
+
+#### strata criteria functions
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;border-style:solid;border-width:1px;}
+.tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
+  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
+  font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-buh4{background-color:#f9f9f9;text-align:left;vertical-align:top}
+.tg .tg-btxf{background-color:#f9f9f9;border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-1wig">Parameter</th>
+    <th class="tg-1wig">Type</th>
+    <th class="tg-1wig">Example</th>
+    <th class="tg-1wig">Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-btxf">dat</td>
+    <td class="tg-btxf">data.table::data.table</td>
+    <td class="tg-buh4"></td>
+    <td class="tg-btxf">Dataset containing the [Analysis population](ep_spec_poplation_def.html)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">event_index,</td>
+    <td class="tg-0pky">List(Integer)</td>
+    <td class="tg-0lax">`[1, 3, 5]`</td>
+    <td class="tg-0pky">Index (pointing to the `INDEX_` column) of rows with an [Event](ep_spec_event.html)</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">subjectid_var</td>
+    <td class="tg-btxf">Character</td>
+    <td class="tg-buh4">`"USUBJID"`</td>
+    <td class="tg-btxf">The column containing the subject id.</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">treatment_var,</td>
+    <td class="tg-btxf">Character</td>
+    <td class="tg-buh4">`"treatment_name"`</td>
+    <td class="tg-btxf">The column name describing treatment type</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">treatment_refval,</td>
+    <td class="tg-0pky">Character</td>
+    <td class="tg-0lax">`"Placebo"`</td>
+    <td class="tg-0pky">The treatment refval for the `treatment_var` column for the endpoint.</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">period_var,</td>
+    <td class="tg-btxf">Character</td>
+    <td class="tg-buh4">`"period_block"`</td>
+    <td class="tg-btxf">The column name describing the periods</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">period_value,</td>
+    <td class="tg-0pky">Character</td>
+    <td class="tg-0lax">`"within_trial_period"`</td>
+    <td class="tg-0pky">The value in the `period_var` which is of interest to the endpoint.</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">endpoint_filter</td>
+    <td class="tg-btxf">Character (escaped)</td>
+    <td class="tg-buh4">`"\"someColumn\" == \"someValue\""`</td>
+    <td class="tg-btxf">Specific endpoint filter</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">endpoint_group_metadata</td>
+    <td class="tg-0pky">List</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0pky">Named list containing by_group metadata</td>
+  </tr>
+  <tr>
+    <td class="tg-btxf">stratify_by</td>
+    <td class="tg-btxf">List(Character)</td>
+    <td class="tg-buh4">`['Sex', 'Gender']`</td>
+    <td class="tg-btxf">The [strata](ep_spec_strata_def.html) which the endpoint is sliced by.</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">strata_var</td>
+    <td class="tg-0lax">Character</td>
+    <td class="tg-0lax">`"Sex"`</td>
+    <td class="tg-0lax">The specific stratification which the criteria relates to.</td>
+  </tr>
+</tbody>
+</table>
+
+### Output specifications
+
+The output of the criteria function must be a simple `bolean` (`TRUE` or `FALSE`)
+
+### Example functions {.tabset .tabset-fade .tabset-pills}
+
+Below are two examples showcasing how to write criteria functions. It is not within scope of the {chef} package to provide a library of criteria functions. 
+
+#### Endpoint criteria functions
+
+Generic criteria function:
+Allows control over endpoint inclusion based on the count of subjects with events in the arms.
+
+This function is a generic that can the be specified in the mk_endpoint_str or curried beforehand ([Stat methods-Currying](methods_stat.html#custom-functions-currying-and-supplying-parameters-))
+
+
+```{r, eval=F}
+
+ep_criteria.treatment_arms_minimum_unique_event_count <- function(
+    dat,
+    event_index,
+    treatment_var,
+    subjectid_var,
+    minimum_event_count,
+    requirement_type = c("any", "all")
+    ...
+    )
+  # rows with events
+  dat_events <- dat[J(event_index),]
+
+  # Bolean of whether the count of unique subjects 
+  # within each treatment arm is above the minimum count.  
+  dat_lvl_above_threshold <- dat_events[
+    , 
+    list("is_above_minimum" = data.table::uniqueN(subjectid_var)>=minimum_event_count), 
+    by=treatment_var
+  ]
+  
+  if requirement_type == "any":
+    return( any(dat_lvl_above_threshold$V1) )
+  return( all(dat_lvl_above_threshold$V1) )
+  
+
+```
+
+
+#### Strata criteria functions
+
+Only include the across strata and treatment arm analysis if there are at least X subjects with events in each treatment arm.
+For requirement_type=="any" just a single cell (stratum + treatment arm) needs to be included. 
+```{r, eval=F}
+
+ep_strata_criteria.strata_treatment_arm_minimum_unique_count <- function(
+    dat,
+    event_index,
+    treatment_var,
+    subjectid_var,
+    strata_var,
+    minimum_event_count,
+    requirement_type = c("any", "all")
+    ...
+    )
+  # rows with events
+  dat_events <- dat[J(event_index),]
+
+  # Bolean of whether the count of unique subjects 
+  # within each treatment arm is above the minimum count.  
+  dat_lvl_above_threshold <- dat_events[
+    , 
+    list("is_above_minimum" = data.table::uniqueN(subjectid_var)>=minimum_event_count), 
+    by=c(treatment_var, strata_var)
+  ]
+  
+  if requirement_type == "any":
+    return( any(dat_lvl_above_threshold$is_above_minimum) )
+  return( all(dat_lvl_above_threshold$is_above_minimum) )
+
+```
+
+
+### Applying criteria functions. 
+
+Criteria functions are supplied to the mk_endpoint_str function and is used to gatekeep which statistical function are run.
+
+An example of a endpoint could be:
+
+We look at the population with an event E_XYZ. 
+
+* We are only interested in the endpoint if we see at least 5 subjects in any of the arms that have event E_XYZ.
+* We are only interested in getting descriptive statistic for any strata (say GENDER, AGEGRP) if the all levels within have at least 1 subject.
+* Finally, we only run the across treatment arm statistics if there are at least 5 subject in each stratum and each treatment arm.
+
+The above requirements/gates are implemented by currying the functions given in the [Examples](#examples) section.
+
+
+```{r, eval = F}
+
+# R/project_criteria.R
+# Curry the general criteria functions from [Examples](#examples)
+
+crit_accept_endpoint.5_subjects_any_treatment_arm <- purrr:partial(
+  ep_criteria.treatment_arms_minimum_unique_event_count,
+  minimum_event_count = 5,
+  requirement_type = "any"
+)
+
+crit_strata.1_subject_all_treatment_strata <- purrr:partial(
+  ep_sg_criteria.sg_treatment_arm_minimum_unique_count,
+  minimum_event_count = 1,
+  requirement_type = "all"
+)
+
+crit_strata.5_subject_all_treatment_strata <- purrr:partial(
+  ep_sg_criteria.sg_treatment_arm_minimum_unique_count,
+  minimum_event_count = 5,
+  requirement_type = "all"
+)
+
+# R/project_endpoints.R
+
+endpoint_XYZ  <- chef::mk_endpoint_str(
+  ..., # Setting the rest of the inputs
+  crit_endpoint = list(crit_accept_endpoint.5_subjects_any_treatment_arm),
+  crit_by_strata_by_trt = list(crit_strata.1_subject_all_treatment_strata),
+  crit_by_strata_across_trt = list(crit_strata.5_subject_all_treatment_strata)
+)
+
+```
+
+
+
+
+

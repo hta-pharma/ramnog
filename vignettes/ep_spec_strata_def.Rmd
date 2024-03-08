@@ -1,0 +1,63 @@
+---
+title: "Strata"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Strata}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+
+The `stratify_by` endpoint parameter specifies the variables in the analysis data set on which the population will be sliced in the endpoint for more granular comparison on treatment arm effects. 
+
+These are the key properties of the `stratify_by` parameter:
+
+* `stratify_by` is a `list()` object
+* The list may be empty if no stratification is needed. 
+* Regardless of whether any srtata are specified (and meet the strata criteria c.f. [Criteria methods](methods_criteria.html)) or not, the endpoint statistics will always be derived for the *total* analysis population in the endpoint. The *total* can be considered a special stratum with only one level. 
+* The stratum values are not required in `stratify_by`. All relevant statistics will be applied to each stratum.
+* The strata variables are applied independently, i.e. strata will not be combined. So if e.g. you stratify by age group and gender, you will not have cross combination such as `SEX="F" & AGEGR="<65"`. 
+
+If cross combinations of two stratum variables `A` and `B` are required, either: 
+
+1. Create a derived variable in `data_prepare` that combines `A` and `B` and stratify on this new variable.
+2. Use `endpoint_filter` or `group_by` to group or filter the data on `A` and then stratify on `B` within each group level.
+
+# Examples
+
+##### Ex 5.1
+
+
+```{r, eval = FALSE}
+# Example of partial endpoint specification with a strata definition
+ep_spec_ex5_2  <- chef::mk_endpoint_str(stratify_by = list(c("SEX")),
+                                 ...)
+```
+
+##### Ex 5.2
+
+Two strata set:
+
+```{r, eval = FALSE}
+# Example of partial endpoint specification with a strata definition
+ep_spec_ex5_2  <- chef::mk_endpoint_str(stratify_by = list(c("SEX", "AGEGGR1")),
+                                 ...)
+```
+
+##### Ex 5.3
+
+No strata, in which case only the *total* will be present in the endpoint:
+
+```{r, eval = FALSE}
+# Example of partial endpoint specification with a strata definition
+ep_spec_ex5_3  <- chef::mk_endpoint_str(stratify_by = list(),
+                                 ...)
+```

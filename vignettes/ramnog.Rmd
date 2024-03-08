@@ -1,0 +1,205 @@
+---
+title: "Quick start"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ramnog}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+Here we start with an empty R project and walk through a full working example analysis. Our goal for this example analysis is to report the number of subjects experiencing a mild adverse event in each treatment arm stratified by a custom age grouping. For this example we use the ADAE dataset provided in the {pharmaverseadam} package.
+
+The outline of the workflow will be:
+
+  1. Set up our project infrastructure by running `chef::use_chef`
+  2. Specify our endpoint
+  3. Define function to produce our ADaM data
+  4. Define function to calculate the statistics we want as results (i.e. number of events)
+  5. Run the pipeline and inspect the results
+
+
+# 1. Set up project infrastructure
+
+**This assumes you have set up an RStudio project (or equivalent).** If you have not done so, do that first.
+
+To setup a chef project you need:
+
+  - A `R/` directory where all project-specific R code will be stored. This will include:
+      - Any functions used to make the `ADaM` data ingested by the chef pipeline
+      - The R function that produces the endpoint specification object
+      - Any analysis/statistical functions that are not sourced from other R packages (like chefStats or chefCriteria)
+      - A script containing `library()` calls to any package needed for the pipeline to run
+  - A `pipeline/` directory where the `targets` pipeline(s) is/are defined
+  - A `targets.yml` file tracking the different pipelines 
+
+The file file structure should look like this:
+```  
+<R-project dir>/
+    |-- R/
+        |--- mk_endpoint_definition.R
+        |--- mk_adam.R
+        |--- packages.R
+    |-- pipeline/
+        |--- pipeline_01.R
+    |-- _targets.yaml
+    
+``` 
+
+{chef} has a convenience function to set up this infrastructure for you:
+  
+```{r eval=FALSE}
+    library(chef)
+    chef::use_chef(
+      pipeline_id = "01"
+    )
+
+```
+    
+  This sets up the following file structure:
+    
+  
+    
+  For now we need to know what the file in `R/` do. For the `_targets.yml` and `pipeline_01.R` explanation, see `vignette("pipeline")`
+
+# 1. Specify an endpoint
+
+Endpoint specifications need to be created inside a function, in this case the function defined in the `mk_endpoint_definition.R`  
+
+An endpoint is created by using the `chef::mk_endpoint_str()` function. For an explanation of how to specify endpoints, see `vignette("endpoint_definitions")`.  
+
+Here we specify a minimal working endpoint based on the `adae` dataset supplied by {pharmaverseadam}. We do this by modifying the `R/mk_endpoint_definition.R` file so that is looks like this:
+
+```{r}
+mk_endpoint_def <- function() {
+  chef::mk_endpoint_str(
+    study_metadata = list(),
+    pop_var = "SAFFL",
+    pop_value = "Y",
+    treatment_var = "TRT01A",
+    treatment_refval = "Xanomeline High Dose",
+    stratify_by = list(c("AGEGR2")),
+    data_prepare = mk_adae,
+    endpoint_label = "A",
+    custom_pop_filter = "TRT01A %in% c('Placebo', 'Xanomeline High Dose')",
+    stat_by_strata_by_trt = list("N_subj_event" = c(chefStats::n_subj_event))
+  )
+}
+```
+
+You might notice a couple things with this specification:
+
+- Even though we are using the ADAE dataset from {pharmavreseadam}, there is no reference to this in the endpoint specification This is because the input clinical data is created via the `adam_fn` field, so in this case the reference to the `ADAE` data set will be inside the `mk_adae` function (see next section).
+  - In the `stratify_by` field we refer to a variable called `AGEGR2`, however the ADAE dataset from {pharmaverseadam} does not contain any such variable. This is because we will derive this variable inside `mk_adae` (see next section).
+
+
+# 2. Define the input dataset
+
+We also need to provide chef with the `ADAE` input data set that that corresponds to the endpoint specified above. To read more about make these data sets, see `vignette("mk_adam")`. We can see that we have strata based on a `AGEGR2`, which can be derived from the `AGE` variable in `ADSL`. 
+For now, we write a simple `ADaM` function `mk_adae` that merges the `ADSL` data set (enriched with `AGEGR2`) onto the `ADAE` data set, thereby creating the input data set.
+
+```{r}
+mk_adae <- function(study_metadata) {
+  adae <- data.table::as.data.table(pharmaverseadam::adae)
+  adsl <- data.table::as.data.table(pharmaverseadam::adsl)
+  adsl[, AGEGR2 := data.table::fcase(AGE < 70, "AGE < 70",
+                                     AGE >= 70, "AGE >= 70")]
+  adae_out <-
+    merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"), with =
+                       F], by = "USUBJID", all = TRUE)
+  adae_out[]
+}
+
+```
+
+
+
+```{r, include=FALSE}
+# Set up temporary project for vignette
+library(chef)
+library(chefStats)
+wd_old <- getwd()
+prj_old <- suppressMessages(usethis::proj_get())
+suppressMessages(testr::create_local_project())
+tmp_dir <- getwd()
+
+chef::use_chef(pipeline_id = "01", mk_endpoint_def_fn = mk_endpoint_def, mk_adam_fn = list(mk_adae))
+```
+
+
+# 3. Define the analysis methods
+
+Now that we have specified the endpoint to be analyzed, and defined the analysis data set for {chef}, we need to define the analysis itself. 
+
+Our goal for this analysis is to count the number of events experiencing an event. We need to define a function that makes those calculations, and give that function to chef. Because we want a result per treatment arm - strata combination, we must provide the function in the  `stat_by_strata_by_trt` argument in the endpoint specification. We have already this argument set to `chefStats::n_subj_event` in the example endpoint specification above
+
+
+
+# 4. Run the analysis pipeline
+
+Now that all the inputs are defined, we can run the pipeline. This is achieved by a call to `tar_make()` from the {targets} package. 
+```{r,eval=FALSE}
+tar_make()
+```
+
+Targets will show you which steps in the pipeline are executed and how long each step took:
+
+```{r, echo=FALSE} 
+setwd(tmp_dir) # Do not run, only needed to get the markdown file to run
+tar_make()
+
+
+```
+
+Then, to see the results, you load the cached step of the pipeline corresponding to the results. In our case it will be `ep_stat`, so to load it into the sessions as an object we call
+
+```{r, eval=FALSE}
+tar_load(ep_stat)
+
+```
+
+Now `ep_stat` is an R object like any other. Thus we can look at our results simply by running
+
+```
+ep_stat
+```
+
+However, there is a lot of extra data included in the object, so lets look at a column subsection of the first 5 rows:
+
+```{r, eval=FALSE}
+ep_stat[, .(
+  treatment_var,
+  treatment_refval,
+  strata_var,
+  stat_filter,
+  label,
+  description,
+  qualifiers,
+  value
+)] |> head()
+
+```
+
+
+```{r, echo=FALSE}
+setwd(tmp_dir) # Do not run, only needed to get the markdown file to run
+tar_load(ep_stat)
+ep_stat[, .(
+  treatment_var,
+  treatment_refval,
+  strata_var,
+  stat_filter,
+  label,
+  description,
+  qualifiers,
+  value
+)] |> head()
+```
+
+
+
+# 5. Pass the data on to TFL formatting
+
+Now that the data is produced, you can pass it on for TFL formatting (outside the scope of {chef}).
+
+

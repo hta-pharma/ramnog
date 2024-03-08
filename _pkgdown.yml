@@ -1,0 +1,48 @@
+url: ~
+template:
+  bootstrap: 5
+
+
+
+articles:
+
+- title: Overview
+  navbar: Overview
+  contents:
+  - ep_overview
+
+- title: Endpoint Population and Outcome Specification
+  navbar: Endpoint Population and Outcome Specification
+  contents:
+  - ep_spec_adam_data
+  - ep_spec_treatment_arms
+  - ep_spec_population_def
+  - ep_spec_event_def
+  - ep_spec_strata_def
+  - ep_spec_label
+
+- title: Endpoint Statistics
+  navbar: Endpoint Statistics
+  contents:
+  - starts_with('methods_')
+
+- title: Endpoint Results
+  navbar: Endpoint Results
+  contents:
+  - starts_with("results")
+
+- title: Endpoint Examples
+  navbar: Endpoint Examples
+  contents:
+  - starts_with("example_")
+
+- title: Debugging
+  navbar: Debugging
+  contents:
+  - debugging
+
+- title: Development
+  navbar: Development
+  contents:
+  - starts_with("dev")
+  - validation

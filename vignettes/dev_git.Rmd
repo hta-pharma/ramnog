@@ -1,0 +1,54 @@
+---
+title: "Git Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Git Workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+```{r}
+library(data.table)
+library(kableExtra)
+```
+
+# Ramnog ecosystem
+
+The ramnog framework is an ecosystem of three R packages
+```{r, echo=FALSE}
+dt <-
+  data.table::data.table(
+    Package = c( "chef", "chefStats", "chefCriteria","ramnog"),
+    Description = c(
+      "Core package that aids in creating endpoint specifications and coordinates the execution of the package",
+      "Collection statistical methods that are used to make summarizations or inferences for each endpoint/outcome",
+      "Collection of criteria that are use in AMNOG dossiers to determin when specific analyses should be executed",
+      "Wrapper package tying ecosystem together"
+    )
+  )
+dt |> 
+  kable(format = "html", table.attr = "class='table table-bordered'") |> 
+  kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |> 
+  row_spec(0, background = "lightblue")
+
+```
+
+
+# Workflow
+
+All packages use [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) way of working. Please see the linked to resource for details on how to work in this style.
+
+Specific for the ramnog ecosystem, each package always has the following three branches:
+
+* `dev` For development purposes. `dev` is where completed `feature` branches should be pulled to and it should always be functional. Any uncompleted features should remain in a `feature` branch. 
+* `test` testing environment. Once a new version or patch is ready, `dev` shouled be pulled into `test`, then `test` should be tested in a production environment.
+* `main` Latest stable release and is what users will interact with. Pulls to `main` should only come from `test`

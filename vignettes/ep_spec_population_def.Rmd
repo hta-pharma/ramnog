@@ -1,0 +1,52 @@
+---
+title: "Analysis Population"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analysis Population}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+
+The analysis data constitutes all the records in the input data set that are relevant to the statistics in the endpoint.
+This can be controlled via the following endpoint specification parameters that filters the analysis data to the analysis population:
+
+* **pop_var**: Name of the flag variable in the input data set that indicates if the record is eligible to the analysis in the endpoint.
+* **pop_value**: The value of `pop_var` that indicates if the record eligible.
+* **custom_pop_filter**: An optional parameter that contains a free text population filter that adds to the filter formed by `pop_var` and `pop_value`. Recommended for ad-hoc testing of different sub populations. 
+
+The approach is that all records that are irrelevant for the endpoint are removed at an early stage, so that only the relevant analysis population is exposed to the statistical functions and criteria functions.
+
+# Example
+
+##### Ex 3.1
+
+Here is an example of a specification of the analysis data using the safety population flag (assumed to be present in the input data returned from `data_prepare`:
+
+```{r, eval=FALSE}
+# Example of partial endpoint specification of population filter
+ep_spec_ex3_1  <- chef::mk_endpoint_str(pop_var = "SAFFL",
+                                 pop_value = "Y",
+                                 ...)
+```
+
+##### Ex 3.2
+
+The population may be further filtered by adding a custom filter. 
+For example, in addition to the population filter from the example above you may add a custom filter so that only subjects aged at least 55 years are inlcuded in the population. 
+
+```{r, eval=FALSE}
+# Example of partial endpoint specification of analysis population
+ep_spec_ex3_2  <- chef::mk_endpoint_str(pop_var = "SAFFL",
+                                 pop_value = "Y",
+                                 custom_pop_filter = "AGE >= 55",
+                                 ...)
+```
