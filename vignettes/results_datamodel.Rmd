@@ -1,0 +1,236 @@
+---
+title: "Result Data Model"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Result Data Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The output from {chef} is a `data.table` containing the statistics for each stratum within each endpoint based on the specified analysis data for each endpoint.
+
+The columns in the table contain information on six different hierarchical levels, meaning that e.g. information on level 2 is a sub level of level 1. 
+
+The table utilizes a long format structure, ensuring that each row corresponds to the most granular level of information (level 6). This level comprises individual statistical outcomes derived from the applied statistical functions. 
+
+The six information levels in the output data from {chef} are:
+
+1. **Endpoint specification**. This may entail multiple endpoint specifications within the output.
+2. **Endpoint**. If a `group_by` argument is included in the endpoint specification, it will result in a set of endpoints for each group level within that specification. If group_by is absent, only a single endpoint will be generated.
+3. **Stratifier**. These are applied to each endpoint. For instance, if the stratifiers are `SEX` and `AGEGR`, the endpoint will be divided into three entities (one for each stratifier, and an additional one for the total, which is a unique, fixed stratification with a singular stratum).
+4. **Statistical function**. The R functions designated for application to each stratifier.
+5. **Stratum**. The levels of each stratifier.
+6. **Statistics**. The statistics corresponding to each stratum.
+
+The table below describes all the columns in the output table. Note that information on levels 1-5 may be repeated on several rows, since level 6 is the defining row level.
+
+<table>
+<thead>
+  <tr>
+    <th>Aggregation level</th>
+    <th>Column name</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td rowspan="13">Level 1: Endpoint specification</td>
+    <td>`endpoint_spec_id`</td>
+    <td>int</td>
+    <td>Id of endpoint specification.</td>
+  </tr>
+  <tr>
+    <td>`study_metadata`</td>
+    <td>list</td>
+    <td>Study metadata.</td>
+  </tr>
+  <tr>
+    <td>`pop_var`</td>
+    <td>char</td>
+    <td>Population filter variable.</td>
+  </tr>
+  <tr>
+    <td>`pop_value`</td>
+    <td>char</td>
+    <td>Population filter value.</td>
+  </tr>
+  <tr>
+    <td>`treatment_var`</td>
+    <td>char</td>
+    <td>Treatment variable.</td>
+  </tr>
+  <tr>
+    <td>`treatment_refval`</td>
+    <td>char</td>
+    <td>Treatment reference value.</td>
+  </tr>
+  <tr>
+    <td>`period_var`</td>
+    <td>char</td>
+    <td>Period filter variable.</td>
+  </tr>
+  <tr>
+    <td>`period_value`</td>
+    <td>char</td>
+    <td>Period filter value.</td>
+  </tr>
+  <tr>
+    <td>`custom_pop_filter`</td>
+    <td>char</td>
+    <td>Custom (free text) population filter.</td>
+  </tr>
+  <tr>
+    <td>`endpoint_filter`</td>
+    <td>char</td>
+    <td>Endpoint filter expression.</td>
+  </tr>
+  <tr>
+    <td>`group_by`</td>
+    <td>list</td>
+    <td>List of variables to group by (cross combinations).</td>
+  </tr>
+  <tr>
+    <td>`stratify_by`</td>
+    <td>list</td>
+    <td>List of variables on which to stratify the analysis data.</td>
+  </tr>
+  <tr>
+    <td>`key_analysis_data`</td>
+    <td>char</td>
+    <td>Id of analysis data set (filtered by population filter).</td>
+  </tr>
+  <tr>
+    <td rowspan="7">Level 2: Endpoint</td>
+    <td>`empty`</td>
+    <td>logical</td>
+    <td>Indicates if the endpoint is empty (no events).</td>
+  </tr>
+  <tr>
+    <td>`endpoint_group_metadata`</td>
+    <td>list</td>
+    <td>Specification of group slice.</td>
+  </tr>
+  <tr>
+    <td>`endpoint_group_filter`</td>
+    <td>char</td>
+    <td>Filter expression to extract group slice from analysis data.</td>
+  </tr>
+  <tr>
+    <td>`endpoint_id`</td>
+    <td>char</td>
+    <td>Endpoint id. One endpoint per group slice.</td>
+  </tr>
+  <tr>
+    <td>`endpoint_label`</td>
+    <td>char</td>
+    <td>Endpoint label.</td>
+  </tr>
+  <tr>
+    <td>`event_index`</td>
+    <td>list</td>
+    <td>Indices (rows) in the analysis data that are events.</td>
+  </tr>
+  <tr>
+    <td>`crit_accept_endpoint`</td>
+    <td>logical</td>
+    <td>Evaluation of crit_endpoint.</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Level 3: Stratifier</td>
+    <td>`strata_var`</td>
+    <td>char</td>
+    <td>Stratification variable.</td>
+  </tr>
+  <tr>
+    <td>`strata_id`</td>
+    <td>char</td>
+    <td>Id of stratifier.</td>
+  </tr>
+  <tr>
+    <td>`crit_accept_by_strata_by_trt`</td>
+    <td>logical</td>
+    <td>Evaluation of `crit_by_strata_by_trt`.</td>
+  </tr>
+  <tr>
+    <td>`crit_accept_by_strata_across_trt`</td>
+    <td>logical</td>
+    <td>Evaluation of `crit_by_strata_across_trt`.</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Level 4: Statistical function</td>
+    <td>`fn_hash`</td>
+    <td>char</td>
+    <td>Id of stat function.</td>
+  </tr>
+  <tr>
+    <td>`fn_type`</td>
+    <td>char</td>
+    <td>Type of stat function (`stat_by_strata_by_trt`, `stat_by_strata_across_trt`, or  `stat_across_strata_across_trt`).</td>
+  </tr>
+  <tr>
+    <td>`fn_name`</td>
+    <td>char</td>
+    <td>Name of stat function.</td>
+  </tr>
+  <tr>
+    <td>`fn_call_char`</td>
+    <td>char</td>
+    <td>Stat function parsing (name of stat function and arguments).</td>
+  </tr>
+  <tr>
+    <td>`fn_callable`</td>
+    <td>list</td>
+    <td>Stat function code.</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Level 5: Stratum</td>
+    <td>`stat_empty`</td>
+    <td>logical</td>
+    <td>Indicates if stratum is empty (`cell_index` is empty).</td>
+  </tr>
+  <tr>
+    <td>`stat_metadata`</td>
+    <td>list</td>
+    <td>Specification of stratum.</td>
+  </tr>
+  <tr>
+    <td>`stat_filter`</td>
+    <td>char</td>
+    <td>Filter expression to extract stratum from analysis data.</td>
+  </tr>
+  <tr>
+    <td>`stat_result_id`</td>
+    <td>char</td>
+    <td>Id of statistics produced by stat function.</td>
+  </tr>
+  <tr>
+    <td>`cell_index`</td>
+    <td>list</td>
+    <td>Indices (rows) in the analysis data included in the stratum.</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Level 6: Statistics</td>
+    <td>`stat_result_description`</td>
+    <td>char</td>
+    <td>Description of the statistics (returned from statistical function).</td>
+  </tr>
+  <tr>
+    <td>`stat_result_label`</td>
+    <td>char</td>
+    <td>Label to the statistical value (returned from statistical function).</td>
+  </tr>
+  <tr>
+    <td>`stat_result_value`</td>
+    <td>num</td>
+    <td>The statistical value returned from the statistical function.</td>
+  </tr>
+</tbody>
+</table>

@@ -1,0 +1,138 @@
+---
+title: "Validation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(ramnog)
+library(testthat)
+library(data.table)
+library(chef)
+library(chefStats)
+```
+
+The validity of the ramnog framework is ensured on several levels:
+
+ - Unit test individual functions/modules in all packages
+ - Integration/end-to-end testing to ensure the interactions between individual functions/modules (that have been unit tested) are as expected
+ - CI/CD to ensure changes are properly tested and deployed to the users
+
+## Unit testing
+
+Each package contains the unit tests for the functionality that package is responsible for. This means, for example, it is the responsibility of the unit-tests in {chefStats} to ensure that the statistical functions written in chefStats produce the result they are supposed to produce.
+
+
+## Integration testing
+
+Integration testing verifies the framework produces the expected results
+
+The integration testing is done via the {testthat} framework, and are essentially unit-tests that cover many different units
+
+The goal is to compare the results of an analysis run via ramnog with the expected results done from a manual calculation of the same analysis.
+
+For example, below is the unit test to ensure the results of an endpoint definition defined and run via chef match those calculated manually
+
+<details>
+<summary>Example of integration test using {testthat} framework </summary>
+
+```{r}
+test_that("Valide stats when one strata level is not found",
+          {
+            # SETUP -------------------------------------------------------------------
+            testr::create_local_project()
+
+            mk_ep_def <- function() {
+              ep <- chef::mk_endpoint_str(
+                study_metadata = list(),
+                pop_var = "SAFFL",
+                pop_value = "Y",
+                treatment_var = "TRT01A",
+                treatment_refval = "Xanomeline High Dose",
+                stratify_by = list(c("SEX")),
+                data_prepare = ramnog::mk_adae_demo,
+                endpoint_label = "A",
+                custom_pop_filter = "SEX == 'F'",
+                group_by = list(list(AESEV = c())),
+                stat_by_strata_by_trt = list(
+                  "N" = chefStats::n_subj,
+                  "E" = chefStats::n_event,
+                  "N subj E" = chefStats::n_subj_event
+                ),
+                stat_by_strata_across_trt = list("RR" = chefStats::RR,
+                                                 "OR" = chefStats::OR),
+                stat_across_strata_across_trt = list("P-interaction" = chefStats::p_val_interaction)
+              )
+            }
+
+
+            chef::use_chef(
+              pipeline_dir = "pipeline",
+              r_functions_dir = "R/",
+              pipeline_id = "01",
+              mk_endpoint_def_fn = mk_ep_def,
+              mk_adam_fn = list(mk_adae_demo)
+            )
+            # ACT ---------------------------------------------------------------------
+            targets::tar_make()
+            targets::tar_load(ep_stat)
+            # EXPECT ------------------------------------------------------------------
+            browser()
+            x <- mk_adae_demo()
+            # Relative Risk
+            actual <-
+              ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &
+                        fn_name == "RR" &
+                        stat_filter == "SEX == \"F\"" & label == "RR", value]
+            x1 <- x[SEX == "F" & SAFFL == "Y"]
+            x1[, event := FALSE]
+            x1[AESEV == "SEVERE", event := TRUE] |> setorder(-event)
+            x1_unique <-
+              unique(x1, by = "USUBJID", fromLast = FALSE)
+            two_by_two <-
+              x1_unique[, .N, by = .(TRT01A, event)][order(TRT01A, event)]
+            
+            # Outcome, exposed
+            a <-
+              two_by_two[TRT01A == "Xanomeline High Dose" &
+                           (event), N] 
+            
+            # No outcome, exposed
+            b <-
+              two_by_two[TRT01A == "Xanomeline High Dose" &
+                           !(event), N] 
+             
+            # Outcome, not exposed
+            c <-
+              two_by_two[TRT01A == "Placebo" &
+                           (event), N]
+            
+            # No outcome, not exposed
+            d <-
+              two_by_two[TRT01A == "Placebo" &
+                           !(event), N] 
+            
+            expected <- (a / sum(a, b)) / (c / sum(c, d))
+            expect_identical(actual, expected)
+
+            # Number of Events
+            actual <-
+              ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &
+                        fn_name == "E" &
+                        strata_var == "SEX"]
+            expected <-
+              x1[(event), .N, by = .(TRT01A)][order(TRT01A)][, as.double(N)]
+            expect_identical(actual$value, expected)
+          })
+```
+</details>

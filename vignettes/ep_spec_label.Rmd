@@ -1,0 +1,105 @@
+---
+title: "Endpoint Label"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Endpoint Label}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+
+For each endpoint the user has the option to specify a label that describes the content of the endpoint. 
+This is parsed as a string via the `endpoint_label` parameter in the endpoint specification.
+The string may contain references to other parameters in the endpoint specification encapsulated by `<>`. 
+These references will be dynamically evaluated to the respective values of the parameters.
+The endpoint label does not have to be unique for each endpoint, and references are optional.
+
+Label referencing is particularly useful when endpoint grouping is applied, which resolves in an endpoint for each group level. 
+In this case you may dynamically refer to the group level present in each of these endpoints.
+
+The dynamic labeling may also be a convenient way to refer to other important parameters that identifies each endpoint e.g., `pop_var`, `period_var` and `endpoint_filter`.
+
+
+# Examples
+
+
+##### Ex 6.1
+
+Suppose you define an endpoint specification with an endpoint on the safety analysis population (`SAFFL = "Y"`) grouped on adverse event severity `AESEV` which has three levels: `MILD`, `MODERATE`, and `SERVERE`. 
+Note that this assumes that `SAFFL` and `AESEV` are variables in the analysis data set. For this setup you may specify a dynamic endpoint label that refer to both the population and the severity: 
+
+```{r, eval=FALSE}
+# Example of partial endpoint specification of analysis population
+ep_spec_ex6_1  <- chef::mk_endpoint_str(pop_var = "SAFFL",
+                                 pop_value = "Y",
+                                 group_by = list(list(AESEV = c())),
+                                 endpoint_label = "Example: <pop_var> - <AESEV> adverse events",
+                                 ...)
+```
+
+This will resolve in three endpoints with the following labels:
+
+```{r, eval=FALSE}
+"Example: SAFFL - MILD adverse events"
+"Example: SAFFL - MODERATE adverse events"
+"Example: SAFFL - SERVERE adverse events"
+```
+
+##### Ex 6.2
+
+In extension of the previous example, suppose you only want to consider subjects of ages between 18-64 years via the age group variable `AGEGR1` in the analysis data set.
+In addition, you want to update the endpoint label to refer to this filter. This could look like this:   
+
+```{r, eval=FALSE}
+# Example of partial endpoint specification of analysis population
+ep_spec_ex6_2  <- chef::mk_endpoint_str(
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  endpoint_filter = "AGEGR1 == '18-64'",
+  group_by = list(list(AESEV = c())),
+  endpoint_label =
+    "Example: <pop_var> - <AESEV> adverse events / <endpoint_filter>",
+  ...
+)
+```
+
+Again, this resolve in three endpoints and they will now have these endpoint labels:
+
+```{r, eval=FALSE}
+"Example: SAFFL - MILD adverse events / AGEGR1 == '18-64'"
+"Example: SAFFL - MODERATE adverse events / AGEGR1 == '18-64'"
+"Example: SAFFL - SERVERE adverse events / AGEGR1 == '18-64'"
+```
+
+##### Ex 6.3
+
+If you do not provide any references in the endpoint label, it is simply returned as a static string.
+Hence, if you modify the label in the previous example as follows:
+
+```{r, eval=FALSE}
+# Example of partial endpoint specification of analysis population
+ep_spec_ex6_3  <- chef::mk_endpoint_str(
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  endpoint_filter = "AGEGR1 == '18-64'",
+  group_by = list(list(AESEV = c())),
+  endpoint_label = "Example of a fixed endpoint label",
+  ...
+)
+```
+
+You will get the following endpoint labels:
+
+```{r, eval=FALSE}
+"Example of a fixed endpoint label"
+"Example of a fixed endpoint label"
+"Example of a fixed endpoint label"
+```
