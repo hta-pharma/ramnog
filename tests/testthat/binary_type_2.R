@@ -23,7 +23,7 @@ test_that("Binary outcomes of type 2 work", {
     mk_adam_fn = list(mk_adae),
   )
   # ACT ---------------------------------------------------------------------
-  browser()
+
   targets::tar_make()
   targets::tar_load(ep_stat)
 

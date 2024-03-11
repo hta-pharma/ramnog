@@ -49,12 +49,11 @@ test_that("Validate statistics - complex endpoint specification",
             targets::tar_load(ep_stat)
             # EXPECT ------------------------------------------------------------------
 
-
             x <- mk_adae()
             actual <-
               ep_stat[endpoint_group_filter == "AESOC == \"SOCIAL CIRCUMSTANCES\" & AESEV == \"SEVERE\"" &
                         fn_name == "RR" &
-                        stat_filter == "SEX == \"F\"" &label == "RR", value]
+                        stat_filter == "SEX == \"F\"" & stat_result_label == "RR", stat_result_value]
             x1 <- x[SEX == "F" & SAFFL == "Y"]
             x1[AESOC == "SOCIAL CIRCUMSTANCES" &
                  AESEV == "SEVERE", event := TRUE]
@@ -71,7 +70,7 @@ test_that("Validate statistics - complex endpoint specification",
               ep_stat[endpoint_group_filter == "AESOC == \"SOCIAL CIRCUMSTANCES\" & AESEV == \"SEVERE\"" &
                         fn_name == "OR" &
                         stat_filter == "SEX == \"F\"" &
-                        label == "OR", value]
+                        stat_result_label == "OR", stat_result_value]
             expected <- (a / b) / (c / d)
             expect_identical(actual, expected)
           })
@@ -133,7 +132,7 @@ test_that("Valide stats when one strata level is not found",
               ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &
                         fn_name == "RR" &
                         stat_filter == "SEX == \"F\"" &
-                        label == "RR", value]
+                        stat_result_label == "RR", stat_result_value]
             x1 <- x[SEX == "F" & SAFFL == "Y"]
             x1[, event := FALSE]
             x1[AESEV == "SEVERE", event := TRUE] |> setorder(-event)
@@ -163,5 +162,5 @@ test_that("Valide stats when one strata level is not found",
                         strata_var == "SEX"]
             expected <-
               x1[(event), .N, by = .(TRT01A)][order(TRT01A)][, as.double(N)]
-            expect_identical(actual$value, expected)
+            expect_identical(actual$stat_result_value, expected)
           })

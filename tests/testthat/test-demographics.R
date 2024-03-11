@@ -44,6 +44,7 @@ test_that("Demographics work with other endpoints", {
     mk_adam_fn = list(mk_adae, mk_advs),
   )
   # ACT ---------------------------------------------------------------------
+browser()
   targets::tar_make()
   targets::tar_load(ep_stat)
 
@@ -74,3 +75,5 @@ test_that("Demographics work with other endpoints", {
   expected <- x[is.na(SEX), .N, by=.(TRT01A)] |> setorder(TRT01A)
   expect_equal(a$value, expected$N)
 })
+
+

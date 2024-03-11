@@ -22,4 +22,7 @@ Suggests:
     testthat (>= 3.0.0),
     kableExtra (>= 1.4)
 Config/testthat/edition: 3
+Remotes:
+    hta-pharma/chefStats,
+    hta-pharma/chef
 VignetteBuilder: knitr
