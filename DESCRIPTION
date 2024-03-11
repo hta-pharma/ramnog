@@ -21,5 +21,9 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     kableExtra (>= 1.4)
+Remotes:
+    hta-pharma/chef,
+    hta-pharma/chefCriteria,
+    hta-pharma/chefStats
 Config/testthat/edition: 3
 VignetteBuilder: knitr
