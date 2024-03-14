@@ -39,8 +39,8 @@ test_that("Complex pipeline runs without errors",
             expect_true(all(is.na(x$error)))
             expect_snapshot(ep_stat[, .(stat_filter,
                                         endpoint_group_filter,
-                                        label,
-                                        description,
-                                        qualifiers,
-                                        value)])
+                                        stat_result_label,
+                                        stat_result_description,
+                                        stat_result_qualifiers,
+                                        stat_result_value)])
           })

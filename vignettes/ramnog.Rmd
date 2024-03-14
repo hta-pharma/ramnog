@@ -172,10 +172,10 @@ ep_stat[, .(
   treatment_refval,
   strata_var,
   stat_filter,
-  label,
-  description,
-  qualifiers,
-  value
+  stat_result_label,
+  stat_result_description,
+  stat_result_qualifiers,
+  stat_result_value
 )] |> head()
 
 ```
@@ -189,10 +189,10 @@ ep_stat[, .(
   treatment_refval,
   strata_var,
   stat_filter,
-  label,
-  description,
-  qualifiers,
-  value
+  stat_result_label,
+  stat_result_description,
+  stat_result_qualifiers,
+  stat_result_value
 )] |> head()
 ```
 
