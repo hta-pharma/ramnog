@@ -66,13 +66,16 @@ test_that("Demographics work with other endpoints", {
   c <- 0.5 # No outcome, not exposed
   d <- 53.5 # No outcome, not exposed
   expected <- (a / sum(a, b)) / (c / sum(c, d))
-  expect_identical(actual, expected)
+  expect_identical(actual$stat_result_value, expected)
 
   # Spot check the Demographic stats
   x <- mk_advs()
-  a <- ep_stat[ stat_result_qualifiers == "SEX" & stat_result_label == "n_missing"] |> data.table::setorder(stat_filter)
+  a <-
+    ep_stat[stat_result_qualifiers == "SEX" &
+              stat_result_label == "n_missing"] |> data.table::setorder(stat_filter)
   expected <- x[is.na(SEX), .N, by = .(TRT01A)] |> data.table::setorder(TRT01A)
-  expect_equal(a$stat_result_value, expected$N)
+
+  expect_equal(a$stat_result_value |> as.integer(), as.integer(expected$N))
 })
 
 
