@@ -6,6 +6,9 @@
 \usage{
 dummy_fn()
 }
+\value{
+Nothing.
+}
 \description{
 exists only to import data.table
 }

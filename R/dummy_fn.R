@@ -1,9 +1,8 @@
 #' Title
 #' @description exists only to import data.table
-#' @return
+#' @return Nothing.
 #' @export
 #'
-#' @examples
 #' @import data.table
 dummy_fn <- function(){
 
