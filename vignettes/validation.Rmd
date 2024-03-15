@@ -94,8 +94,12 @@ testthat::test_that("Valide stats when one strata level is not found",
             targets::tar_make()
             targets::tar_load(ep_stat)
             # EXPECT ------------------------------------------------------------------
+<<<<<<< HEAD
             # Manually calculated expected results
             x <- mk_adae(study_metadata = NULL)
+=======
+            x <- mk_adae_demo()
+>>>>>>> 62e189b (Adds junit as reporter)
             # Relative Risk
             actual <-
               ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &

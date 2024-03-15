@@ -13,7 +13,6 @@ test_that("multiplication works", {
       stratify_by = list(c("AEDECOD")),
       stat_by_strata_by_trt = list(chefStats::p_subj_event)
     )
-
   }
 
 
@@ -27,5 +26,8 @@ test_that("multiplication works", {
   # ACT ---------------------------------------------------------------------
   targets::tar_make()
   targets::tar_load(ep_stat)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 62e189b (Adds junit as reporter)
 })
