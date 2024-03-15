@@ -41,12 +41,22 @@ jobs:
       #     )
       #   shell: Rscript {0}
 
+      - name: Get package name
+        run: |
+          echo "PKGNAME=$(echo $(awk -F: '/Package:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: debug
+        run: |
+          echo $PKGNAME
+        shell: bash
+
       - name: Run tests with coverage
         run: |
           covr::codecov(
             type = "none",
             code = "testthat::test_package(
-              'chefStats',
+              Sys.getenv('PKGNAME'),
               reporter = testthat::JunitReporter$new(file = file.path(normalizePath(Sys.getenv('GITHUB_WORKSPACE'), winslash = '/'), 'test-results.xml'))
               )",
             install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package"),
@@ -54,7 +64,7 @@ jobs:
             quiet=FALSE
             )
         shell: Rscript {0}
-        
+
       - name: Show testthat output in console
         if: always()
         run: |
