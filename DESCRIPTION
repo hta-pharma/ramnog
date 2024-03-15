@@ -10,7 +10,7 @@ Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.3.1
 Imports:
     chef,
     chefCriteria,
@@ -20,9 +20,13 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    kableExtra (>= 1.4)
+    kableExtra (>= 1.4),
+    testr,
+    tidyr,
+    pharmaverseadam
 Config/testthat/edition: 3
 Remotes:
     hta-pharma/chefStats,
-    hta-pharma/chef
+    hta-pharma/chef,
+    matthew-phelps/testr
 VignetteBuilder: knitr

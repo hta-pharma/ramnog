@@ -1,12 +1,12 @@
 ---
-title: "Endpoint catalog"
+title: "Endpoint Catalog"
 resource_files:
   - vignettes/figures
 output: 
   rmarkdown::html_vignette:
     toc: false
 vignette: >
-  %\VignetteIndexEntry{Endpoint catalog}
+  %\VignetteIndexEntry{Endpoint Catalog}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

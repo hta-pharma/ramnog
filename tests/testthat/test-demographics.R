@@ -55,7 +55,7 @@ test_that("Demographics work with other endpoints", {
   actual <-
     ep_stat[endpoint_group_filter == "AESOC == \"SOCIAL CIRCUMSTANCES\" & AESEV == \"SEVERE\"" &
               fn_name == "RR" &
-              stat_filter == "SEX == \"F\"" & stat_result_label == "RR", stat_result_value]
+              stat_filter == "SEX == \"F\"" & stat_result_label == "RR", "stat_result_value"]
   x1 <- x[SEX == "F" & SAFFL == "Y"]
   x1[AESOC == "SOCIAL CIRCUMSTANCES" &
        AESEV == "SEVERE", event := TRUE]
@@ -70,8 +70,8 @@ test_that("Demographics work with other endpoints", {
 
   # Spot check the Demographic stats
   x <- mk_advs()
-  a <- ep_stat[ stat_result_qualifiers == "SEX" & stat_result_label == "n_missing"] |> setorder(stat_filter)
-  expected <- x[is.na(SEX), .N, by = .(TRT01A)] |> setorder(TRT01A)
+  a <- ep_stat[ stat_result_qualifiers == "SEX" & stat_result_label == "n_missing"] |> data.table::setorder(stat_filter)
+  expected <- x[is.na(SEX), .N, by = .(TRT01A)] |> data.table::setorder(TRT01A)
   expect_equal(a$stat_result_value, expected$N)
 })
 

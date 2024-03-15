@@ -35,7 +35,6 @@ test_that("Validate statistics - complex endpoint specification",
               )
             }
 
-
             chef::use_chef(
               pipeline_dir = "pipeline",
               r_functions_dir = "R/",
@@ -44,6 +43,7 @@ test_that("Validate statistics - complex endpoint specification",
               mk_adam_fn = list(mk_adae),
               mk_criteria_fn = list(crit_endpoint, crit_sga, crit_sgd)
             )
+
             # ACT ---------------------------------------------------------------------
             targets::tar_make()
             targets::tar_load(ep_stat)
@@ -113,7 +113,6 @@ test_that("Valide stats when one strata level is not found",
               )
             }
 
-
             chef::use_chef(
               pipeline_dir = "pipeline",
               r_functions_dir = "R/",
@@ -122,6 +121,7 @@ test_that("Valide stats when one strata level is not found",
               mk_adam_fn = list(mk_adae),
               mk_criteria_fn = list(crit_endpoint, crit_sga, crit_sgd)
             )
+
             # ACT ---------------------------------------------------------------------
             targets::tar_make()
             targets::tar_load(ep_stat)
@@ -157,9 +157,9 @@ test_that("Valide stats when one strata level is not found",
 
             # Numeber of Events
             actual <-
-              ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &
-                        fn_name == "E" &
-                        strata_var == "SEX"]
+              ep_stat[ep_stat$endpoint_group_filter == "AESEV == \"SEVERE\"" &
+                        ep_stat$fn_name == "E" &
+                        ep_stat$strata_var == "SEX"]
             expected <-
               x1[(event), .N, by = .(TRT01A)][order(TRT01A)][, as.double(N)]
             expect_identical(actual$stat_result_value, expected)
