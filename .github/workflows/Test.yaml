@@ -5,9 +5,9 @@ on:
 
 name: test-coverage
 
-# concurrency:
-#   group: roxygen-${{ github.event.pull_request.number || github.ref }}
-#   cancel-in-progress: true
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   test-coverage:
@@ -24,7 +24,11 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::covr
+          extra-packages: |
+            any::covr
+            any::xml2
+            any::dplyr
+            any::knitr
           needs: coverage
 
       - name: Test coverage
@@ -32,7 +36,7 @@ jobs:
           covr::codecov(
             quiet = FALSE,
             clean = FALSE,
-            install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
           )
         shell: Rscript {0}
 
@@ -40,7 +44,7 @@ jobs:
         if: always()
         run: |
           ## --------------------------------------------------------------------
-          find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
 
       - name: Upload test results
@@ -49,3 +53,41 @@ jobs:
         with:
           name: coverage-test-failures
           path: ${{ runner.temp }}/package
+
+      - name: Create Coverage Report for comment
+        run: |
+          covr::package_coverage() |>
+            covr::to_cobertura(filename = "cobertura.xml")
+
+          xml <- xml2::read_xml("cobertura.xml")
+
+          pkg_cov <- xml |>
+            xml2::xml_find_first("packages/package") |>
+            xml2::xml_attrs() |>
+            dplyr::bind_rows()
+
+          fnc_cov <- xml |>
+            xml2::xml_find_first("packages/package") |>
+            xml2::xml_find_all("classes/class") |>
+            xml2::xml_attrs() |>
+            lapply(dplyr::bind_rows)
+
+          res <- list(pkg_cov, fnc_cov) |>
+            dplyr::bind_rows() |>
+            dplyr::transmute(
+              Name = dplyr::coalesce(filename, name),
+              `Coverage (%)` = round(as.numeric(`line-rate`)*100, digits = 2)
+            ) |>
+            knitr::kable()
+
+          c("# Code coverage", res) |>
+            writeLines(con = "coverage.md")
+        shell: Rscript {0}
+
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          header: coverage
+          path: coverage.md

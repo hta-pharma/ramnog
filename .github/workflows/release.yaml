@@ -1,0 +1,125 @@
+---
+    name: Release
+    
+    on:
+      workflow_call:
+        inputs:
+          create-dev-releases:
+            description: 'Create dev releases'
+            required: false
+            default: false
+            type: boolean
+          is-pre-release:
+              description: 'Mark as pre-release'
+              required: false
+              default: false
+              type: boolean
+      workflow_dispatch:
+    
+    concurrency:
+      group: release-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    
+    jobs:
+      release:
+        name: Release 🚀
+        runs-on: ubuntu-latest
+        permissions:
+          contents: write
+        steps:
+          - name: Setup token 🔑
+            id: github-token
+            run: |
+              if [ "${{ secrets.REPO_GITHUB_TOKEN }}" == "" ]; then
+                echo "REPO_GITHUB_TOKEN is empty. Substituting it with GITHUB_TOKEN."
+                echo "token=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_OUTPUT
+              else
+                echo "Using REPO_GITHUB_TOKEN."
+                echo "token=${{ secrets.REPO_GITHUB_TOKEN }}" >> $GITHUB_OUTPUT
+              fi
+            shell: bash
+    
+          - name: Checkout repo 🛎
+            uses: actions/checkout@v4
+
+          - uses: r-lib/actions/setup-pandoc@v2
+
+          - uses: r-lib/actions/setup-r@v2
+            with:
+              use-public-rspm: true
+    
+          - uses: r-lib/actions/setup-r-dependencies@v2
+            with:
+              extra-packages: |
+                any::rcmdcheck
+                any::knitr
+                any::pkgdown
+    
+          - name: Get branch names 🌿
+            id: branch-name
+            uses: tj-actions/branch-names@v7
+
+          
+
+          - name: Create pkg tarball 📦
+            run: |
+              R CMD build .
+            shell: bash
+
+          - name: Display structure of downloaded files
+            run: ls -R
+
+          - name: Get package build filename 📦
+            run: |
+              echo "PKGBUILD=$(echo $(awk -F: '/Package:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION)_"\
+              "$(awk -F: '/Version:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION).tar.gz)" >> $GITHUB_ENV
+            shell: bash
+
+          - name: Get package version
+            run: |
+              echo "PACKAGE_VERSION=v$(awk -F: '/Version:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION)" >> $GITHUB_ENV
+            shell: bash
+          
+          - name: Check if running with dev tag 🏷️
+            id: dev-tag
+            run: |
+              echo "Current tag: ${{ steps.branch-name.outputs.tag }}"
+              current_tag="${{ steps.branch-name.outputs.tag }}"
+              if [ "$(echo "$current_tag" | grep -E "^v([0-9]+\.)?([0-9]+\.)?([0-9]+)(-[0-9]+)$")" != "" ]; then
+                echo "Running for rc-tag."
+                echo "is-dev-tag=true" >> $GITHUB_OUTPUT
+              else
+                echo "is-dev-tag=false" >> $GITHUB_OUTPUT
+              fi
+            shell: bash
+    
+          - name: Generate Changelog 📜
+            run: |
+              RELEASE_VERSION=$(awk -F: '/Version:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION)
+              REPOSITORY_NAME="${{ github.event.repository.name }}"
+              (awk "/^#+.*${REPOSITORY_NAME//./\.}.*${RELEASE_VERSION//./\.}$/{flag=1;next}/^#+.*${REPOSITORY_NAME//./\.}.*/{flag=0}flag" NEWS.md | grep -v "^$" || echo "* ${RELEASE_VERSION}") > RELEASE_BODY.txt
+    
+          - name: Create release 🌟
+            # https://github.com/softprops/action-gh-release/pull/406#issuecomment-1934635958
+            uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
+            with:
+              body_path: RELEASE_BODY.txt
+              token: ${{ steps.github-token.outputs.token }}
+              generate_release_notes: true
+              name: ${{ env.PACKAGE_VERSION }}
+              tag_name: ${{ env.PACKAGE_VERSION}}
+              files: |
+                LICENSE
+                LICENSE.md
+                ${{ env.PKGBUILD }}
+              prerelease: inputs.pre-release
+        
+          # - name: Upload binaries to release 🔼
+          #   uses: svenstaro/upload-release-action@v2
+          #   with:
+          #     file: ${{ env.PKGBUILD }}
+          #     asset_name: ${{ env.PKGBUILD }}
+          #     tag: ${{ github.ref }}
+          #     overwrite: true
+
+          
