@@ -32,15 +32,6 @@ jobs:
             any::knitr
           needs: coverage
 
-      # - name: Test coverage
-      #   run: |
-      #     covr::codecov(
-      #       quiet = FALSE,
-      #       clean = FALSE,
-      #       install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
-      #     )
-      #   shell: Rscript {0}
-
       - name: Get package name
         run: |
           echo "PKGBUILD=$(awk -F: '/Package:/{gsub(/[ ]+/,""); print $2}' DESCRIPTION)" >> $GITHUB_ENV
