@@ -8,6 +8,7 @@ name: test-coverage
 permissions:
   contents: read
   pull-requests: write
+  checks: write
 
 jobs:
   test-coverage:
@@ -42,16 +43,18 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          junit_file <- file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "reports", "test-out.xml")
-          pkg_install_path <- file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
-          covr::package_coverage(
+          covr::codecov(
             type = "none",
-            code = "options(testthat.output_file = junit_file);testthat::test_dir('tests/testthat', reporter = 'junit')",
-            install_path = "pkg_install_path",
-            clean = FALSE,
-            quiet = FALSE)
+            code = "testthat::test_package(
+              'chefStats',
+              reporter = testthat::JunitReporter$new(file = file.path(normalizePath(Sys.getenv('GITHUB_WORKSPACE'), winslash = '/'), 'test-results.xml'))
+              )",
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package"),
+            clean=FALSE,
+            quiet=FALSE
+            )
         shell: Rscript {0}
-
+        
       - name: Show testthat output in console
         if: always()
         run: |
@@ -64,7 +67,7 @@ jobs:
         if: always()
         with:
           files: |
-            ${{ runner.temp }}/reports/test-out.xml
+            test-results.xml
 
       - name: Upload test results
         if: failure()
