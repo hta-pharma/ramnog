@@ -43,7 +43,7 @@ jobs:
 
       - name: Get package name
         run: |
-          echo "PKGNAME=$(echo $(awk -F: '/Package:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION)" >> $GITHUB_ENV
+          echo "PKGBUILD=$(awk -F: '/Package:/{gsub(/[ ]+/,""); print $2}' DESCRIPTION)" >> $GITHUB_ENV
         shell: bash
 
       - name: debug
@@ -52,6 +52,7 @@ jobs:
         shell: bash
 
       - name: Run tests with coverage
+        description: Run tests with coverage, install package, runs coverage and generate unittest Junit report.
         run: |
           covr::codecov(
             type = "none",
