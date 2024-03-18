@@ -1,8 +1,8 @@
 ---
-title: "Validation"
+title: "Quality control for ramnog ecosystem"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Validation}
+  %\VignetteIndexEntry{Quality control for ramnog ecosystem}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
