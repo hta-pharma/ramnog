@@ -19,6 +19,7 @@ library(ramnog)
 library(testthat)
 library(data.table)
 library(chef)
+library(testr)
 library(chefStats)
 ```
 
@@ -47,13 +48,20 @@ For example, below is the unit test to ensure the results of an endpoint definit
 <summary>Example of integration test using {testthat} framework </summary>
 
 ```{r}
-test_that("Valide stats when one strata level is not found",
+testthat::test_that("Valide stats when one strata level is not found",
           {
             # SETUP -------------------------------------------------------------------
             testr::create_local_project()
-
+            mk_adae <- function(study_metadata) {
+              adsl <- pharmaverseadam::adsl |> data.table::setDT()
+              adae <- pharmaverseadam::adae |> data.table::setDT()
+              adae_out <-
+                merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"), with =
+                                   F], by = "USUBJID", all = TRUE)
+              adae_out[TRT01A %in% c('Placebo', 'Xanomeline High Dose'),]
+            }
             mk_ep_def <- function() {
-              ep <- chef::mk_endpoint_str(
+              chef::mk_endpoint_str(
                 study_metadata = list(),
                 pop_var = "SAFFL",
                 pop_value = "Y",
@@ -86,8 +94,8 @@ test_that("Valide stats when one strata level is not found",
             targets::tar_make()
             targets::tar_load(ep_stat)
             # EXPECT ------------------------------------------------------------------
-
-            x <- mk_adae()
+            # Manually calculated expected results
+            x <- mk_adae(study_metadata = NULL)
             # Relative Risk
             actual <-
               ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &
@@ -135,3 +143,6 @@ test_that("Valide stats when one strata level is not found",
           })
 ```
 </details>
+
+## CI/CD 
+To be added
