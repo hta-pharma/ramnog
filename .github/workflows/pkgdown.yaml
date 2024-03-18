@@ -39,7 +39,7 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
-      # If not pull request a brand new webpage is deployed
+      
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4.5.0
@@ -48,7 +48,7 @@ jobs:
           branch: gh-pages
           folder: docs
 
-        # If pull request the webpage is deployed inside a dev/"PR number" folder for review
+       
         - name: Add pkgdown PR Comment
           uses: marocchino/sticky-pull-request-comment@v2
           if: github.event_name == 'pull_request'
