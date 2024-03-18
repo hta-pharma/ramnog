@@ -1,13 +1,14 @@
 # Complex pipeline runs without errors
 
     Code
-      ep_stat[, .(stat_filter, endpoint_group_filter, label, description, qualifiers,
-        value)]
+      ep_stat[, .(stat_filter, endpoint_group_filter, stat_result_label,
+        stat_result_description, stat_result_qualifiers, stat_result_value)]
     Output
                                                      stat_filter
+                                                          <char>
          1:              TOTAL_ == "total" & TRT01A == "Placebo"
-         2: TOTAL_ == "total" & TRT01A == "Xanomeline High Dose"
-         3:              TOTAL_ == "total" & TRT01A == "Placebo"
+         2:              TOTAL_ == "total" & TRT01A == "Placebo"
+         3: TOTAL_ == "total" & TRT01A == "Xanomeline High Dose"
          4: TOTAL_ == "total" & TRT01A == "Xanomeline High Dose"
          5:                     SEX == "F" & TRT01A == "Placebo"
         ---                                                     
@@ -17,6 +18,7 @@
       4277:                                                     
       4278:                                                     
                                                                                          endpoint_group_filter
+                                                                                                        <char>
          1:                  AESOC == "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" & AESEV == "MILD"
          2:                  AESOC == "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" & AESEV == "MILD"
          3:                  AESOC == "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" & AESEV == "MILD"
@@ -28,16 +30,30 @@
       4276:                                         AESOC == "EAR AND LABYRINTH DISORDERS" & AESEV == "SEVERE"
       4277: AESOC == "NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)" & AESEV == "SEVERE"
       4278: AESOC == "NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)" & AESEV == "SEVERE"
-            label                       description qualifiers value
-         1:     E                  Number of events       <NA>    36
-         2:     E                  Number of events       <NA>    75
-         3:     N                Number of subjects       <NA>    86
-         4:     N                Number of subjects       <NA>    72
-         5:     E                  Number of events       <NA>    18
-        ---                                                         
-      4274:  <NA> P-value interaction not conducted       <NA>    NA
-      4275:  <NA> P-value interaction not conducted       <NA>    NA
-      4276:  <NA> P-value interaction not conducted       <NA>    NA
-      4277:  <NA> P-value interaction not conducted       <NA>    NA
-      4278:  <NA> P-value interaction not conducted       <NA>    NA
+            stat_result_label           stat_result_description
+                       <char>                            <char>
+         1:                 E                  Number of events
+         2:                 N                Number of subjects
+         3:                 E                  Number of events
+         4:                 N                Number of subjects
+         5:                 E                  Number of events
+        ---                                                    
+      4274:              <NA> P-value interaction not conducted
+      4275:              <NA> P-value interaction not conducted
+      4276:              <NA> P-value interaction not conducted
+      4277:              <NA> P-value interaction not conducted
+      4278:              <NA> P-value interaction not conducted
+            stat_result_qualifiers stat_result_value
+                            <char>             <num>
+         1:                   <NA>                36
+         2:                   <NA>                86
+         3:                   <NA>                75
+         4:                   <NA>                72
+         5:                   <NA>                18
+        ---                                         
+      4274:                   <NA>                NA
+      4275:                   <NA>                NA
+      4276:                   <NA>                NA
+      4277:                   <NA>                NA
+      4278:                   <NA>                NA
 

@@ -217,7 +217,7 @@ The table below describes all the columns in the output table. Note that informa
     <td>Indices (rows) in the analysis data included in the stratum.</td>
   </tr>
   <tr>
-    <td rowspan="3">Level 6: Statistics</td>
+    <td rowspan="4">Level 6: Statistics</td>
     <td>`stat_result_description`</td>
     <td>char</td>
     <td>Description of the statistics (returned from statistical function).</td>
@@ -225,7 +225,12 @@ The table below describes all the columns in the output table. Note that informa
   <tr>
     <td>`stat_result_label`</td>
     <td>char</td>
-    <td>Label to the statistical value (returned from statistical function).</td>
+    <td>Label to the statistics (returned from statistical function).</td>
+  </tr>
+  <tr>
+    <td>`stat_result_qualifiers`</td>
+    <td>char</td>
+    <td>Qualifiers to the statistics (returned from statistical function).</td>
   </tr>
   <tr>
     <td>`stat_result_value`</td>
@@ -234,3 +239,4 @@ The table below describes all the columns in the output table. Note that informa
   </tr>
 </tbody>
 </table>
+
