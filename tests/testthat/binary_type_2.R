@@ -25,10 +25,6 @@ test_that("Binary outcomes of type 2 work", {
     mk_adam_fn = list(mk_adae),
   )
   # ACT ---------------------------------------------------------------------
-<<<<<<< HEAD
-
-=======
->>>>>>> 62e189b (Adds junit as reporter)
   targets::tar_make()
   targets::tar_load(ep_stat)
 
