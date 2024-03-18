@@ -1,3 +1,10 @@
 ^ramnog\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^README.Rmd
+^_pkgdown.yml
+^docs
+^.vscode
+^.github
+^.githooks
+^.pre-commit-config.yaml

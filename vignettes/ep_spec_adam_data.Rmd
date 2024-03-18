@@ -93,8 +93,8 @@ mk_adam_ex1_2 <- function(study_metadata) {
   # Merge ADSL, ADAE and baseline body weight from ADVS
   ax_out <-
     merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"), with = F], 
-          by = "USUBJID", all.x = TRUE) %>%
-    merge(., advs_bw[, c("bw_baseline", "USUBJID")], by = "USUBJID", all.x = TRUE)
+          by = "USUBJID", all.x = TRUE) |> 
+    merge(x=_, advs_bw[, c("bw_baseline", "USUBJID")], by = "USUBJID", all.x = TRUE)
   
   return(ax_out)
 }

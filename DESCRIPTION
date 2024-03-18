@@ -18,6 +18,8 @@ Imports:
     data.table (>= 1.14.2),
 Suggests: 
     knitr,
+    targets,
+    usethis,
     rmarkdown,
     testthat (>= 3.0.0),
     kableExtra (>= 1.4),
@@ -28,5 +30,6 @@ Config/testthat/edition: 3
 Remotes:
     hta-pharma/chefStats,
     hta-pharma/chef,
+    hta-pharma/chefCriteria,
     matthew-phelps/testr
 VignetteBuilder: knitr

@@ -15,7 +15,6 @@ editor_options:
 ---
 
 ```{r, include = FALSE}
-library(magrittr)
 library(ramnog)
 library(testthat)
 library(data.table)
@@ -407,13 +406,13 @@ mk_adlb <- function(study_metadata) {
   )]
 
   # Read ADLB
-  adlb <- data.table::as.data.table(pharmaverseadam::adlb) %>%
-    .[.[["PARAMCD"]] == "SODIUM" &
-      .[["AVISIT"]] %in% c("Baseline", "Week 8", "Week 16"), ]
+  adlb_0 <- data.table::as.data.table(pharmaverseadam::adlb)
+  adlb_1 <- adlb_0[adlb_0[["PARAMCD"]] == "SODIUM" &
+      adlb_0[["AVISIT"]] %in% c("Baseline", "Week 8", "Week 16"), ]
 
   adlb2 <-
-    merge(adlb,
-      adlb[adlb$AVISIT == "Baseline", c("USUBJID", "AVAL")],
+    merge(adlb_1,
+      adlb_1[adlb_1$AVISIT == "Baseline", c("USUBJID", "AVAL")],
       by = "USUBJID", all.x = TRUE
     )
 
