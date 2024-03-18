@@ -47,35 +47,3 @@ jobs:
           branch: gh-pages
           folder: docs
 
-      - name: Add pkgdown PR Comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
-        with:
-          recreate: true
-          header: pkgdown
-          message: |
-            # Github pages
-            Review the pkgdown webpage for the PR [here](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dev/${{ github.event.pull_request.number }})
-
-      - name: Copy page to temp folder
-        if: github.event_name == 'pull_request'
-        run: |
-          mkdir -p /home/runner/work/dev
-          cp -r ./docs/* /home/runner/work/dev
-
-      - name: Check out gh-pages branch
-        if: github.event_name == 'pull_request'
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-
-      - name: Copy and push to gh-pages
-        if: github.event_name == 'pull_request'
-        run: |
-          mkdir -p dev/${{ github.event.pull_request.number }}
-          cp -r /home/runner/work/dev/* ./dev/${{ github.event.pull_request.number }}
-          git config --global user.email "actions-robot@novonordisk.com"
-          git config --global user.name "Actions Robot From Github Actions"
-          git add .
-          git commit -m "Update gh pages from the PR"
-          git push
