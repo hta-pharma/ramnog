@@ -33,3 +33,4 @@ Remotes:
     hta-pharma/chefCriteria,
     matthew-phelps/testr
 VignetteBuilder: knitr
+URL: https://hta-pharma.github.io/ramnog/
