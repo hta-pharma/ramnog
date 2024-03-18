@@ -27,6 +27,5 @@ test_that("multiplication works", {
   # ACT ---------------------------------------------------------------------
   targets::tar_make()
   targets::tar_load(ep_stat)
-  browser()
 
 })

@@ -44,6 +44,6 @@ test_that("stat funtion that produces a 0 returns result ",
 
 
             actual <-
-              ep_stat[grepl("Placebo", stat_filter), value]
+              ep_stat[grepl("Placebo", stat_filter), stat_result_value]
             expect_equal(actual, 0)
           })

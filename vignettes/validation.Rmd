@@ -1,8 +1,8 @@
 ---
-title: "Validation"
+title: "Quality control for ramnog ecosystem"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Validation}
+  %\VignetteIndexEntry{Quality control for ramnog ecosystem}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,6 +19,7 @@ library(ramnog)
 library(testthat)
 library(data.table)
 library(chef)
+library(testr)
 library(chefStats)
 ```
 
@@ -47,20 +48,27 @@ For example, below is the unit test to ensure the results of an endpoint definit
 <summary>Example of integration test using {testthat} framework </summary>
 
 ```{r}
-test_that("Valide stats when one strata level is not found",
+testthat::test_that("Valide stats when one strata level is not found",
           {
             # SETUP -------------------------------------------------------------------
             testr::create_local_project()
-
+            mk_adae <- function(study_metadata) {
+              adsl <- pharmaverseadam::adsl |> data.table::setDT()
+              adae <- pharmaverseadam::adae |> data.table::setDT()
+              adae_out <-
+                merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"), with =
+                                   F], by = "USUBJID", all = TRUE)
+              adae_out[TRT01A %in% c('Placebo', 'Xanomeline High Dose'),]
+            }
             mk_ep_def <- function() {
-              ep <- chef::mk_endpoint_str(
+              chef::mk_endpoint_str(
                 study_metadata = list(),
                 pop_var = "SAFFL",
                 pop_value = "Y",
                 treatment_var = "TRT01A",
                 treatment_refval = "Xanomeline High Dose",
                 stratify_by = list(c("SEX")),
-                data_prepare = ramnog::mk_adae_demo,
+                data_prepare = mk_adae,
                 endpoint_label = "A",
                 custom_pop_filter = "SEX == 'F'",
                 group_by = list(list(AESEV = c())),
@@ -75,28 +83,27 @@ test_that("Valide stats when one strata level is not found",
               )
             }
 
-
             chef::use_chef(
               pipeline_dir = "pipeline",
               r_functions_dir = "R/",
               pipeline_id = "01",
               mk_endpoint_def_fn = mk_ep_def,
-              mk_adam_fn = list(mk_adae_demo)
+              mk_adam_fn = list(mk_adae)
             )
             # ACT ---------------------------------------------------------------------
             targets::tar_make()
             targets::tar_load(ep_stat)
             # EXPECT ------------------------------------------------------------------
-            browser()
-            x <- mk_adae_demo()
+            # Manually calculated expected results
+            x <- mk_adae(study_metadata = NULL)
             # Relative Risk
             actual <-
               ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &
                         fn_name == "RR" &
-                        stat_filter == "SEX == \"F\"" & label == "RR", value]
+                        stat_filter == "SEX == \"F\"" & stat_result_label == "RR", stat_result_value]
             x1 <- x[SEX == "F" & SAFFL == "Y"]
             x1[, event := FALSE]
-            x1[AESEV == "SEVERE", event := TRUE] |> setorder(-event)
+            x1[AESEV == "SEVERE", event := TRUE] |> data.table::setorder(-event)
             x1_unique <-
               unique(x1, by = "USUBJID", fromLast = FALSE)
             two_by_two <-
@@ -132,7 +139,10 @@ test_that("Valide stats when one strata level is not found",
                         strata_var == "SEX"]
             expected <-
               x1[(event), .N, by = .(TRT01A)][order(TRT01A)][, as.double(N)]
-            expect_identical(actual$value, expected)
+            expect_identical(actual$stat_result_value, expected)
           })
 ```
 </details>
+
+## CI/CD 
+To be added

@@ -1,3 +1,15 @@
 ^ramnog\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^README.Rmd
+^_pkgdown.yml
+^docs
+^.vscode
+^.github
+^.githooks
+^.pre-commit-config.yaml
+RELEASE_BODY\.txt
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

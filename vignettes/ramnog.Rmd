@@ -1,8 +1,8 @@
 ---
-title: "Quick start"
+title: "Quick Start"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ramnog}
+  %\VignetteIndexEntry{Quick Start}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -139,14 +139,14 @@ Our goal for this analysis is to count the number of events experiencing an even
 
 Now that all the inputs are defined, we can run the pipeline. This is achieved by a call to `tar_make()` from the {targets} package. 
 ```{r,eval=FALSE}
-tar_make()
+targets::tar_make()
 ```
 
 Targets will show you which steps in the pipeline are executed and how long each step took:
 
 ```{r, echo=FALSE} 
 setwd(tmp_dir) # Do not run, only needed to get the markdown file to run
-tar_make()
+targets::tar_make()
 
 
 ```
@@ -154,7 +154,7 @@ tar_make()
 Then, to see the results, you load the cached step of the pipeline corresponding to the results. In our case it will be `ep_stat`, so to load it into the sessions as an object we call
 
 ```{r, eval=FALSE}
-tar_load(ep_stat)
+targets::tar_load(ep_stat)
 
 ```
 
@@ -172,10 +172,10 @@ ep_stat[, .(
   treatment_refval,
   strata_var,
   stat_filter,
-  label,
-  description,
-  qualifiers,
-  value
+  stat_result_label,
+  stat_result_description,
+  stat_result_qualifiers,
+  stat_result_value
 )] |> head()
 
 ```
@@ -183,16 +183,16 @@ ep_stat[, .(
 
 ```{r, echo=FALSE}
 setwd(tmp_dir) # Do not run, only needed to get the markdown file to run
-tar_load(ep_stat)
+targets::tar_load(ep_stat)
 ep_stat[, .(
   treatment_var,
   treatment_refval,
   strata_var,
   stat_filter,
-  label,
-  description,
-  qualifiers,
-  value
+  stat_result_label,
+  stat_result_description,
+  stat_result_qualifiers,
+  stat_result_value
 )] |> head()
 ```
 

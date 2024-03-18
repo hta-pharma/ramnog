@@ -34,13 +34,13 @@ test_that("Complex pipeline runs without errors",
             targets::tar_make()
 
             # EXPECT ------------------------------------------------------------------
-            x <- targets::tar_meta() %>% data.table::as.data.table()
+            x <- targets::tar_meta() |> data.table::as.data.table()
             targets::tar_load(ep_stat)
             expect_true(all(is.na(x$error)))
             expect_snapshot(ep_stat[, .(stat_filter,
                                         endpoint_group_filter,
-                                        label,
-                                        description,
-                                        qualifiers,
-                                        value)])
+                                        stat_result_label,
+                                        stat_result_description,
+                                        stat_result_qualifiers,
+                                        stat_result_value)])
           })
