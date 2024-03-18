@@ -10,3 +10,6 @@
 ^.pre-commit-config.yaml
 RELEASE_BODY\.txt
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
