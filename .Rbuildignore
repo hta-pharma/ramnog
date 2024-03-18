@@ -8,3 +8,5 @@
 ^.github
 ^.githooks
 ^.pre-commit-config.yaml
+RELEASE_BODY\.txt
+^\.github$
