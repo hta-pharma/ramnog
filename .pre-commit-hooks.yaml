@@ -1,0 +1,6 @@
+-   id: org-hook
+    name: org-wide hooks
+    language: script
+    entry: ./run-org-hooks
+    verbose: true
+    require_serial: true
