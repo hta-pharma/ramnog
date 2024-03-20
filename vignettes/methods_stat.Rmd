@@ -112,5 +112,3 @@ chef::mk_endpoint_str(
 ```
 
 __Important:__ if the custom function relies on any external packages, you need to add those packages to the `packages.R` file in `R/`.
-
-

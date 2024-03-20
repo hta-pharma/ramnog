@@ -9,4 +9,4 @@
 library(testthat)
 library(ramnog)
 
-test_check("ramnog")
+test_check("ramnog", reporter = JunitReporter$new(file = "junit_result.xml"))

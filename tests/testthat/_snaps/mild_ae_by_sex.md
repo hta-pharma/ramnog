@@ -32,11 +32,11 @@
       4278: AESOC == "NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)" & AESEV == "SEVERE"
             stat_result_label           stat_result_description
                        <char>                            <char>
-         1:                 E                  Number of events
-         2:                 N                Number of subjects
-         3:                 E                  Number of events
-         4:                 N                Number of subjects
-         5:                 E                  Number of events
+         1:                 N                Number of subjects
+         2:                 E                  Number of events
+         3:                 N                Number of subjects
+         4:                 E                  Number of events
+         5:                 N                Number of subjects
         ---                                                    
       4274:              <NA> P-value interaction not conducted
       4275:              <NA> P-value interaction not conducted
@@ -45,11 +45,11 @@
       4278:              <NA> P-value interaction not conducted
             stat_result_qualifiers stat_result_value
                             <char>             <num>
-         1:                   <NA>                36
-         2:                   <NA>                86
-         3:                   <NA>                75
-         4:                   <NA>                72
-         5:                   <NA>                18
+         1:                   <NA>                86
+         2:                   <NA>                36
+         3:                   <NA>                72
+         4:                   <NA>                75
+         5:                   <NA>                53
         ---                                         
       4274:                   <NA>                NA
       4275:                   <NA>                NA

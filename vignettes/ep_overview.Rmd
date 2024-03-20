@@ -96,5 +96,3 @@ dt |>
   kableExtra::collapse_rows(columns = 1:2)
 
 ```
-
-
