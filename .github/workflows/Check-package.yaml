@@ -32,7 +32,7 @@ jobs:
     name: gitleaks 💧
     uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main
     with:
-      check-for-pii: true
+      check-for-pii: false #Currently fails on R packages (not that the test check fails, but that the test fails to run.)
 
 
 
