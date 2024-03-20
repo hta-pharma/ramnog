@@ -31,4 +31,3 @@ articles:
   contents:
   - starts_with("dev")
   - validation
-

@@ -6,3 +6,4 @@ repos:
         language: script
         entry: ./run-org-hooks
         verbose: true
+        require_serial: true

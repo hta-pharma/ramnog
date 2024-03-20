@@ -239,4 +239,3 @@ The table below describes all the columns in the output table. Note that informa
   </tr>
 </tbody>
 </table>
-
