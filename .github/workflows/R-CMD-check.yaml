@@ -47,7 +47,8 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
-          upload-snapshots: true
-          error-on: '"error"'
-          check-dir: '"check"'
-          upload-results: true
+          args: 'c("--no-manual", "--as-cran", "--no-tests")' # We run a secondary tests check
+          # upload-snapshots: true
+          # error-on: '"error"'
+          # check-dir: '"check"'
+          # upload-results: true
