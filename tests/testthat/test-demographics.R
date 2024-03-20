@@ -77,5 +77,3 @@ test_that("Demographics work with other endpoints", {
 
   expect_equal(a$stat_result_value |> as.integer(), as.integer(expected$N))
 })
-
-

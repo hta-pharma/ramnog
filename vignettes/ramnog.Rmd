@@ -201,5 +201,3 @@ ep_stat[, .(
 # 5. Pass the data on to TFL formatting
 
 Now that the data is produced, you can pass it on for TFL formatting (outside the scope of {chef}).
-
-

@@ -384,8 +384,3 @@ endpoint_XYZ  <- chef::mk_endpoint_str(
 )
 
 ```
-
-
-
-
-
