@@ -13,3 +13,5 @@ RELEASE_BODY\.txt
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^run-org-hooks$
+^shared-pre-commit-config.yaml$
