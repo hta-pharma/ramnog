@@ -2,7 +2,7 @@
 # R specific hooks: https://github.com/lorenzwalthert/precommit
 repos:
 -   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2.9027
+    rev: v0.4.0
     hooks: 
     # -   id: style-files
     #     args: [--style_pkg=styler, --style_fun=tidyverse_style]    
@@ -60,10 +60,12 @@ repos:
         args: ['--maxkb=200']
     # -   id: file-contents-sorter
     #     files: '^\.Rbuildignore$'
-    -   id: end-of-file-fixer
-        exclude: >
-          '\.Rd'
-          'tests/testthat/_snaps'
+    -   id: end-of-file-fixer #NB exclude is regex - requiring multiline (or = |) statements
+        exclude: |
+            (?x)^(
+                '\.Rd'|
+                tests\/testthat\/_snaps\/.*
+            )$
     - id: detect-private-key
     # - id: detect-aws-credentials
 -   repo: local
