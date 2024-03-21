@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 
 
-```{r}
+```{r, echo=F}
 library(data.table)
 library(kableExtra)
 ```
@@ -49,6 +49,44 @@ All packages use [Gitflow](https://www.atlassian.com/git/tutorials/comparing-wor
 
 Specific for the ramnog ecosystem, each package always has the following three branches:
 
-* `dev` For development purposes. `dev` is where completed `feature` branches should be pulled to and it should always be functional. Any uncompleted features should remain in a `feature` branch. 
-* `test` testing environment. Once a new version or patch is ready, `dev` shouled be pulled into `test`, then `test` should be tested in a production environment.
-* `main` Latest stable release and is what users will interact with. Pulls to `main` should only come from `test`
+### Dev
+
+`dev` For development purposes. `dev` is where completed `feature` branches should be pulled to and it should always be functional. Any uncompleted features should remain in a `feature` branch.
+- When pulling into `dev` the commits should be squashed into a single commit. This is to keep the commit history clean and easy to read. 
+- Furthermore, the PR title should be informative of the changes made. 
+
+### Stage/vX.Y.Z
+`stage/vX.Y.Z` This is the staging environment. Once a new version or patch is ready, a need stage/vX.Y.Z branch should be created from `dev`. 
+- The `stage/vX.Y.Z` branch should be thoroughly tested and reviewed before merging into `main`.
+- Creating a pull-request will run multiple checks and create the pkgdown site for inspection.
+- Ones ready to merge into `main` the `stage/vX.Y.Z` branch should be tagged with the version number.
+  - Ensure the DESCRIPTION file and the tag are synced.
+
+- Once the `stage/vX.Y.Z` branch is ready, it should be merged into `main` and a new release should be created. 
+  - NB. use fast-forward merging either by activating the fast-forward Git-action by adding a comment with `/fast-forward` to the Pull-request.
+    - Alternatively do this manually using:
+    ```
+    git checkout stage/vX.Y.Z
+    git pull
+    git checkout main
+    git pull
+    git merge stage/vX.Y.Z --ff-only
+    git push # Will work if PR requirements are met.
+    ```
+
+- Finally, if after merging into main any changes should be merged back into `dev`. 
+  - Fast-forward if possible and otherwise do a merge-commit (do **not** squash commits or rebase).
+
+### Main
+ `main` Latest stable release and is what users will interact with. Pulls to `main` should only come from `stage/vX.Y.Z` or `hotfix` branches.
+
+# DevOps: Pre-commit and Git-actions
+
+The ramnog ecosystem uses both pre-commit hooks and Git-Actions to ensure code quality and consistency.
+
+Configuration for Pre-commit as well as Git-action workflows are hosted in the {ramnog} package and consumed by the other packages.
+Idealy, the DevOps configuration should be hosted in a seperate repository, but for now it is in the {ramnog} package.
+
+### Pre-commit
+
+Pre-commit is a tool that runs checks on the code before it is commited. It is configured in the `.pre-commit-config.yaml` file in the root of the repository.
