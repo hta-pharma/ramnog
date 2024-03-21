@@ -21,7 +21,7 @@ The aim of ramnog is that statistician/programmer can set up an AMNOG-type analy
 library(kableExtra)
 library(data.table)
 dt <- data.table::data.table(
-  Package = c("chef", "chefStats", "chefCriteria", "ramnog"),
+  Package = c("[chef](https://hta-pharma.github.io/chef/)", "[chefStats](https://hta-pharma.github.io/chefStats/)", "[chefCriteria]((https://hta-pharma.github.io/chefCriteria/))", "[ramnog]((https://hta-pharma.github.io/ramnog/))"),
   Description = c(
     "Core package that aids in creating endpoint specifications, builds the analysis pipeline, and coordinates the execution of the ananlyses",
     "Collection of statistical methods that are used to make summarizations or inferences for each endpoint/outcome",

@@ -25,7 +25,7 @@ Description
 <tbody>
 <tr>
 <td style="text-align:left;">
-chef
+[chef](https://hta-pharma.github.io/chef/)
 </td>
 <td style="text-align:left;">
 Core package that aids in creating endpoint specifications, builds the
@@ -34,7 +34,7 @@ analysis pipeline, and coordinates the execution of the ananlyses
 </tr>
 <tr>
 <td style="text-align:left;">
-chefStats
+[chefStats](https://hta-pharma.github.io/chefStats/)
 </td>
 <td style="text-align:left;">
 Collection of statistical methods that are used to make summarizations
@@ -43,7 +43,7 @@ or inferences for each endpoint/outcome
 </tr>
 <tr>
 <td style="text-align:left;">
-chefCriteria
+[chefCriteria]((https://hta-pharma.github.io/chefCriteria/))
 </td>
 <td style="text-align:left;">
 Collection of criteria that are used in AMNOG dossiers to determin when
@@ -52,7 +52,7 @@ specific analyses/statistics should be calculated
 </tr>
 <tr>
 <td style="text-align:left;">
-ramnog
+[ramnog]((https://hta-pharma.github.io/ramnog/))
 </td>
 <td style="text-align:left;">
 Wrapper package tying ecosystem together
