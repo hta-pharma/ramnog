@@ -70,7 +70,7 @@
     <a class="dropdown-item" href="articles/debugging.html">Debugging</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Development</h6>
-    <a class="dropdown-item" href="articles/dev_git.html">Git Workflow</a>
+    <a class="dropdown-item" href="articles/dev_git.html">Contributing</a>
     <a class="dropdown-item" href="articles/validation.html">Quality control for ramnog ecosystem</a>
   </div>
 </li>
@@ -95,7 +95,7 @@
 <div class="section level1">
 <h1 id="packages">Packages<a class="anchor" aria-label="anchor" href="#packages"></a>
 </h1>
-<table class="table table table-bordered table table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table table-bordered table table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;background-color: lightblue !important;">
 Package
@@ -107,7 +107,7 @@ Description
 <tbody>
 <tr>
 <td style="text-align:left;">
-chef
+<a href="https://hta-pharma.github.io/chef/" class="external-link">chef</a>
 </td>
 <td style="text-align:left;">
 Core package that aids in creating endpoint specifications, builds the analysis pipeline, and coordinates the execution of the ananlyses
@@ -115,7 +115,7 @@ Core package that aids in creating endpoint specifications, builds the analysis 
 </tr>
 <tr>
 <td style="text-align:left;">
-chefStats
+<a href="https://hta-pharma.github.io/chefStats/" class="external-link">chefStats</a>
 </td>
 <td style="text-align:left;">
 Collection of statistical methods that are used to make summarizations or inferences for each endpoint/outcome
@@ -123,7 +123,7 @@ Collection of statistical methods that are used to make summarizations or infere
 </tr>
 <tr>
 <td style="text-align:left;">
-chefCriteria
+<a href="(https://hta-pharma.github.io/chefCriteria/)" class="external-link">chefCriteria</a>
 </td>
 <td style="text-align:left;">
 Collection of criteria that are used in AMNOG dossiers to determin when specific analyses/statistics should be calculated
@@ -131,7 +131,7 @@ Collection of criteria that are used in AMNOG dossiers to determin when specific
 </tr>
 <tr>
 <td style="text-align:left;">
-ramnog
+<a href="(https://hta-pharma.github.io/ramnog/)">ramnog</a>
 </td>
 <td style="text-align:left;">
 Wrapper package tying ecosystem together
@@ -139,6 +139,30 @@ Wrapper package tying ecosystem together
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level1">
+<h1 id="aim">Aim<a class="anchor" aria-label="anchor" href="#aim"></a>
+</h1>
+<p>The aim of the ramnog framework is that a programmer has to write minimal code, and no programming to in order to set-up a new AMNOG-type analyses. For each study, the programmer will need to make, adjust, or check the following four types of code:</p>
+<ol style="list-style-type: decimal">
+<li>The definition of each endpoint (or group of endpoints).</li>
+<li>A set of adam functions that makes any modifications to existing ADaM datasets (e.g., new age grouping in ADSL), or makes new ADaM datasets if none exist for the required output.</li>
+<li>(If needed) Define a set of criteria for when an endpoint should be included in the results. A library of these criteria are stored in the companion package {chefCriteria}</li>
+<li>A specification of the statistical functions used to summarize/analyze the data (usually found in the <a href="https://hta-pharma.github.io/chefStats/" class="external-link">chefStats</a> package).</li>
+</ol>
+<p>A core principal of the frameworks design is <strong>modularity</strong>. The core functionality of the framework as specefied in the code in <a href="https://hta-pharma.github.io/chef/" class="external-link">chef</a> should change slowly, while functionality that is subject to more frequent changes are sectioned off in other packages (<a href="https://hta-pharma.github.io/chefStats/" class="external-link">chefStats</a> and <a href="https://hta-pharma.github.io/chefCriteria/" class="external-link">cheCriteria</a>)</p>
+</div>
+<div class="section level1">
+<h1 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h1>
+<p>We welcome contributions to the code base. Please see the <a href="%22https://hta-pharma.github.io/chefCriteria/dev_git%22" class="external-link">contributing vignette</a> for more information on how to contribute.</p>
+</div>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<p>The packages are available to install from GitHub:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"hta-pharma/ramnog"</span><span class="op">)</span></span></code></pre></div>
 </div>
 
   </main><aside class="col-md-3"><div class="license">
