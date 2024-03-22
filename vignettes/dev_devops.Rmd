@@ -1,0 +1,38 @@
+---
+title: "Git actions and pre-commit hooks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dev_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+The {ramnog} ecosystem incl. {chef}, {chefStats}, and {chefCriteria} is developed in a collaborative manner. 
+This vignette describes the git actions and pre-commit hooks that are used to ensure a consistent and high-quality codebase.
+
+The github actions are run on every push to the main branch and on every pull request. The pre-commit hooks are run on every commit.
+**NB**. the pre-commit hooks are only run if the pre-commit package is installed. These checks are run locally on the developer's machine.
+
+The configuration for both Git-Actions as well as pre-commit hooks is stored in the ramnog repository and consumed by the remainder of the ecosystem.
+
+## Git Actions
+
+## Pre-commit hooks
+
+Individual setup of pre-commit hooks is described in the [pre-commit documentation](https://pre-commit.com/).
+
+__Quick Start__:
+```
+# Install pre-commit in the Individual user space (use pip if pipx is not installed)
+pipx install pre-commit 
+# Install the pre-commit hooks in the repository NB this needs to be run in the root of the repository
+pre-commit install 
+# Run on all files to check it works:
+pre-commit run --all-files 
+```
