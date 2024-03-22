@@ -14,10 +14,23 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Gitflow
 
+All packages use [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) way of working. Please see the linked to resource for details on how to work in this style.
 
+Specifically each package always has the `main` branch that is functioning and deployable. 
 
-# Definition of done
+### How to add a feature / bugfix
+
+1. Create new branch from main, lets say we call it `feature_A` 
+2. Develop, commit, and push to `feature_A`
+3. When you are [done](#dod), make a draft PR from `feature_A` into `main`. This will trigger the CI/CD pipelines and checks to run.
+4. Check the output of the CI/CD checks and make any requisit changes to `feature_A`
+5. Once the pipeline runs wihout any errors, mark your draft PR as ready for review and assign a reviewer
+6. When the PR is approved, chose the option to __squash and merge__ your commits. Here you will have the option to summarize the changes that your feature/bug fix address.
+7. Delete the source branch (`feature_A`)
+
+# Definition of done {#dod}
 
 A feature is defined as done and ready for a PR into main only once it has been properly tested. Testing consists of:
 
@@ -25,75 +38,14 @@ A feature is defined as done and ready for a PR into main only once it has been 
 2. Integration testing to ensure all features work together
 3. Passing the CI/CD
 
-Unit-testing and ingegration testing are done using the [testthat]() framework. New features usually, but no always require new tests.
+Unit-testing and ingegration testing are done using the [testthat](https://testthat.r-lib.org/) framework. New features usually, but no always require new tests.
 
 If you are developing, for example a new statistical function for chefStats then it must be checked with unit tests.
 
 Additionally, all previous unit-tests and integration tests need to pass. You can check this by running `devtools::test()` in the respective packages.
 
 __Note:__ Integration testing mostly resides in the ramnog package, so you will need to run `devtools::test()` there as well
-```{r, echo=F}
-library(data.table)
-library(kableExtra)
-```
 
-# Ramnog ecosystem
-
-The ramnog framework is an ecosystem of three R packages
-```{r, echo=FALSE}
-dt <-
-  data.table::data.table(
-    Package = c("chef", "chefStats", "chefCriteria", "ramnog"),
-    Description = c(
-      "Core package that aids in creating endpoint specifications and coordinates the execution of the package",
-      "Collection statistical methods that are used to make summarizations or inferences for each endpoint/outcome",
-      "Collection of criteria that are use in AMNOG dossiers to determin when specific analyses should be executed",
-      "Wrapper package tying ecosystem together"
-    )
-  )
-dt |>
-  kable(format = "html", table.attr = "class='table table-bordered'") |>
-  kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |>
-  row_spec(0, background = "lightblue")
-```
-
-
-# Workflow
-
-All packages use [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) way of working. Please see the linked to resource for details on how to work in this style.
-
-Specific for the ramnog ecosystem, each package always has the following three branches:
-
-### Dev
-
-`dev` For development purposes. `dev` is where completed `feature` branches should be pulled to and it should always be functional. Any uncompleted features should remain in a `feature` branch.
-- When pulling into `dev` the commits should be squashed into a single commit. This is to keep the commit history clean and easy to read. 
-- Furthermore, the PR title should be informative of the changes made. 
-
-### Stage/vX.Y.Z
-`stage/vX.Y.Z` This is the staging environment. Once a new version or patch is ready, a need stage/vX.Y.Z branch should be created from `dev`. 
-- The `stage/vX.Y.Z` branch should be thoroughly tested and reviewed before merging into `main`.
-- Creating a pull-request will run multiple checks and create the pkgdown site for inspection.
-- Ones ready to merge into `main` the `stage/vX.Y.Z` branch should be tagged with the version number.
-  - Ensure the DESCRIPTION file and the tag are synced.
-
-- Once the `stage/vX.Y.Z` branch is ready, it should be merged into `main` and a new release should be created. 
-  - NB. use fast-forward merging either by activating the fast-forward Git-action by adding a comment with `/fast-forward` to the Pull-request.
-    - Alternatively do this manually using:
-    ```
-    git checkout stage/vX.Y.Z
-    git pull
-    git checkout main
-    git pull
-    git merge stage/vX.Y.Z --ff-only
-    git push # Will work if PR requirements are met.
-    ```
-
-- Finally, if after merging into main any changes should be merged back into `dev`. 
-  - Fast-forward if possible and otherwise do a merge-commit (do **not** squash commits or rebase).
-
-### Main
- `main` Latest stable release and is what users will interact with. Pulls to `main` should only come from `stage/vX.Y.Z` or `hotfix` branches.
 
 # DevOps: Pre-commit and Git-actions
 
