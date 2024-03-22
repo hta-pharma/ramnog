@@ -1,8 +1,8 @@
 ---
-title: "Git Workflow"
+title: "Contributing"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Git Workflow}
+  %\VignetteIndexEntry{Contributing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,6 +16,22 @@ knitr::opts_chunk$set(
 
 
 
+
+# Definition of done
+
+A feature is defined as done and ready for a PR into main only once it has been properly tested. Testing consists of:
+
+1. Unit-tests to test the basic functionality 
+2. Integration testing to ensure all features work together
+3. Passing the CI/CD
+
+Unit-testing and ingegration testing are done using the [testthat]() framework. New features usually, but no always require new tests.
+
+If you are developing, for example a new statistical function for chefStats then it must be checked with unit tests.
+
+Additionally, all previous unit-tests and integration tests need to pass. You can check this by running `devtools::test()` in the respective packages.
+
+__Note:__ Integration testing mostly resides in the ramnog package, so you will need to run `devtools::test()` there as well
 ```{r, echo=F}
 library(data.table)
 library(kableExtra)
@@ -27,7 +43,7 @@ The ramnog framework is an ecosystem of three R packages
 ```{r, echo=FALSE}
 dt <-
   data.table::data.table(
-    Package = c( "chef", "chefStats", "chefCriteria","ramnog"),
+    Package = c("chef", "chefStats", "chefCriteria", "ramnog"),
     Description = c(
       "Core package that aids in creating endpoint specifications and coordinates the execution of the package",
       "Collection statistical methods that are used to make summarizations or inferences for each endpoint/outcome",
@@ -35,11 +51,10 @@ dt <-
       "Wrapper package tying ecosystem together"
     )
   )
-dt |> 
-  kable(format = "html", table.attr = "class='table table-bordered'") |> 
-  kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |> 
+dt |>
+  kable(format = "html", table.attr = "class='table table-bordered'") |>
+  kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |>
   row_spec(0, background = "lightblue")
-
 ```
 
 
