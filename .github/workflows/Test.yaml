@@ -1,47 +1,65 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# This is a GitHub Actions workflow file for testing an R package and reporting test coverage.
+# It is derived from examples provided by the r-lib/actions repository.
+# If you encounter build failures, you can find help at https://github.com/r-lib/actions#where-to-find-help
+
+# This workflow is triggered by a 'workflow_call' event, meaning it can be reused by other workflows.
 on:
   workflow_call:
 
+# The name of the workflow is 'test-coverage'.
 name: test-coverage
 
+# Permissions needed for the workflow to run.
 permissions:
-  contents: read
-  pull-requests: write
-  checks: write
+  contents: read           # Read access to the repository's contents.
+  pull-requests: write     # Write access to pull requests to post comments, etc.
+  checks: write            # Write access to checks to provide feedback on commits.
 
+# The jobs that will be run as part of this workflow.
 jobs:
   test-coverage:
+    # The job will run on the latest Ubuntu runner provided by GitHub Actions.
     runs-on: ubuntu-latest
+    
+    # Environment variables that will be available to all steps in the job.
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}  # Personal Access Token for GitHub, provided by GitHub Actions.
 
+    # The steps that will be executed as part of this job.
     steps:
+      # Check out the repository's code so that the workflow can access it.
       - uses: actions/checkout@v4
 
+      # Set up the R environment using the r-lib/actions setup-r action.
       - uses: r-lib/actions/setup-r@v2
         with:
-          use-public-rspm: true
+          use-public-rspm: true  # Use the public RStudio Package Manager.
 
+      # Install R package dependencies using the r-lib/actions setup-r-dependencies action.
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
+          extra-packages: |  # List of extra packages to install.
             any::covr
             any::xml2
             any::dplyr
             any::knitr
-          needs: coverage
+          needs: coverage  # Specify that this step needs the 'coverage' context.
 
+      # Get the name of the R package from the DESCRIPTION file and set it as an environment variable.
+      # This will be used to run the tests on the package.
       - name: Get package name
         run: |
           echo "PKGNAME=$(awk -F: '/Package:/{gsub(/[ ]+/,""); print $2}' DESCRIPTION)" >> $GITHUB_ENV
         shell: bash
 
+      # Debug step to print the package name to the console.
       - name: debug
         run: |
           echo $PKGNAME
         shell: bash
 
+      # Run the R package tests with coverage reporting using the covr package.
+      # The default test-engine for covr is not testthat so we overwrite it here by setting `type` and `code`.
       - name: Run tests with coverage
         run: |
           covr::codecov(
@@ -51,32 +69,38 @@ jobs:
               reporter = testthat::JunitReporter$new(file = file.path(normalizePath(Sys.getenv('GITHUB_WORKSPACE'), winslash = '/'), 'test-results.xml'))
               )",
             install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package"),
-            clean=FALSE,
+            clean=FALSE, # Do not remove the installation path after running the tests - later steps grab files here.
             quiet=FALSE
             )
         shell: Rscript {0}
 
+      # Show the output of the testthat tests in the console for easier debugging.
       - name: Show testthat output in console
-        if: always()
+        if: always()  # This step will always run, regardless of previous step success/failure.
         run: |
-          ## --------------------------------------------------------------------
           find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
 
+      # This will create a comment in the PR and add a check if the action is run on a PR.
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        if: always()  # This step will always run, regardless of previous step success/failure.
         with:
-          files: |
+          files: |  # The files containing test results to be published.
             test-results.xml
 
+      # If the tests fail, upload the test results as an artifact for further analysis.
+      # Here we include both package and test results.
       - name: Upload test results
-        if: failure()
+        if: failure()  # This step will only run if the previous steps have failed.
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-test-failures
-          path: ${{ runner.temp }}/package
+          name: coverage-test-failures  # Name of the artifact.
+          path: ${{ runner.temp }}/package  # Path to the test results to be uploaded.
 
+
+      # Additionally we can create a coverage report and add it as a comment to the PR.
+      # Currently this reruns the tests which isn't great, but it's a start.
       - name: Create Coverage Report for comment
         run: |
           covr::package_coverage() |>
@@ -107,6 +131,7 @@ jobs:
             writeLines(con = "coverage.md")
         shell: Rscript {0}
 
+      # Add the coverage report (from previous step) as a comment to the PR.
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: github.event_name == 'pull_request'
