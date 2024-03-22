@@ -1,21 +1,30 @@
+# Main pipeline for releasing package and documentation.
+
   on:
+    # Executes when content is pushed/merged to main or when a PR is created.
     push:
       branches: main
     pull_request:
       branches: main
+    # Can also be executed manually from Actions tab on github or as a subflow of another workflow.
     workflow_dispatch:
     workflow_call:
 
   name: Release Package 🚀
 
   jobs:
+    # Run the R-CMD check and uploads the tests incl. snaps if they fail.
+    # View subflow for details
     build:
       name: RMD Build and check
       uses: ./.github/workflows/R-CMD-check.yaml
+    # Builds the pkgdown site and deploys it on gh-pages.
+    # View subflow for details
     docs:
       needs: build
       name: Build and Deploy Docs
       uses: ./.github/workflows/pkgdown.yaml
+    # Releases the package creating a new release if on main and the push is a new tag.
     release:
       needs: [build, docs]
       name: Release
