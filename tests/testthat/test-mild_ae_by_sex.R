@@ -23,6 +23,7 @@ test_that("Complex pipeline runs without errors",
             }
 
 
+
             chef::use_chef(
               pipeline_dir = "pipeline",
               r_functions_dir = "R/",
@@ -37,10 +38,18 @@ test_that("Complex pipeline runs without errors",
             x <- targets::tar_meta() |> data.table::as.data.table()
             targets::tar_load(ep_stat)
             expect_true(all(is.na(x$error)))
-            expect_snapshot(ep_stat[, .(stat_filter,
-                                        endpoint_group_filter,
-                                        stat_result_label,
-                                        stat_result_description,
-                                        stat_result_qualifiers,
-                                        stat_result_value)])
+            actual <- ep_stat[, .(
+              stat_filter,
+              endpoint_group_filter,
+              stat_result_label,
+              stat_result_description,
+              stat_result_qualifiers,
+              stat_result_value
+            )] |> setorder(endpoint_group_filter,
+                           stat_filter,
+                           stat_result_label,
+                           stat_result_qualifiers)
+
+
+            expect_snapshot_value(x = as.data.frame(actual), tolerance = 1e-6, style = "json2")
           })
