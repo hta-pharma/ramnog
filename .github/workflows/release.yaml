@@ -1,3 +1,7 @@
+# Packages and creates a Github Release which can be used to control release flow.
+# This should eventually be replaced by a release to CRAN.
+# NOTE this will fail if the tag and DESCRIPTION file is out of sync.
+
 ---
     name: Release
     
@@ -23,10 +27,14 @@
     jobs:
       release:
         name: Release 🚀
+
         runs-on: ubuntu-latest
+
         permissions:
           contents: write
+
         steps:
+
           - name: Setup token 🔑
             id: github-token
             run: |
@@ -59,15 +67,10 @@
             id: branch-name
             uses: tj-actions/branch-names@v7
 
-          
-
           - name: Create pkg tarball 📦
             run: |
               R CMD build .
             shell: bash
-
-          - name: Display structure of downloaded files
-            run: ls -R
 
           - name: Get package build filename 📦
             run: |
@@ -79,26 +82,16 @@
             run: |
               echo "PACKAGE_VERSION=v$(awk -F: '/Version:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION)" >> $GITHUB_ENV
             shell: bash
-          
-          - name: Check if running with dev tag 🏷️
-            id: dev-tag
-            run: |
-              echo "Current tag: ${{ steps.branch-name.outputs.tag }}"
-              current_tag="${{ steps.branch-name.outputs.tag }}"
-              if [ "$(echo "$current_tag" | grep -E "^v([0-9]+\.)?([0-9]+\.)?([0-9]+)(-[0-9]+)$")" != "" ]; then
-                echo "Running for rc-tag."
-                echo "is-dev-tag=true" >> $GITHUB_OUTPUT
-              else
-                echo "is-dev-tag=false" >> $GITHUB_OUTPUT
-              fi
-            shell: bash
     
+          # Generates a small text describing the changes requires a NEWS.md file with appropriate vX.Y.Z header.
           - name: Generate Changelog 📜
             run: |
               RELEASE_VERSION=$(awk -F: '/Version:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION)
               REPOSITORY_NAME="${{ github.event.repository.name }}"
               (awk "/^#+.*${REPOSITORY_NAME//./\.}.*${RELEASE_VERSION//./\.}$/{flag=1;next}/^#+.*${REPOSITORY_NAME//./\.}.*/{flag=0}flag" NEWS.md | grep -v "^$" || echo "* ${RELEASE_VERSION}") > RELEASE_BODY.txt
     
+          # This will create a Github Release based on the current tag
+          # The Release will contain the code as a tarball but also include License and Changelog.
           - name: Create release 🌟
             # https://github.com/softprops/action-gh-release/pull/406#issuecomment-1934635958
             uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
@@ -113,13 +106,4 @@
                 LICENSE.md
                 ${{ env.PKGBUILD }}
               prerelease: inputs.pre-release
-        
-          # - name: Upload binaries to release 🔼
-          #   uses: svenstaro/upload-release-action@v2
-          #   with:
-          #     file: ${{ env.PKGBUILD }}
-          #     asset_name: ${{ env.PKGBUILD }}
-          #     tag: ${{ github.ref }}
-          #     overwrite: true
-
           

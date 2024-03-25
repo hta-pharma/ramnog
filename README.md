@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# R packages for AMNOG analyses
+# R packages for AMNOG analyses <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
 
 Ramnog is a collection of packages for setting up pipelines for
 AMNOG-style HTA analyses

@@ -1,4 +1,5 @@
-
+# This is the primary workflow for checking the state of the package
+# It will run unittest (incl.) codecov and R CMD checks - furthermore it will check for problematic dependencies and key leakage.
 
 
 on:
@@ -12,22 +13,27 @@ on:
 name: Check Package 📦
 
 jobs:
+  # Runs dependency scan powered by oysteR - checks for known security vulnerabilities
   audit:
     name: Audit Dependencies 🕵️‍♂️
     uses: insightsengineering/r.pkg.template/.github/workflows/audit.yaml@main
 
+  # Generates a license report of package dependencies
   licenses:
     name: License Check 🃏
     uses: insightsengineering/r.pkg.template/.github/workflows/licenses.yaml@main
 
+  # Runs R CMD check using the local R-CMD-check.yaml workflow
   check:
     name: RMD check 📦
     uses: ./.github/workflows/R-CMD-check.yaml
 
+  # Runs unittests while capturing code:cov and uploads to Codecov io. See local subflow
   test:
     name: Test 🧪
     uses: ./.github/workflows/Test.yaml
 
+  # Checks for git keys etc.
   gitleaks:
     name: gitleaks 💧
     uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main
