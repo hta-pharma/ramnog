@@ -156,20 +156,29 @@ The only downside is that you need to install the pre-commit package on your mac
 Individual setup of pre-commit hooks is described in the [pre-commit documentation](https://pre-commit.com/).
 
 <details>
-<summary>*quickstart* </summary>
+<summary>Quickstart</summary>
+
+1. Install pre-commit in the Individual user space (use pip if pipx is not installed)
 
 ```yaml
-# Install pre-commit in the Individual user space (use pip if pipx is not installed)
 pipx install pre-commit 
-# Install the pre-commit hooks in the repository NB this needs to be run in the root of the repository
+```
+
+2. Install the pre-commit hooks in the repository. __NOTE:__ this needs to be run in the root of the repository
+
+```yaml
 pre-commit install 
-# Run on all files to check it works:
+```
+
+3. Run on all files to check it works:
+
+```yaml
 pre-commit run --all-files 
 ```
 </details>
 
 <details>
-<summary>Error: Python not available </summary>
+<summary>Troubleshooting: `Error: Python not available` </summary>
 The pre-commit hook requires a python environment. If you do not have python installed, you can install it using `conda` or `pyenv`.
 
 if you have python3 installed and you get an error that python is not available you may need to specify that ``python3`` should be used.
