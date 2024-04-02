@@ -18,7 +18,7 @@ Debugging a chef pipeline is different than debugging normal R scripts or functi
 
 We present here two main approaches to debugging:
 
-  - Use the chef helper functions
+  - Use the {chef} helper functions
   - Use the {[targets](https://books.ropensci.org/targets/)} helper functions
   
 The chef debugging helper functions are best for normal debugging situations, while using the {targets} helper functions may be needed for more in-depth debugging sessions.
@@ -47,7 +47,7 @@ Errors stemming from user function are split into two types:
 
 - Secondly, errors which arise during the evaluation of the function and validation of its output. These errors can come from bug in the functions causing crashing at runtime, or functions which return an invalid output.
 
-### Input errors.
+### Input errors
 
 Input errors stems from mismatch between the expected arguments of a function and those arguments which {chef} supplies. Errors in this domain could stem from improperly defined statistical functions or for instance statistical functions applied to wrong statistical types in the endpoint specification.
 
@@ -99,7 +99,7 @@ Either state all supplied args explicitely or use dots (...) as a passthrough (r
 
 In the under-defined example the function does not expect the supplied `study_metadata` argument. This example also shows how optional arguments (with default values) are displayed.
 
-### Evaluation and validation errors.
+### Evaluation and validation errors
 
 Chef has built-in helpers that provide the user the state of the pipeline when a user-supplied function errors-out. By using these helpers, the programmer can access the workspace (i.e., all objects and functions) at the point of the error. Then they can debug interactively like normal R debugging.
 
