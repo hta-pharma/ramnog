@@ -91,8 +91,11 @@ dt <- data.table::data.table(
   )
 )
 
-dt |> 
-  knitr::kable() |> 
+ knitr::kable(dt, booktabs = TRUE, escape = FALSE, format = "html", 
+      col.names = c("Type", kableExtra::linebreak("Section"), "Argument name")) |>
+  kableExtra::kable_styling(full_width = FALSE) |>
+  kableExtra::column_spec(1, width = "15em") |>
+  kableExtra::column_spec(2, width = "30em") |>
+  kableExtra::column_spec(3, width = "15em") |>
   kableExtra::collapse_rows(columns = 1:2)
-
 ```
