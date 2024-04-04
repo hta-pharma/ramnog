@@ -14,32 +14,31 @@ knitr::opts_chunk$set(
 )
 ```
 
-Debugging a chef pipeline is different than debugging normal R scripts or functions. This is because under the hood, chef makes heavy use of the {[targets](https://books.ropensci.org/targets/)} package.
+Debugging a {chef} pipeline is different than debugging normal R scripts or functions. This is because under the hood, {chef} makes heavy use of the {[targets](https://books.ropensci.org/targets/)} package.
 
 We present here two main approaches to debugging:
 
   - Use the {chef} helper functions
   - Use the {[targets](https://books.ropensci.org/targets/)} helper functions
   
-The chef debugging helper functions are best for normal debugging situations, while using the {targets} helper functions may be needed for more in-depth debugging sessions.
+The {chef} debugging helper functions are best for normal debugging situations, while using the {targets} helper functions may be needed for more in-depth debugging sessions.
 
 
 ## Context - why debugging is different
 
-In a chef pipeline, the execution environment is managed by {[targets](https://books.ropensci.org/targets/)}, and does **not** take place in your working environment. As a side-effect, it is not be as straightforward to reproduce errors or trace them back to their source. Specifically:
+In a {chef} pipeline, the execution environment is managed by {[targets](https://books.ropensci.org/targets/)}, and does **not** take place in your working environment. As a side-effect, it is not be as straightforward to reproduce errors or trace them back to their source. Specifically:
 
   - Each target in a {targets} pipeline is run in an new R session that closes upon completion or hitting an error. This means that the working environment is clean for every run, which is beneficial for reproducibility but can make it harder to debug because the state that led to an error might not be readily accessible.
   
-  - Targets uses a caching mechanism to avoid re-running successful tasks. While this feature enhances efficiency, it can make debugging tricky. Understanding whether a bug is due to current code or cached results might not be straightforward
+  - {targets} uses a caching mechanism to avoid re-running successful tasks. While this feature enhances efficiency, it can make debugging tricky. Understanding whether a bug is due to current code or cached results might not be straightforward
   
-  - Sometimes, the error messages from a targets pipeline can be cryptic or not very informative, making it harder to figure out what's going wrong.
+  - Sometimes, the error messages from a {targets} pipeline can be cryptic or not very informative, making it harder to figure out what's going wrong.
   
   - Debugging often requires interactively running code to inspect objects and their states. However, {targets} is designed for non-interactive batch (and sometimes parallel) execution, which can make interactive debugging less straightforward. For example, you cannot just insert a `browser()` into the function that errored out like you would in interactive debugging.
 
-## Chef style debugging
+## {chef} style debugging
 
 The most common errors will be due to errors stemming from improper user inputs (e.g. the user-supplied functions that that generate the input ADaM datasets, or contain the statistical methods). To debug these, it is easiest if the programmer has access to the state of the program at the time it errored-out.
-
 
 Errors stemming from user function are split into two types:
 
@@ -73,7 +72,7 @@ Expected arguments: (required, [optional])
 	specific_arg, study_metadata []
 ```
 
-In the above example, the expect-but-no-supplied argument `specific_arg` is clearly described as well as those arguments chef supplies (`study_metadata`) and the full function argument specification.
+In the above example, the expect-but-no-supplied argument `specific_arg` is clearly described as well as those arguments {chef} supplies (`study_metadata`) and the full function argument specification.
 
 ---
 
@@ -101,9 +100,9 @@ In the under-defined example the function does not expect the supplied `study_me
 
 ### Evaluation and validation errors
 
-Chef has built-in helpers that provide the user the state of the pipeline when a user-supplied function errors-out. By using these helpers, the programmer can access the workspace (i.e., all objects and functions) at the point of the error. Then they can debug interactively like normal R debugging.
+{chef} has built-in helpers that provide the user the state of the pipeline when a user-supplied function errors-out. By using these helpers, the programmer can access the workspace (i.e., all objects and functions) at the point of the error. Then they can debug interactively like normal R debugging.
 
-In broad terms Chef will supply the user with the function and input parameters that lead to an erroneous evaluation. Chef will supply debugging sessions if the function crashes or if the function output is not compliant.([Statistical output](methods_stat.html#output-specification-shared-for-all-types), [Criterion output](methods_criteria.html#output-specifications))
+In broad terms {chef} will supply the user with the function and input parameters that lead to an erroneous evaluation. {chef} will supply debugging sessions if the function crashes or if the function output is not compliant. ([Statistical output](methods_stat.html#output-specification-shared-for-all-types), [Criterion output](methods_criteria.html#output-specifications))
 
 For failures during the evaluation the error message will contain the keyword `EVALUATE` while non-conforming outputs will result in errors with the `VALIDATE` keyword. Sample error messages can be seen in the following.
 
@@ -114,7 +113,7 @@ Error during evaluation of: log(1)
 Failed to VALIDATE function output with error:
 Expected (data.table::data.table) Found: numeric
 
-# Error message wrt. evaluation.
+# Error message wrt. evaluation
 
 Error during evaluation of: P-interaction
 Failed to EVALUATE function with error:
@@ -191,9 +190,6 @@ We can then play around with the function, given the supplied inputs.
 
 In this toy example we simply have a function which throws an error - a simple error to fix. However, this tool provides you with the possiblity to explore and tinker with your functions in the context which they fail in the pipeline.
 NB. as mentioned in the console message - remember to update you changes to the source code!
-
-
-
 
 ## Targets style debugging
 

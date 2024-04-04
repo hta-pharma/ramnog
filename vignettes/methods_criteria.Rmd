@@ -76,7 +76,7 @@ _NB_ Similar to the stat methods we require that criteria function include ellip
 This is both a convenience, since you then only need to explicitly state the used parameters in your function definition. However, more importantly it will ensure that a criteria function you define today will also work tomorrow, where {chef} may supply more parameters to the criteria functions.
 
 
-#### endpoint criteria functions
+#### Endpoint criteria functions
 
 <style type="text/css">
   .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;border-style:solid;border-width:1px;}
@@ -163,7 +163,7 @@ This is both a convenience, since you then only need to explicitly state the use
 </tbody>
 </table>
 
-#### strata criteria functions
+#### Strata criteria functions
 
 <style type="text/css">
 .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;border-style:solid;border-width:1px;}
@@ -258,7 +258,7 @@ This is both a convenience, since you then only need to explicitly state the use
 
 ### Output specifications
 
-The output of the criteria function must be a simple `bolean` (`TRUE` or `FALSE`)
+The output of the criteria function must be a simple `boolean` (`TRUE` or `FALSE`)
 
 ### Example functions {.tabset .tabset-fade .tabset-pills}
 
@@ -336,7 +336,7 @@ ep_strata_criteria.strata_treatment_arm_minimum_unique_count <- function(
 ```
 
 
-### Applying criteria functions. 
+### Applying criteria functions
 
 Criteria functions are supplied to the mk_endpoint_str function and is used to gatekeep which statistical function are run.
 
