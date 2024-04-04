@@ -145,4 +145,4 @@ testthat::test_that("Valide stats when one strata level is not found",
 </details>
 
 ## CI/CD 
-To be added
+To be added.
