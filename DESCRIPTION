@@ -25,7 +25,8 @@ Suggests:
     kableExtra (>= 1.4),
     testr,
     tidyr,
-    pharmaverseadam
+    pharmaverseadam,
+    crew
 Config/testthat/edition: 3
 Remotes:
     hta-pharma/chefStats,
