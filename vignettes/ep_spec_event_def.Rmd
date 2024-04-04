@@ -64,20 +64,20 @@ Here are three examples of the syntax for supplying the period filter, the endpo
 
 ```{r, eval = FALSE}
 # Example of partial endpoint specification with period filter
-ep_spec_ex4_1_1  <- chef::mk_endpoint_str(period_var = "ANL01FL"
-                                   period_value = "Y",
-                                   ...)
+ep_spec_ex4_1_1  <- chef::mk_endpoint_str(
+  period_var = "ANL01FL"
+  period_value = "Y",
+  ...)
 
 # Example of partial endpoint specification with endpoint filtering
-ep_spec_ex4_1_2  <- chef::mk_endpoint_str(endpoint_filter = 'ASEV == "MILD"',
-                                   ...)
+ep_spec_ex4_1_2  <- chef::mk_endpoint_str(
+  endpoint_filter = 'ASEV == "MILD"',
+  ...)
 
 # Example of partial endpoint specification with endpoint grouping
-ep_spec_ex4_1_3  <- chef::mk_endpoint_str(group_by =
-                                     list(list(AESEV = c(
-                                       "MILD", "MODERATE", "SERVERE"
-                                     ))),
-                                   ...)
+ep_spec_ex4_1_3  <- chef::mk_endpoint_str(
+  group_by = list(list(AESEV = c("MILD", "MODERATE", "SERVERE"))),
+  ...)
 ```
 
 ##### Ex 4.2
@@ -86,8 +86,9 @@ You may also state the group levels in a lazy manner in which case all group lev
 
 ```{r, eval = FALSE}
 # Example of partial endpoint specification with lazy endpoint grouping
-ep_spec_ex4_2  <- chef::mk_endpoint_str(group_by = list(list(AESOC = c())),
-                                 ...)
+ep_spec_ex4_2  <- chef::mk_endpoint_str(
+  group_by = list(list(AESOC = c())),
+  ...)
 ```
 
 ##### Ex 4.3
@@ -96,8 +97,9 @@ In case you want to combine groups on multiple variables you can state each dime
 
 ```{r, eval = FALSE}
 # Example of partial endpoint specification with lazy endpoint grouping on multiple variables
-ep_spec_ex4_3  <- chef::mk_endpoint_str(group_by = list(list(AESEV = c(), AESOC = c())),
-                                 ...)
+ep_spec_ex4_3  <- chef::mk_endpoint_str(
+  group_by = list(list(AESEV = c(), AESOC = c())),
+  ...)
 ```
 
 ##### Ex 4.4
@@ -106,7 +108,8 @@ As a continuation of the previews example, if you are only interested in mild ad
 
 ```{r, eval = FALSE}
 # Example of partial endpoint specification with endpoint filter and lazy grouping
-ep_spec_ex4_4  <- chef::mk_endpoint_str(endpoint_filter = 'ASEV == "MILD"',
-                                 group_by = list(list(AESOC = c())),
-                                 ...)
+ep_spec_ex4_4  <- chef::mk_endpoint_str(
+  endpoint_filter = 'ASEV == "MILD"',
+  group_by = list(list(AESOC = c())),
+  ...)
 ```

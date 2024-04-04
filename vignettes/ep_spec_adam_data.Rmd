@@ -106,6 +106,7 @@ The ADaM functions, once defined, need to be linked to the corresponding endpoin
 ```{r, eval=FALSE}
 # Example of endpoint specification of ADaM function.
 # The dots must be replaced with other required parameters.
-ep_spec_ex1_3  <- chef::mk_endpoint_str(data_prepare = mk_adam_ex1_2,
-                                 ...)
+ep_spec_ex1_3  <- chef::mk_endpoint_str(
+  data_prepare = mk_adam_ex1_2,
+  ...)
 ```

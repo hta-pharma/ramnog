@@ -38,11 +38,12 @@ Note that this assumes that `SAFFL` and `AESEV` are variables in the analysis da
 
 ```{r, eval=FALSE}
 # Example of partial endpoint specification of analysis population
-ep_spec_ex6_1  <- chef::mk_endpoint_str(pop_var = "SAFFL",
-                                 pop_value = "Y",
-                                 group_by = list(list(AESEV = c())),
-                                 endpoint_label = "Example: <pop_var> - <AESEV> adverse events",
-                                 ...)
+ep_spec_ex6_1  <- chef::mk_endpoint_str(
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  group_by = list(list(AESEV = c())),
+  endpoint_label = "Example: <pop_var> - <AESEV> adverse events",
+  ...)
 ```
 
 This will resolve in three endpoints with the following labels:
@@ -67,8 +68,7 @@ ep_spec_ex6_2  <- chef::mk_endpoint_str(
   group_by = list(list(AESEV = c())),
   endpoint_label =
     "Example: <pop_var> - <AESEV> adverse events / <endpoint_filter>",
-  ...
-)
+  ...)
 ```
 
 Again, this resolve in three endpoints and they will now have these endpoint labels:
@@ -92,8 +92,7 @@ ep_spec_ex6_3  <- chef::mk_endpoint_str(
   endpoint_filter = "AGEGR1 == '18-64'",
   group_by = list(list(AESEV = c())),
   endpoint_label = "Example of a fixed endpoint label",
-  ...
-)
+  ...)
 ```
 
 You will get the following endpoint labels:

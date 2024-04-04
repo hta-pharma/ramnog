@@ -25,7 +25,7 @@ This can be controlled via the following endpoint specification parameters that 
 
 The approach is that all records that are irrelevant for the endpoint are removed at an early stage, so that only the relevant analysis population is exposed to the statistical functions and criteria functions.
 
-# Example
+# Examples
 
 ##### Ex 3.1
 
@@ -33,9 +33,10 @@ Here is an example of a specification of the analysis data using the safety popu
 
 ```{r, eval=FALSE}
 # Example of partial endpoint specification of population filter
-ep_spec_ex3_1  <- chef::mk_endpoint_str(pop_var = "SAFFL",
-                                 pop_value = "Y",
-                                 ...)
+ep_spec_ex3_1  <- chef::mk_endpoint_str(
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  ...)
 ```
 
 ##### Ex 3.2
@@ -45,8 +46,9 @@ For example, in addition to the population filter from the example above you may
 
 ```{r, eval=FALSE}
 # Example of partial endpoint specification of analysis population
-ep_spec_ex3_2  <- chef::mk_endpoint_str(pop_var = "SAFFL",
-                                 pop_value = "Y",
-                                 custom_pop_filter = "AGE >= 55",
-                                 ...)
+ep_spec_ex3_2  <- chef::mk_endpoint_str(
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  custom_pop_filter = "AGE >= 55",
+  ...)
 ```

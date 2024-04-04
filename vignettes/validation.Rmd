@@ -23,7 +23,7 @@ library(testr)
 library(chefStats)
 ```
 
-The validity of the ramnog framework is ensured on several levels:
+The validity of the {ramnog} framework is ensured on several levels:
 
  - Unit test individual functions/modules in all packages
  - Integration/end-to-end testing to ensure the interactions between individual functions/modules (that have been unit tested) are as expected
@@ -145,4 +145,4 @@ testthat::test_that("Valide stats when one strata level is not found",
 </details>
 
 ## CI/CD 
-To be added
+To be added.

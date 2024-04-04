@@ -38,8 +38,9 @@ If cross combinations of two stratum variables `A` and `B` are required, either:
 
 ```{r, eval = FALSE}
 # Example of partial endpoint specification with a strata definition
-ep_spec_ex5_2  <- chef::mk_endpoint_str(stratify_by = list(c("SEX")),
-                                 ...)
+ep_spec_ex5_2  <- chef::mk_endpoint_str(
+  stratify_by = list(c("SEX")),
+  ...)
 ```
 
 ##### Ex 5.2
@@ -48,8 +49,9 @@ Two strata set:
 
 ```{r, eval = FALSE}
 # Example of partial endpoint specification with a strata definition
-ep_spec_ex5_2  <- chef::mk_endpoint_str(stratify_by = list(c("SEX", "AGEGGR1")),
-                                 ...)
+ep_spec_ex5_2  <- chef::mk_endpoint_str(
+  stratify_by = list(c("SEX", "AGEGGR1")),
+  ...)
 ```
 
 ##### Ex 5.3
@@ -58,6 +60,7 @@ No strata, in which case only the *total* will be present in the endpoint:
 
 ```{r, eval = FALSE}
 # Example of partial endpoint specification with a strata definition
-ep_spec_ex5_3  <- chef::mk_endpoint_str(stratify_by = list(),
-                                 ...)
+ep_spec_ex5_3  <- chef::mk_endpoint_str(
+  stratify_by = list(),
+  ...)
 ```

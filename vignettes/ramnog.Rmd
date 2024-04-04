@@ -60,7 +60,7 @@ The file file structure should look like this:
     
   
     
-  For now we need to know what the file in `R/` do. For the `_targets.yml` and `pipeline_01.R` explanation, see `vignette("pipeline")`
+  For now we need to know what the file in `R/` do. For the `_targets.yml` and `pipeline_01.R` explanation, see `vignette("pipeline")`.
 
 # 1. Specify an endpoint
 
