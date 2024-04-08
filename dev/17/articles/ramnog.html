@@ -77,8 +77,8 @@
     <a class="dropdown-item" href="../articles/debugging.html">Debugging</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Development</h6>
+    <a class="dropdown-item" href="../articles/dev_contribute.html">Contributing</a>
     <a class="dropdown-item" href="../articles/dev_devops.html">Git actions and pre-commit hooks</a>
-    <a class="dropdown-item" href="../articles/dev_git.html">Contributing</a>
     <a class="dropdown-item" href="../articles/validation.html">Quality control for ramnog ecosystem</a>
   </div>
 </li>
@@ -108,11 +108,17 @@
 
     
     
-<p>Here we start with an empty R project and walk through a full working
-example analysis. Our goal for this example analysis is to report the
-number of subjects experiencing a mild adverse event in each treatment
-arm stratified by a custom age grouping. For this example we use the
-ADAE dataset provided in the {pharmaverseadam} package.</p>
+<p>In this vignette we start with an empty R project and walk through a
+full working example analysis. Our goal for this example analysis is to
+report the number of subjects experiencing a mild adverse event in each
+treatment arm stratified by a custom age grouping. For this example we
+use the ADAE dataset provided in the {pharmaverseadam} package. To run
+this example you will need the following packages installed:</p>
+<ul>
+<li><a href="https://github.com/hta-pharma/chef" class="external-link">chef</a></li>
+<li><a href="https://github.com/hta-pharma/chefStats" class="external-link">chefStats</a></li>
+<li><a href="https://github.com/pharmaverse/pharmaverseadam" class="external-link">pharmaverseadam</a></li>
+</ul>
 <p>The outline of the workflow will be:</p>
 <ol style="list-style-type: decimal">
 <li>Set up our project infrastructure by running
@@ -161,10 +167,10 @@ pipelines</li>
 <p>{chef} has a convenience function to set up this infrastructure for
 you:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://hta-pharma.github.io/chef/" class="external-link">chef</a></span><span class="op">)</span></span>
-<span>    <span class="fu">chef</span><span class="fu">::</span><span class="fu"><a href="https://hta-pharma.github.io/chef/reference/use_chef.html" class="external-link">use_chef</a></span><span class="op">(</span></span>
-<span>      pipeline_id <span class="op">=</span> <span class="st">"01"</span></span>
-<span>    <span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://hta-pharma.github.io/chef/" class="external-link">chef</a></span><span class="op">)</span></span>
+<span><span class="fu">chef</span><span class="fu">::</span><span class="fu"><a href="https://hta-pharma.github.io/chef/reference/use_chef.html" class="external-link">use_chef</a></span><span class="op">(</span></span>
+<span>  pipeline_id <span class="op">=</span> <span class="st">"01"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>This sets up the following file structure:</p>
 <p>For now we need to know what the file in <code>R/</code> do. For the
 <code>_targets.yml</code> and <code>pipeline_01.R</code> explanation,
@@ -231,11 +237,15 @@ creating the input data set.</p>
 <code class="sourceCode R"><span><span class="va">mk_adae</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">study_metadata</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/main/reference/adae.html" class="external-link">adae</a></span><span class="op">)</span></span>
 <span>  <span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/main/reference/adsl.html" class="external-link">adsl</a></span><span class="op">)</span></span>
-<span>  <span class="va">adsl</span><span class="op">[</span>, <span class="va">AGEGR2</span> <span class="op">:=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fcase.html" class="external-link">fcase</a></span><span class="op">(</span><span class="va">AGE</span> <span class="op">&lt;</span> <span class="fl">70</span>, <span class="st">"AGE &lt; 70"</span>,</span>
-<span>                                     <span class="va">AGE</span> <span class="op">&gt;=</span> <span class="fl">70</span>, <span class="st">"AGE &gt;= 70"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">adsl</span><span class="op">[</span>, <span class="va">AGEGR2</span> <span class="op">:=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fcase.html" class="external-link">fcase</a></span><span class="op">(</span></span>
+<span>    <span class="va">AGE</span> <span class="op">&lt;</span> <span class="fl">70</span>, <span class="st">"AGE &lt; 70"</span>,</span>
+<span>    <span class="va">AGE</span> <span class="op">&gt;=</span> <span class="fl">70</span>, <span class="st">"AGE &gt;= 70"</span></span>
+<span>  <span class="op">)</span><span class="op">]</span></span>
 <span>  <span class="va">adae_out</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">adsl</span>, <span class="va">adae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span><span class="op">)</span>, <span class="st">"USUBJID"</span><span class="op">)</span>, with <span class="op">=</span></span>
-<span>                       <span class="cn">F</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"USUBJID"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">adsl</span>, <span class="va">adae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span><span class="op">)</span>, <span class="st">"USUBJID"</span><span class="op">)</span>,</span>
+<span>      with <span class="op">=</span></span>
+<span>        <span class="cn">F</span></span>
+<span>    <span class="op">]</span>, by <span class="op">=</span> <span class="st">"USUBJID"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="va">adae_out</span><span class="op">[</span><span class="op">]</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
@@ -266,20 +276,20 @@ package.</p>
 how long each step took:</p>
 <pre><code><span><span class="co">## <span style="color: #BB0000;">Loading required package: targets</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target ep</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed target ep [0.03 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed target ep [0.031 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target ep_id</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed target ep_id [0.01 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed target ep_id [0.009 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_fn_map_c85cfecb</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_fn_map_c85cfecb [0.033 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_fn_map_c85cfecb [0.032 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_fn_map</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target user_def_fn</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed target user_def_fn [0.003 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target study_data</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed target study_data [0.038 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed target study_data [0.036 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target fn_map_tibble</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed target fn_map_tibble [0.005 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed target fn_map_tibble [0.004 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_and_data_c85cfecb</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_and_data_c85cfecb [0.01 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_and_data_c85cfecb [0.009 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_and_data</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch fn_map_d4f16b44</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed branch fn_map_d4f16b44 [0 seconds]</span></span></span>
@@ -288,19 +298,19 @@ how long each step took:</p>
 <span><span class="co"><span style="color: #BB0000;">## ● completed branch analysis_data_container_a4b422b1 [0 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern analysis_data_container</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_with_data_key_a4b422b1</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_with_data_key_a4b422b1 [0.001 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_with_data_key_a4b422b1 [0 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_with_data_key</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_expanded_e741f3f8</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_expanded_e741f3f8 [0.021 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_expanded_e741f3f8 [0.019 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_expanded</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_event_index_5f7976c8</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_event_index_5f7976c8 [0.004 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_event_index_5f7976c8 [0.003 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_event_index</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_crit_endpoint_6d509103</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_crit_endpoint_6d509103 [0.004 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_crit_endpoint</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_crit_by_strata_by_trt_b0cbfb24</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_crit_by_strata_by_trt_b0cbfb24 [0.013 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_crit_by_strata_by_trt_b0cbfb24 [0.012 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_crit_by_strata_by_trt</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_crit_by_strata_across_trt_13a39c88</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_crit_by_strata_across_trt_13a39c88 [0.004 seconds]</span></span></span>
@@ -309,13 +319,13 @@ how long each step took:</p>
 <span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_prep_by_strata_across_trt_a5ba2b45 [0.002 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_prep_by_strata_across_trt</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_prep_across_strata_across_trt_a5ba2b45</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_prep_across_strata_across_trt_a5ba2b45 [0.002 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_prep_across_strata_across_trt_a5ba2b45 [0.001 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_prep_across_strata_across_trt</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_prep_by_strata_by_trt_a5ba2b45</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_prep_by_strata_by_trt_a5ba2b45 [0.037 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_prep_by_strata_by_trt_a5ba2b45 [0.036 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_prep_by_strata_by_trt</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target ep_rejected</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed target ep_rejected [0.001 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed target ep_rejected [0 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_stat_by_strata_across_trt_de0d8a13</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_stat_by_strata_across_trt_de0d8a13 [0.001 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_stat_by_strata_across_trt</span></span></span>
@@ -323,13 +333,13 @@ how long each step took:</p>
 <span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_stat_across_strata_across_trt_abf19794 [0.001 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_stat_across_strata_across_trt</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched branch ep_stat_by_strata_by_trt_05c2dd03</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_stat_by_strata_by_trt_05c2dd03 [0.016 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed branch ep_stat_by_strata_by_trt_05c2dd03 [0.015 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed pattern ep_stat_by_strata_by_trt</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target ep_stat_nested</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ● completed target ep_stat_nested [0.001 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ● completed target ep_stat_nested [0 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ▶ dispatched target ep_stat</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## ● completed target ep_stat [0.004 seconds]</span></span></span>
-<span><span class="co"><span style="color: #BB0000;">## ▶ ended pipeline [0.483 seconds]</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">## ▶ ended pipeline [0.442 seconds]</span></span></span>
 <span><span class="co"><span style="color: #BB0000;">## </span></span></span></code></pre>
 <p>Then, to see the results, you load the cached step of the pipeline
 corresponding to the results. In our case it will be
