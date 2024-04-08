@@ -32,7 +32,7 @@ Specifically each package always has the `main` branch that is functioning and d
 
 # Definition of done {#dod}
 
-A feature is defined as done and ready for a PR into main only once it has been properly tested. Testing consists of:
+A feature branch is defined as done and ready for a PR (pull request) into main branch only once it has been properly tested. Testing consists of:
 
 1. Unit-tests to test the basic functionality 
 2. Integration testing to ensure all features work together
@@ -40,7 +40,7 @@ A feature is defined as done and ready for a PR into main only once it has been 
 
 Unit-testing and ingegration testing are done using the [testthat](https://testthat.r-lib.org/) framework. New features usually, but no always require new tests.
 
-If you are developing, for example a new statistical function for chefStats then it must be checked with unit tests.
+If you are developing, for example a new statistical function for {chefStats} then it must be checked with unit tests.
 
 Additionally, all previous unit-tests and integration tests need to pass. You can check this by running `devtools::test()` in the respective packages.
 

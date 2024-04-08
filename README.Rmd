@@ -3,7 +3,7 @@
   always_allow_html: true
 ---
 
-  <!-- README.md is generated from README.Rmd. Please edit that file -->
+# ramnog <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
 
 # R packages for AMNOG analyses <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
 
@@ -38,14 +38,15 @@ dt |>
 
 # Aim
 
-The aim of the ramnog framework is that a programmer has to write minimal code, and no programming to in order to set-up a new AMNOG-type analyses. For each study, the programmer will need to make, adjust, or check the following four types of code:
+The aim of {ramnog} is that a programmer has to write minimal code, and no programming to in order to set-up a new AMNOG-type analyses. For each study, the programmer will need to make, adjust, or check the following four types of code:
 
 1.  The definition of each endpoint (or group of endpoints).
-2.  A set of adam functions that makes any modifications to existing ADaM datasets (e.g., new age grouping in ADSL), or makes new ADaM datasets if none exist for the required output.
-3.  (If needed) Define a set of criteria for when an endpoint should be included in the results. A library of these criteria are stored in the companion package {chefCriteria}
-4.  A specification of the statistical functions used to summarize/analyze the data (usually found in the [chefStats](https://hta-pharma.github.io/chefStats/) package).
+2.  A set of ADaM functions that makes any modifications to existing ADaM datasets (e.g., new age grouping in ADSL), or makes new ADaM datasets if none exist for the required output.
+3.  (If needed) Define a set of criteria for when an endpoint should be included in the results. A library of these criteria are stored in the companion package {[chefCriteria](https://hta-pharma.github.io/chefCriteria/)}.
+4.  A specification of the statistical functions used to summarize/analyze the data. A library of these functions are provided in the {[chefStats](https://hta-pharma.github.io/chefStats/)} package.
 
-A core principal of the frameworks design is __modularity__. The core functionality of the framework as specefied in the code in [chef](https://hta-pharma.github.io/chef/) should change slowly, while functionality that is subject to more frequent changes are sectioned off in other packages ([chefStats](https://hta-pharma.github.io/chefStats/) and [cheCriteria](https://hta-pharma.github.io/chefCriteria/))
+A core principal of the frameworks design is __modularity__. 
+The core functionality of the framework resides in {[chef](https://hta-pharma.github.io/chef/)} and should change slowly, while functionality that is subject to more frequent changes are sectioned off in other packages ({[chefStats](https://hta-pharma.github.io/chefStats/)} and {[chefCriteria](https://hta-pharma.github.io/chefCriteria/)}).
 
 # Contributing
  

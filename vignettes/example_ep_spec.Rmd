@@ -434,7 +434,7 @@ mk_adlb <- function(study_metadata) {
 }
 ```
 
-The endpoint specification showing "summary statistics on baseline and change from baseline" is shown below
+The endpoint specification showing summary statistics on baseline and change from baseline is shown below
 
 ```{r eval=FALSE}
 chef::mk_endpoint_str(

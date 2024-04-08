@@ -21,9 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Statistical method types in chef and chefStats
+## Statistical method types
 
-The chef framework categorizes statistical functions into three main categories depending on how they operate over stratification levels and treatment levels. Operations can either be done once per stratification level or treatment level, or they can operate across levels. 
+The {chef} framework categorizes statistical functions into three main categories depending on how they operate over stratification levels and treatment levels. Operations can either be done once per stratification level or treatment level, or they can operate across levels. 
 
 Figure 1 below shows a typical table from a safety analysis and color codes each result based on the function type that creates it:
 
@@ -44,7 +44,7 @@ dt <-
     ),
     Description = c(
       "One output per combination of strata level and treatment level _for each strata type_ (e.g. SEX, AGEGR, etc): ",
-      "one output per strata level, across treatment levels _for each strata type_ (e.g. SEX, AGEGR, etc): ",
+      "One output per strata level, across treatment levels _for each strata type_ (e.g. SEX, AGEGR, etc): ",
       "One output per strata type (e.g. SEX, AGEGR, etc), across treatment levels"
     ),
     
