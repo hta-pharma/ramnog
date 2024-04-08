@@ -39,8 +39,11 @@ test_that("Complex pipeline runs without errors", {
 
   # EXPECT ------------------------------------------------------------------
   x <- targets::tar_meta() |> data.table::as.data.table()
+  expect_true(all(is.na(x$error)))
+  
   targets::tar_load(ep_stat)
-  ep_stat <- ep_stat[order(c(
+  
+  ep_stat |> setorder(
     endpoint_id,
     strata_var,
     fn_type,
@@ -48,9 +51,8 @@ test_that("Complex pipeline runs without errors", {
     stat_filter,
     stat_result_label,
     stat_result_description
-  )), ]
-
-  expect_true(all(is.na(x$error)))
+  )
+  
   actual <- ep_stat[, .(
     stat_filter,
     endpoint_group_filter,
@@ -58,12 +60,7 @@ test_that("Complex pipeline runs without errors", {
     stat_result_description,
     stat_result_qualifiers,
     stat_result_value
-  )] |> setorder(
-    endpoint_group_filter,
-    stat_filter,
-    stat_result_label,
-    stat_result_qualifiers
-  )
-
+  )] 
+  
   expect_snapshot_value(x = as.data.frame(actual), tolerance = 1e-6, style = "json2")
 })
