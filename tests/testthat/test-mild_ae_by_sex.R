@@ -65,6 +65,5 @@ test_that("Complex pipeline runs without errors", {
     stat_result_qualifiers
   )
 
-
   expect_snapshot_value(x = as.data.frame(actual), tolerance = 1e-6, style = "json2")
 })
