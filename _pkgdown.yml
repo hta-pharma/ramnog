@@ -29,5 +29,6 @@ articles:
 - title: Development
   navbar: Development
   contents:
-  - starts_with("dev")
+  - dev_contribute
+  - dev_devops
   - validation

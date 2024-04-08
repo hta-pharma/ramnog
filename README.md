@@ -11,7 +11,7 @@ AMNOG-type analyses with minimal familiarity with R.
 
 # Packages
 
-<table class="table table-bordered table table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<table class="table table-bordered table table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;background-color: lightblue !important;">
@@ -92,7 +92,7 @@ sectioned off in other packages
 # Contributing
 
 We welcome contributions to the code base. Please see the [contributing
-vignette](%22https://hta-pharma.github.io/chefCriteria/dev_git%22) for
+vignette](%22https://hta-pharma.github.io/chef/dev_contribute%22) for
 more information on how to contribute.
 
 # Installation

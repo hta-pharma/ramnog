@@ -50,7 +50,7 @@ The core functionality of the framework resides in {[chef](https://hta-pharma.gi
 
 # Contributing
  
- We welcome contributions to the code base. Please see the [contributing vignette]("https://hta-pharma.github.io/chefCriteria/dev_git") for more information on how to contribute.
+ We welcome contributions to the code base. Please see the [contributing vignette]("https://hta-pharma.github.io/chef/dev_contribute") for more information on how to contribute.
 
 # Installation
 
