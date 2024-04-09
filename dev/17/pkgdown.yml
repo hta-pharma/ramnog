@@ -15,11 +15,11 @@ articles:
   example_ep_spec: example_ep_spec.html
   methods_criteria: methods_criteria.html
   methods_stat: methods_stat.html
+  qc: qc.html
   ramnog: ramnog.html
   results_datamodel: results_datamodel.html
   results_datamodel2tfl: results_datamodel2tfl.html
-  validation: validation.html
-last_built: 2024-04-09T12:25Z
+last_built: 2024-04-09T13:43Z
 urls:
   reference: https://hta-pharma.github.io/ramnog/reference
   article: https://hta-pharma.github.io/ramnog/articles
