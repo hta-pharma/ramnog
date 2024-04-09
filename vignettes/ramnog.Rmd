@@ -8,7 +8,9 @@ vignette: >
 ---
 
 
-In this vignette we start with an empty R project and walk through a full working example analysis. Our goal for this example analysis is to report the number of subjects experiencing a mild adverse event in each treatment arm stratified by a custom age grouping. For this example we use the ADAE dataset provided in the {pharmaverseadam} package. To run this example you will need the following packages installed:
+In this vignette we start with an empty R project and walk through a full working example analysis. 
+
+Our goal for this example analysis is to report the number of subjects experiencing a mild adverse event in each treatment arm stratified by a custom age grouping. For this example we use the ADAE dataset provided in the {pharmaverseadam} package. To run this example you will need the following packages installed:
 
 - [chef](https://github.com/hta-pharma/chef)
 - [chefStats](https://github.com/hta-pharma/chefStats)
