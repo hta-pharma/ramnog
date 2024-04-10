@@ -9,6 +9,8 @@ AMNOG-style HTA analyses
 The aim of ramnog is that statistician/programmer can set up an
 AMNOG-type analyses with minimal familiarity with R.
 
+To get started, check out the [Quick Start](ramnog.html) guide
+
 # Packages
 
 <table class="table table-bordered table table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
@@ -93,8 +95,8 @@ sectioned off in other packages
 # Contributing
 
 We welcome contributions to the code base. Please see the [contributing
-vignette](%22https://hta-pharma.github.io/chef/dev_contribute%22) for
-more information on how to contribute.
+vignette](dev_contribute.html) for more information on how to
+contribute.
 
 # Installation
 

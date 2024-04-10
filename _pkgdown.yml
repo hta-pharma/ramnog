@@ -8,6 +8,9 @@ navbar:
     left: [intro, articles, contributing]
     right: [github]
   components:
+    intro:
+      text: Quick start
+      href: articles/ramnog.html
     contributing:
       text: Contributing
       menu:

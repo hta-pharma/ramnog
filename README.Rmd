@@ -15,6 +15,8 @@ Ramnog is a collection of packages for setting up pipelines for AMNOG-style HTA 
 
 The aim of ramnog is that statistician/programmer can set up an AMNOG-type analyses with minimal familiarity with R.
 
+To get started, check out the [Quick Start](ramnog.html) guide
+
 # Packages
  
 ```{r, echo=FALSE}
@@ -52,7 +54,7 @@ The core functionality of the framework resides in {[chef](https://hta-pharma.gi
 
 # Contributing
  
- We welcome contributions to the code base. Please see the [contributing vignette]("https://hta-pharma.github.io/chef/dev_contribute") for more information on how to contribute.
+ We welcome contributions to the code base. Please see the [contributing vignette](dev_contribute.html) for more information on how to contribute.
 
 # Installation
 
