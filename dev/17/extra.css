@@ -3,3 +3,6 @@
   color: #494646;
   font-weight: 700;
 }
+.text-muted {
+  color: var(--bs-navbar-brand-color) !important;
+}
