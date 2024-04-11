@@ -1,20 +1,25 @@
 
 # ramnog <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
 
-The {ramnog} package is a collection of packages for setting up
-pipelines for AMNOG-style HTA analyses. The aim of {ramnog} is to enable
-statisticians/programmers to set up an AMNOG-type analyses with minimal
-familiarity with `R`.
+# R packages for AMNOG analyses <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
+
+Ramnog is a collection of packages for setting up pipelines for
+AMNOG-style HTA analyses
+
+The aim of ramnog is that statistician/programmer can set up an
+AMNOG-type analyses with minimal familiarity with R.
+
+To get started, check out the [Quick Start](ramnog.html) guide
 
 # Packages
 
-<table class="table table-bordered table table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<table class="table table-bordered table table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
-<th style="text-align:left;background-color: lightblue !important;">
+<th style="text-align:left;color: white !important;background-color: rgba(44, 62, 80, 255) !important;">
 Package
 </th>
-<th style="text-align:left;background-color: lightblue !important;">
+<th style="text-align:left;color: white !important;background-color: rgba(44, 62, 80, 255) !important;">
 Description
 </th>
 </tr>
@@ -61,9 +66,10 @@ Wrapper package tying ecosystem together
 # Aim
 
 The aim of {ramnog} is that a programmer has to write minimal code, and
-no programming to in order to set-up a new AMNOG-type analyses. For each
-study, the programmer will need to make, adjust, or check the following
-four types of code:
+no programming, to set-up a new AMNOG-type analyses.
+
+For each study, the programmer will need to make, adjust, or check the
+following four types of code:
 
 1.  The definition of each endpoint (or group of endpoints).
 2.  A set of ADaM functions that makes any modifications to existing
@@ -89,8 +95,8 @@ sectioned off in other packages
 # Contributing
 
 We welcome contributions to the code base. Please see the [contributing
-vignette](%22https://hta-pharma.github.io/chefCriteria/dev_git%22) for
-more information on how to contribute.
+vignette](dev_contribute.html) for more information on how to
+contribute.
 
 # Installation
 

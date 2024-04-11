@@ -1,13 +1,10 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# Executes R CMD check will run the check for both windows and ubuntu latest on the newest R release.
+
 on:
+  # Executable from a parent workflow.
   workflow_call:
 
 name: R-CMD-check
-
-# concurrency:
-#   group: roxygen-${{ github.event.pull_request.number || github.ref }}
-#   cancel-in-progress: true
 
 jobs:
   R-CMD-check:
@@ -15,11 +12,14 @@ jobs:
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
+    # Setup of subjobs or here which os/R versions needs to be tested.
     strategy:
       fail-fast: false
       matrix:
         config:
           - {os: ubuntu-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: macos-latest,    r: 'release'}
           # - {os: ubuntu-latest,   r: 'oldrel-1'}
           # - {os: ubuntu-latest,   r: 'oldrel-2'}
           # - {os: ubuntu-latest,   r: 'oldrel-3'}
@@ -30,25 +30,30 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      # Checkout the code
       - uses: actions/checkout@v4
 
+      # Setup pandoc which is required to built doc for pacakge
       - uses: r-lib/actions/setup-pandoc@v2
 
+      # Setup R env using the R version specified under strategy above.
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
+          #http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      # Install package dependencies
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
 
+      # Run the R CMD check - will upload results as an artifact.
       - uses: r-lib/actions/check-r-package@v2
         with:
-          args: 'c("--no-manual", "--as-cran", "--no-tests")' # We run a secondary tests check
-          # upload-snapshots: true
-          # error-on: '"error"'
-          # check-dir: '"check"'
-          # upload-results: true
+          args: 'c("--no-manual", "--as-cran")'
+          upload-snapshots: true
+          error-on: '"error"'
+          check-dir: '"check"'
+          upload-results: true

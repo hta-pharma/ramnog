@@ -5,12 +5,17 @@
 
 # ramnog <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
 
+# R packages for AMNOG analyses <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The {ramnog} package is a collection of packages for setting up pipelines for AMNOG-style HTA analyses.
-The aim of {ramnog} is to enable statisticians/programmers to set up an AMNOG-type analyses with minimal familiarity with `R`.
+Ramnog is a collection of packages for setting up pipelines for AMNOG-style HTA analyses
+
+The aim of ramnog is that statistician/programmer can set up an AMNOG-type analyses with minimal familiarity with R.
+
+To get started, check out the [Quick Start](ramnog.html) guide
 
 # Packages
  
@@ -30,12 +35,14 @@ dt <- data.table::data.table(
 dt |>
   kable(format = "html", table.attr = "class='table table-bordered'") |>
   kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |>
-  row_spec(0, background = "lightblue")
+  row_spec(0, background = "#2C3E50", color="white")
 ```
 
 # Aim
 
-The aim of {ramnog} is that a programmer has to write minimal code, and no programming to in order to set-up a new AMNOG-type analyses. For each study, the programmer will need to make, adjust, or check the following four types of code:
+The aim of {ramnog} is that a programmer has to write minimal code, and no programming, to set-up a new AMNOG-type analyses. 
+
+For each study, the programmer will need to make, adjust, or check the following four types of code:
 
 1.  The definition of each endpoint (or group of endpoints).
 2.  A set of ADaM functions that makes any modifications to existing ADaM datasets (e.g., new age grouping in ADSL), or makes new ADaM datasets if none exist for the required output.
@@ -47,7 +54,7 @@ The core functionality of the framework resides in {[chef](https://hta-pharma.gi
 
 # Contributing
  
- We welcome contributions to the code base. Please see the [contributing vignette]("https://hta-pharma.github.io/chefCriteria/dev_git") for more information on how to contribute.
+ We welcome contributions to the code base. Please see the [contributing vignette](dev_contribute.html) for more information on how to contribute.
 
 # Installation
 

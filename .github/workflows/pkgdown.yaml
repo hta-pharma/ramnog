@@ -1,15 +1,14 @@
-# Workflow adjusted from usethis::use_pkgdown_github_pages() to also publish pages from PRs in a subfolder
+# Workflow to build and deploy documentation site using GH pages.
+# For pull-request it will create a subpage under dev/#PR so that you can review changes before pulling into main.
+# NB when pulling into main it will remove previous dev/#PR sites.
 
   on:
-    # push:
-    #   branches: [main, master]
-    # pull_request:
-    #   branches: [main, master]
-    # release:
-    #   types: [published]
+    # Can be triggered independently via the Actions tab
     workflow_dispatch:
+    # Can be triggered from another flow.
     workflow_call:
   
+  # By default actions can only read - Here it needs to write content (to gh_pages branch) and comments to PR.
   permissions:
     contents: write
     pull-requests: write
@@ -25,6 +24,7 @@
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       steps:
+        # Checkout the repo to the runner environment
         - uses: actions/checkout@v4
   
         - uses: r-lib/actions/setup-pandoc@v2
@@ -38,12 +38,12 @@
             extra-packages: any::pkgdown, local::.
             needs: website
   
+        # Build the packagedown site.
         - name: Build site
           run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
           shell: Rscript {0}
   
         # If not pull request a brand new webpage is deployed
-  
         - name: Deploy to GitHub pages 🚀
           if: github.event_name != 'pull_request'
           uses: JamesIves/github-pages-deploy-action@v4.5.0
@@ -53,7 +53,6 @@
             folder: docs
   
         # If pull request the webpage is deployed inside a dev/"PR number" folder for review
-  
         - name: Add pkgdown PR Comment
           uses: marocchino/sticky-pull-request-comment@v2
           if: github.event_name == 'pull_request'

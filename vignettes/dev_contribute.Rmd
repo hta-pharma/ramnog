@@ -1,0 +1,57 @@
+---
+title: "Contributing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Contributing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Gitflow
+
+All packages use [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) way of working. Please see the linked to resource for details on how to work in this style.
+
+Specifically each package always has the `main` branch that is functioning and deployable. 
+
+### How to add a feature / bugfix
+
+1. Create new branch from main, lets say we call it `feature_A` 
+2. Develop, commit, and push to `feature_A`
+3. When you are [done](#dod), make a draft PR from `feature_A` into `main`. This will trigger the CI/CD pipelines and checks to run.
+4. Check the output of the CI/CD checks and make any requisit changes to `feature_A`
+5. Once the pipeline runs wihout any errors, mark your draft PR as ready for review and assign a reviewer
+6. When the PR is approved, chose the option to __squash and merge__ your commits. Here you will have the option to summarize the changes that your feature/bug fix address.
+7. Delete the source branch (`feature_A`)
+
+# Definition of done {#dod}
+
+A feature branch is defined as done and ready for a PR (pull request) into main branch only once it has been properly tested. Please see the [Quality Control](qc.html) vignette for more detailed information on what this entails. Briefly, testing consists of:
+
+1. Unit-tests to test the basic functionality 
+2. Integration testing to ensure all features work together
+3. Passing the CI/CD
+
+If you are developing, for example, a new statistical function for {chefStats} then it must be checked with unit tests.
+
+Additionally, all previous unit-tests and integration tests need to pass. You can check this by running `devtools::test()` in the respective packages.
+
+__Note:__ Integration testing mostly resides in the ramnog package, so you will need to run `devtools::test()` there as well
+
+
+# DevOps: Pre-commit and Git-actions
+
+The ramnog ecosystem uses both pre-commit hooks and Git-Actions to ensure code quality and consistency.
+
+Configuration for Pre-commit as well as Git-action workflows are hosted in the {ramnog} package and consumed by the other packages.
+Idealy, the DevOps configuration should be hosted in a seperate repository, but for now it is in the {ramnog} package.
+
+### Pre-commit
+
+Pre-commit is a tool that runs checks on the code before it is commited. It is configured in the `.pre-commit-config.yaml` file in the root of the repository.

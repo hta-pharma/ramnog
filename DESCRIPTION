@@ -1,11 +1,11 @@
 Package: ramnog
 Title: Facilitating AMNOG style analysis pipelines
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
-    c(person("MEWP (Matthew David Phelps)", , , "mewp@novonordisk.com", role = c("aut")),
-    person("NOSJ (Nicolai Skov Johnsen)",, , "nosj@novonordisk.com", role = c("aut")),
-    person("HSPU (Henrik Sparre Spiegelhauer)",, , "hspu@novonordisk.com", role = c("aut")),
-    person("CINO (Christian Haargaard Olsen)",, , "cino@novonordisk.com", role = c("aut", "cre")))
+    c(person("Matthew David Phelps", , , "mewp@novonordisk.com", role = c("aut")),
+    person("Nicolai Skov Johnsen",, , "nosj@novonordisk.com", role = c("aut")),
+    person("Henrik Sparre Spiegelhauer",, , "hspu@novonordisk.com", role = c("aut")),
+    person("Christian Haargaard Olsen",, , "cino@novonordisk.com", role = c("aut", "cre")))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -33,4 +33,7 @@ Remotes:
     hta-pharma/chefCriteria,
     matthew-phelps/testr
 VignetteBuilder: knitr
-URL: https://hta-pharma.github.io/ramnog/
+URL: 
+    https://hta-pharma.github.io/ramnog/,
+    https://github.com/hta-pharma/ramnog,
+    https://app.codecov.io/gh/hta-pharma/ramnog

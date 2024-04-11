@@ -1,3 +1,7 @@
+# This a small action to perform fast forward merging which is not supported by github by default.
+# NB: since this by default is run using the default GITHUB_TOKEN it will not trigger subsequent work-flows.
+# In order for this to be effective either a PAT or a github app (dependabot) should be setup 
+
 name: Fast Forward PR
 on: 
   issue_comment:

@@ -8,7 +8,13 @@ vignette: >
 ---
 
 
-Here we start with an empty R project and walk through a full working example analysis. Our goal for this example analysis is to report the number of subjects experiencing a mild adverse event in each treatment arm stratified by a custom age grouping. For this example we use the ADAE dataset provided in the {pharmaverseadam} package.
+In this vignette we start with an empty R project and walk through a full working example analysis. 
+
+Our goal for this example analysis is to report the number of subjects experiencing a mild adverse event in each treatment arm stratified by a custom age grouping. For this example we use the ADAE dataset provided in the {pharmaverseadam} package. To run this example you will need the following packages installed:
+
+- [chef](https://github.com/hta-pharma/chef)
+- [chefStats](https://github.com/hta-pharma/chefStats)
+- [pharmaverseadam](https://github.com/pharmaverse/pharmaverseadam)
 
 The outline of the workflow will be:
 
@@ -49,11 +55,10 @@ The file file structure should look like this:
 {chef} has a convenience function to set up this infrastructure for you:
   
 ```{r eval=FALSE}
-    library(chef)
-    chef::use_chef(
-      pipeline_id = "01"
-    )
-
+library(chef)
+chef::use_chef(
+  pipeline_id = "01"
+)
 ```
     
   This sets up the following file structure:
@@ -102,14 +107,17 @@ For now, we write a simple `ADaM` function `mk_adae` that merges the `ADSL` data
 mk_adae <- function(study_metadata) {
   adae <- data.table::as.data.table(pharmaverseadam::adae)
   adsl <- data.table::as.data.table(pharmaverseadam::adsl)
-  adsl[, AGEGR2 := data.table::fcase(AGE < 70, "AGE < 70",
-                                     AGE >= 70, "AGE >= 70")]
+  adsl[, AGEGR2 := data.table::fcase(
+    AGE < 70, "AGE < 70",
+    AGE >= 70, "AGE >= 70"
+  )]
   adae_out <-
-    merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"), with =
-                       F], by = "USUBJID", all = TRUE)
+    merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"),
+      with =
+        F
+    ], by = "USUBJID", all = TRUE)
   adae_out[]
 }
-
 ```
 
 
@@ -147,15 +155,12 @@ Targets will show you which steps in the pipeline are executed and how long each
 ```{r, echo=FALSE} 
 setwd(tmp_dir) # Do not run, only needed to get the markdown file to run
 targets::tar_make()
-
-
 ```
 
 Then, to see the results, you load the cached step of the pipeline corresponding to the results. In our case it will be `ep_stat`, so to load it into the sessions as an object we call
 
 ```{r, eval=FALSE}
 targets::tar_load(ep_stat)
-
 ```
 
 Now `ep_stat` is an R object like any other. Thus we can look at our results simply by running
@@ -177,7 +182,6 @@ ep_stat[, .(
   stat_result_qualifiers,
   stat_result_value
 )] |> head()
-
 ```
 
 

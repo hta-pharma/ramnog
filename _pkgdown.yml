@@ -1,33 +1,54 @@
 url: https://hta-pharma.github.io/ramnog/
 template:
   bootstrap: 5
-articles:
-- title: Overview
-  navbar: Overview
-  contents: ep_overview
-- title: Endpoint Population and Outcome Specification
-  navbar: Endpoint Population and Outcome Specification
-  contents:
-  - ep_spec_adam_data
-  - ep_spec_treatment_arms
-  - ep_spec_population_def
-  - ep_spec_event_def
-  - ep_spec_strata_def
-  - ep_spec_label
-- title: Endpoint Statistics
-  navbar: Endpoint Statistics
-  contents: starts_with('methods_')
-- title: Endpoint Results
-  navbar: Endpoint Results
-  contents: starts_with("results")
-- title: Endpoint Examples
-  navbar: Endpoint Examples
-  contents: starts_with("example_")
-- title: Debugging
-  navbar: Debugging
-  contents: debugging
-- title: Development
-  navbar: Development
-  contents:
-  - starts_with("dev")
-  - validation
+  bootswatch: flatly
+
+navbar:
+  structure:
+    left: [intro, articles, contributing]
+    right: [github]
+  components:
+    intro:
+      text: Quick start
+      href: articles/ramnog.html
+    contributing:
+      text: Contributing
+      menu:
+      - text: Contributing overview
+        href: articles/dev_contribute.html
+      - text: DevOps
+        href: articles/dev_devops.html
+      - text: Quality control
+        href: articles/qc.html
+    articles:
+      text: Articles
+      menu:
+      - text: Overview
+      - text: Endpoint specification overview
+        href: articles/ep_overview.html
+      - text: "----"
+      - text: Endpoint population and outcome specification
+      - text: ADaM specification
+        href: articles/ep_spec_adam_data.html
+      - text: Treatment Arms
+        href: articles/ep_spec_treatment_arms.html
+      - text: Analysis Population
+        href: articles/ep_spec_population_def.html
+      - text: Endpoint Events
+        href: articles/ep_spec_event_def.html
+      - text: Strata
+        href: articles/ep_spec_strata_def.html
+      - text: ----
+      - text: Endpoint Statistics
+      - text: Criteria Methods
+        href: articles/methods_criteria.html
+      - text: Statistical Methods
+        href: articles/methods_stat.html
+      - text: ----
+      - text: Examples
+      - text: Endpoint Catalog
+        href: articles/example_ep_spec.html
+      - text: ----
+      - text: Debugging
+      - text: Debugging
+        href: articles/debugging.html
