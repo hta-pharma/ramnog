@@ -1,6 +1,6 @@
 Package: ramnog
 Title: Facilitating AMNOG style analysis pipelines
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     c(person("Matthew David Phelps", , , "mewp@novonordisk.com", role = c("aut")),
     person("Nicolai Skov Johnsen",, , "nosj@novonordisk.com", role = c("aut")),
