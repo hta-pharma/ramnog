@@ -13,7 +13,10 @@
     <loc>https://hta-pharma.github.io/ramnog/articles/debugging.html</loc>
   </url>
   <url>
-    <loc>https://hta-pharma.github.io/ramnog/articles/dev_git.html</loc>
+    <loc>https://hta-pharma.github.io/ramnog/articles/dev_contribute.html</loc>
+  </url>
+  <url>
+    <loc>https://hta-pharma.github.io/ramnog/articles/dev_devops.html</loc>
   </url>
   <url>
     <loc>https://hta-pharma.github.io/ramnog/articles/ep_overview.html</loc>
@@ -49,6 +52,9 @@
     <loc>https://hta-pharma.github.io/ramnog/articles/methods_stat.html</loc>
   </url>
   <url>
+    <loc>https://hta-pharma.github.io/ramnog/articles/qc.html</loc>
+  </url>
+  <url>
     <loc>https://hta-pharma.github.io/ramnog/articles/ramnog.html</loc>
   </url>
   <url>
@@ -56,9 +62,6 @@
   </url>
   <url>
     <loc>https://hta-pharma.github.io/ramnog/articles/results_datamodel2tfl.html</loc>
-  </url>
-  <url>
-    <loc>https://hta-pharma.github.io/ramnog/articles/validation.html</loc>
   </url>
   <url>
     <loc>https://hta-pharma.github.io/ramnog/authors.html</loc>

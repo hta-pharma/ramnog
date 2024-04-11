@@ -3,7 +3,8 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   debugging: debugging.html
-  dev_git: dev_git.html
+  dev_contribute: dev_contribute.html
+  dev_devops: dev_devops.html
   ep_overview: ep_overview.html
   ep_spec_adam_data: ep_spec_adam_data.html
   ep_spec_event_def: ep_spec_event_def.html
@@ -14,11 +15,11 @@ articles:
   example_ep_spec: example_ep_spec.html
   methods_criteria: methods_criteria.html
   methods_stat: methods_stat.html
+  qc: qc.html
   ramnog: ramnog.html
   results_datamodel: results_datamodel.html
   results_datamodel2tfl: results_datamodel2tfl.html
-  validation: validation.html
-last_built: 2024-04-08T06:54Z
+last_built: 2024-04-11T06:35Z
 urls:
   reference: https://hta-pharma.github.io/ramnog/reference
   article: https://hta-pharma.github.io/ramnog/articles
