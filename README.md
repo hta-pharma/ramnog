@@ -9,7 +9,7 @@ AMNOG-style HTA analyses
 The aim of ramnog is that statistician/programmer can set up an
 AMNOG-type analyses with minimal familiarity with R.
 
-To get started, check out the [Quick Start](ramnog.html) guide
+To get started, check out the [Quick Start](articles/ramnog.html) guide
 
 # Packages
 
@@ -95,7 +95,7 @@ sectioned off in other packages
 # Contributing
 
 We welcome contributions to the code base. Please see the [contributing
-vignette](dev_contribute.html) for more information on how to
+vignette](articles/dev_contribute.html) for more information on how to
 contribute.
 
 # Installation
