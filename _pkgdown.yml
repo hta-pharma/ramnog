@@ -38,7 +38,7 @@ navbar:
         href: articles/ep_spec_event_def.html
       - text: Strata
         href: articles/ep_spec_strata_def.html
-      - text: Enpoint Label
+      - text: Endpoint Label
         href: articles/ep_spec_label.html
       - text: ----
       - text: Methods
@@ -49,9 +49,9 @@ navbar:
       - text: ----
       - text: Output Data Model
       - text: Result Data Model
-      - href: articles/results_datamodel.html
+        href: articles/results_datamodel.html
       - text: Mapping Results to TFLs
-      - href: articles/results_datamodel2tfl.html
+        href: articles/results_datamodel2tfl.html
       - text: ----
       - text: Examples
       - text: Endpoint Catalog
