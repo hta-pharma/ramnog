@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.8
 pkgdown_sha: ~
 articles:
   debugging: debugging.html
@@ -19,7 +19,7 @@ articles:
   ramnog: ramnog.html
   results_datamodel: results_datamodel.html
   results_datamodel2tfl: results_datamodel2tfl.html
-last_built: 2024-04-11T10:15Z
+last_built: 2024-04-16T11:37Z
 urls:
   reference: https://hta-pharma.github.io/ramnog/reference
   article: https://hta-pharma.github.io/ramnog/articles
