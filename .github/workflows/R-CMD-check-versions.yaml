@@ -42,7 +42,7 @@
 
 
         - name: Install pak (Windows)
-          if: runner.os != 'Windows' && matrix.config.date != 'latest'
+          if: runner.os == 'Windows' && matrix.config.date != 'latest'
           run: |
               # Install pak
               cat("::group::Install pak\n")
