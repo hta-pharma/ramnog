@@ -39,9 +39,9 @@
           id: cran-image
           run: |
             if [ "${{ matrix.config.date }}" == "latest" ]; then
-              echo "::set-output name=image::https://packagemanager.posit.co/cran"
+              echo "image=https://cloud.r-project.org" >> $GITHUB_OUTPUT
             else
-              echo "::set-output name=image::https://packagemanager.posit.co/cran/${{ matrix.config.date }}"
+              echo "image=https://packagemanager.posit.co/cran/${{ matrix.config.date }}" >> $GITHUB_OUTPUT
             fi
           shell: bash
 
