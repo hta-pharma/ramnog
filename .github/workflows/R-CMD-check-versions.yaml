@@ -35,12 +35,6 @@
             r-version: ${{ matrix.config.r }}
             use-public-rspm: false
 
-        # - name: Install curl ()
-        #   if: matrix.os == 'ubuntu-latest' && matrix.config.date != 'latest'
-        #   run: |
-        #     sudo apt install libcurl4-openssl-dev
-
-
         - name: Install pak (Windows + CRAN snapshot) 
           if: runner.os == 'Windows' && matrix.config.date != 'latest'
           run: |
