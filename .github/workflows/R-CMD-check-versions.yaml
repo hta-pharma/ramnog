@@ -56,7 +56,7 @@
                   R.Version()$arch
               ))
               cat("::endgroup::\n")
-              shell: Rscript {0}
+            shell: Rscript {0}
       
         - name: Install pak (Unix + CRAN snapshot)
           if: runner.os != 'Windows' && matrix.config.date != 'latest'
@@ -67,7 +67,7 @@
               #$SUDO R -q -e 'dir.create(Sys.getenv("R_LIB_FOR_PAK"), recursive = TRUE, showWarnings = FALSE)'
               $SUDO R -q -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/%s/%s/%s/%s", "stable", .Platform$pkgType, R.Version()$os, R.Version()$arch))'
               echo "::endgroup::"
-              shell: bash
+            shell: bash
 
 
           # Install package dependencies (if a specific date)     
