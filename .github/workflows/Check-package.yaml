@@ -28,6 +28,11 @@ jobs:
     name: RMD check 📦
     uses: ./.github/workflows/R-CMD-check.yaml
 
+  # Runs R CMD check with specific version(s) of R and cran-snapshot
+  check-versions:
+    name: RMD check versions 📜
+    uses: ./.github/workflows/R-CMD-check-versions.yaml
+
   # Runs unittests while capturing code:cov and uploads to Codecov io. See local subflow
   test:
     name: Test 🧪
