@@ -49,7 +49,7 @@
                 repos = c(CRAN = "https://packagemanager.posit.co/cran/${{ matrix.config.date }}")
                 )
     
-              install.packages("rcmdcheck")
+              install.packages(c("rcmdcheck", "knitr"))
               install.packages(".", dependencies=T, upgrade=T, Ncpus = parallel::detectCores()-1)
 
             shell: Rscript {0}
