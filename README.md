@@ -1,4 +1,16 @@
 
+<!-- Add badges here -->
+
+\[![codecov.io](https://app.codecov.io/gh/hta-pharma/ramnog/coverage.svg?branch=main)\]
+(<https://app.codecov.io/gh/hta-pharma/ramnog?branch=main>)
+
+[![Check Package
+📦](https://github.com/hta-pharma/ramnog/actions/workflows/Check-package.yaml/badge.svg)](https://github.com/hta-pharma/ramnog/actions/workflows/Check-package.yaml)
+[![Release Package
+🚀](https://github.com/hta-pharma/ramnog/actions/workflows/Release-package.yaml/badge.svg)](https://github.com/hta-pharma/ramnog/actions/workflows/Release-package.yaml)
+
+<!-- Until here -->
+
 # ramnog <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
 
 # R packages for AMNOG analyses <a href="https://hta-pharma.github.io/ramnog/"><img src="man/figures/logo.png" align="right" height="138" alt="ramnog website" /></a>
@@ -13,7 +25,7 @@ To get started, check out the [Quick Start](articles/ramnog.html) guide
 
 # Packages
 
-<table class="table table-bordered table table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-bordered table table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;color: white !important;background-color: rgba(44, 62, 80, 255) !important;">
