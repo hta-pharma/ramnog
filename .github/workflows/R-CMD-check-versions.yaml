@@ -38,11 +38,11 @@
         - name: Determine the CRAN image to use
           id: cran-image
           run: |
-            if ("${{ matrix.config.date }}" == "latest") {
+            if [ "${{ matrix.config.date }}" == "latest" ]; then
               echo "::set-output name=image::https://packagemanager.posit.co/cran"
-            } else {
+            else
               echo "::set-output name=image::https://packagemanager.posit.co/cran/${{ matrix.config.date }}"
-            }
+            fi
           shell: bash
 
         - name: Debug image
@@ -50,7 +50,8 @@
             echo ${{ steps.cran-image.outputs.image }}
           shell: bash
 
-        - uses: ./.github/actions/setup-r-dependencies.yaml
+        - name: Install R dependencies (custom)
+          uses: ./.github/actions/setup-r-dependencies.yaml
           with:
             cache: true
             dependency_repo: ${{ steps.cran-image.outputs.image }}
