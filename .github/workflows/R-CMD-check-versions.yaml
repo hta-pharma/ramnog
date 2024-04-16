@@ -54,15 +54,6 @@
               install.packages("rcmdcheck")
               install.packages(".", dependencies=T, upgrade=T, Ncpus = parallel::detectCores()-1)
 
-              #install.packages("pak")
-
-            #   pak::pkg_install("rcmdcheck")
-            #   pak::pkg_install(".", dependencies=T, upgrade=T)
-    
-    
-            #   attachment::att_from_description(field = c("Depends", "Imports", "Suggests")) |>
-            #     install.packages(Ncpus = parallel::detectCores()-1)
-    
             shell: Rscript {0}
 
             # Install package dependencies (if lastest)     
