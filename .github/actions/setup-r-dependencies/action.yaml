@@ -141,8 +141,8 @@ runs:
           path: |
             ${{ env.R_LIBS_USER }}/*
             !${{ env.R_LIBS_USER }}/pak
-          key: ${{ format('{0}-{1}-{2}-{3}', steps.install.outputs.os-version, steps.install.outputs.r-version, inputs.cache-version, inputs.dependency_repo, hashFiles(format('{0}/.github/pkg.lock', inputs.working-directory ))) }}
-          restore-keys: ${{ steps.install.outputs.os-version }}-${{ steps.install.outputs.r-version }}-${{inputs.cache-version }}-
+          key: ${{ format('{0}-{1}-{2}-{3}-{5}', steps.install.outputs.os-version, steps.install.outputs.r-version, inputs.cache-version, inputs.dependency_repo, hashFiles(format('{0}/.github/pkg.lock', inputs.working-directory ))) }}
+          restore-keys: ${{ steps.install.outputs.os-version }}-${{ steps.install.outputs.r-version }}-${{inputs.cache-version }}-${{inputs.dependency_repo }}-
 
       - name: Install dependencies
         run: |
