@@ -1,0 +1,8 @@
+.dropdown-header {
+  font-size: 1.2rem;
+  color: #494646;
+  font-weight: 700;
+}
+.text-muted {
+  color: var(--bs-navbar-brand-color) !important;
+}
