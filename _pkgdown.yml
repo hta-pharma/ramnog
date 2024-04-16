@@ -9,7 +9,7 @@ navbar:
     right: [github]
   components:
     intro:
-      text: Quick start
+      text: Quick Start
       href: articles/ramnog.html
     contributing:
       text: Contributing
@@ -24,11 +24,11 @@ navbar:
       text: Articles
       menu:
       - text: Overview
-      - text: Endpoint specification overview
+      - text: Endpoint specification
         href: articles/ep_overview.html
       - text: "----"
-      - text: Endpoint population and outcome specification
-      - text: ADaM specification
+      - text: Population and outcome
+      - text: ADaM Data
         href: articles/ep_spec_adam_data.html
       - text: Treatment Arms
         href: articles/ep_spec_treatment_arms.html
@@ -38,12 +38,20 @@ navbar:
         href: articles/ep_spec_event_def.html
       - text: Strata
         href: articles/ep_spec_strata_def.html
+      - text: Enpoint Label
+        href: articles/ep_spec_label.html
       - text: ----
-      - text: Endpoint Statistics
+      - text: Methods
       - text: Criteria Methods
         href: articles/methods_criteria.html
       - text: Statistical Methods
         href: articles/methods_stat.html
+      - text: ----
+      - text: Output Data Model
+      - text: Result Data Model
+      - href: articles/results_datamodel.html
+      - text: Mapping Results to TFLs
+      - href: articles/results_datamodel2tfl.html
       - text: ----
       - text: Examples
       - text: Endpoint Catalog

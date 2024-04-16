@@ -45,7 +45,7 @@ For more details on the internal steps of {chef} see [Getting Started with Pipel
 The parameters of each endpoint specification can be grouped in to the sets below, which are explained in their respective sections:
 ```{r, echo=FALSE}
 dt <- data.table::data.table(
-  Type = c(rep("Population and outcome specifications", 13), rep("Methods", 6)),
+  Type = c(rep("Population and outcome", 13), rep("Methods", 6)),
   Section = c(
     rep(
       "[ADaM data](ep_spec_adam_data.html). What data to use and how to consolidate it into a single data table for the endpoint that is used to calculate statistics.",
