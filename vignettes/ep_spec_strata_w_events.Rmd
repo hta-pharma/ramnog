@@ -1,0 +1,20 @@
+---
+title: "Processing of strata without events"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Processing of strata without events}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+
+The `only_strata_with_events` endpoint parameter specifies whether the endpoint upon completion in the {chef} framework will include all strata levels or only those levels that contain events. By default, all levels will be included in the endpoint.
+

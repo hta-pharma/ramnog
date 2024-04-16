@@ -45,7 +45,7 @@ For more details on the internal steps of {chef} see [Getting Started with Pipel
 The parameters of each endpoint specification can be grouped in to the sets below, which are explained in their respective sections:
 ```{r, echo=FALSE}
 dt <- data.table::data.table(
-  Type = c(rep("Population and outcome", 13), rep("Methods", 6)),
+  Type = c(rep("Population and outcome", 14), rep("Methods", 6)),
   Section = c(
     rep(
       "[ADaM data](ep_spec_adam_data.html). What data to use and how to consolidate it into a single data table for the endpoint that is used to calculate statistics.",
@@ -61,6 +61,7 @@ dt <- data.table::data.table(
       4),
     "[Strata](ep_spec_strata_def.html). How to slice the data within the endpoint.",
     "[Endpoint label](ep_spec_label.html). What events the endpoint describes.",
+    "[Processing of strata without events](ep_spec_strata_w_events.html). Specification of whether only strata levels with events are to be incorporated in the endpoint.",
     rep(
       "[Criteria methods](methods_criteria.html). Requirements that must be met to include different types of statistics in the endpoint results.",
       3),
@@ -82,6 +83,7 @@ dt <- data.table::data.table(
     "`group_by`",
     "`stratify_by`",
     "`endpoint_label`",
+    "`only_strata_with_events`",
     "`crit_endpoint`",
     "`crit_by_strata_by_trt`",
     "`crit_by_strata_across_trt`",
