@@ -49,7 +49,7 @@
                 repos = c(CRAN = "https://packagemanager.posit.co/cran/${{ matrix.config.date }}")
                 )
     
-              install.packages(c("rcmdcheck"))
+              install.packages(c("rcmdcheck", "devtools"))
               devtools::install(".", dependencies = TRUE, upgrade = TRUE, Ncpus = parallel::detectCores()-1)
               #install.packages(".", dependencies=T, upgrade=T, Ncpus = parallel::detectCores()-1)
 
