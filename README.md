@@ -13,7 +13,7 @@ To get started, check out the [Quick Start](articles/ramnog.html) guide
 
 # Packages
 
-<table class="table table-bordered table table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-bordered table table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;color: white !important;background-color: rgba(44, 62, 80, 255) !important;">
@@ -45,7 +45,7 @@ or inferences for each endpoint/outcome
 </tr>
 <tr>
 <td style="text-align:left;">
-[chefCriteria]((https://hta-pharma.github.io/chefCriteria/))
+[chefCriteria](https://hta-pharma.github.io/chefCriteria/)
 </td>
 <td style="text-align:left;">
 Collection of criteria that are used in AMNOG dossiers to determin when
