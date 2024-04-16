@@ -25,8 +25,8 @@
               - windows-latest
               - ubuntu-latest
             config:
-              - date: 'latest'
-                r: 'release'
+            #   - date: 'latest'
+            #     r: 'release'
               - date: 2023-10-25  # Lock the date of the CRAN snapshot
                 r: 4.3.1
         env:
@@ -55,8 +55,7 @@
                 repos = c(CRAN = "https://packagemanager.posit.co/cran/${{ matrix.config.date }}")
                 )
     
-    
-              #install.packages(c("pak"), Ncpus = parallel::detectCores()-1)
+              install.packages("pak")
 
               pak::pkg_install("rcmdcheck")
               pak::pkg_install(".", dependencies=T, upgrade=T)
