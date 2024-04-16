@@ -4,8 +4,6 @@
     on:
       workflow_dispatch:
       workflow_call:
-
-    permissions: read-all
     
     name: R-CMD-check-versions
     
