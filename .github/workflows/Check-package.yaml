@@ -23,10 +23,10 @@ jobs:
     name: License Check 🃏
     uses: insightsengineering/r.pkg.template/.github/workflows/licenses.yaml@main
 
-  # Runs R CMD check using the local R-CMD-check.yaml workflow
-  check:
-    name: RMD check 📦
-    uses: ./.github/workflows/R-CMD-check.yaml
+  # # Runs R CMD check using the local R-CMD-check.yaml workflow
+  # check:
+  #   name: RMD check 📦
+  #   uses: ./.github/workflows/R-CMD-check.yaml
 
   # Runs R CMD check with specific version(s) of R and cran-snapshot
   check-versions:

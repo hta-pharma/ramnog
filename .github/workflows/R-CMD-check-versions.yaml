@@ -20,6 +20,8 @@
               - windows-latest
               - ubuntu-latest
             config:
+              - date: 'latest'
+                r: 'release'
               - date: 2023-10-25  # Lock the date of the CRAN snapshot
                 r: 4.3.1
         env:
@@ -39,13 +41,37 @@
             run: |
               sudo apt install libcurl4-openssl-dev
     
-          - name: Install dependencies
+
+            # Install package dependencies (if a specific date)     
+          - name: Install dependencies ${{ matrix.config.date }}
+            if: matrix.config.date != 'latest'
             run: >
               options(
                 repos = c(CRAN = "https://packagemanager.posit.co/cran/${{ matrix.config.date }}")
                 )
     
     
+              install.packages(c("pak"), Ncpus = parallel::detectCores()-1)
+
+              pak::pkg_install("rcmdcheck")
+              pak::pkg_install(".", dependencies=T, upgrade=T)
+    
+    
+            #   attachment::att_from_description(field = c("Depends", "Imports", "Suggests")) |>
+            #     install.packages(Ncpus = parallel::detectCores()-1)
+    
+            shell: Rscript {0}
+
+            # Install package dependencies (if lastest)     
+          - uses: r-lib/actions/setup-r-dependencies@v2
+            if: matrix.config.date == 'latest'
+            with:
+              extra-packages: any::rcmdcheck
+              needs: check
+
+          - name: Install dependencies latest
+            if: matrix.config.date == 'latest'
+            run: >
               install.packages(c("attachment", "rcmdcheck"), Ncpus = parallel::detectCores()-1)
     
     
