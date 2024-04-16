@@ -35,13 +35,13 @@
             r-version: ${{ matrix.config.r }}
             use-public-rspm: false
 
-        - name: Install curl
-          if: matrix.os == 'ubuntu-latest'
-          run: |
-            sudo apt install libcurl4-openssl-dev
+        # - name: Install curl ()
+        #   if: matrix.os == 'ubuntu-latest' && matrix.config.date != 'latest'
+        #   run: |
+        #     sudo apt install libcurl4-openssl-dev
 
 
-        - name: Install pak (Windows)
+        - name: Install pak (Windows + CRAN snapshot) 
           if: runner.os == 'Windows' && matrix.config.date != 'latest'
           run: |
               # Install pak
@@ -58,7 +58,7 @@
               cat("::endgroup::\n")
               shell: Rscript {0}
       
-        - name: Install pak (Unix)
+        - name: Install pak (Unix + CRAN snapshot)
           if: runner.os != 'Windows' && matrix.config.date != 'latest'
           run: |
               # Install pak
@@ -71,7 +71,7 @@
 
 
           # Install package dependencies (if a specific date)     
-        - name: Install dependencies ${{ matrix.config.date }}
+        - name: Install dependencies ${{ matrix.config.date }} (CRAN snapshot)
           if: matrix.config.date != 'latest'
           run: |
             options(
