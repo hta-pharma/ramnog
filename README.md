@@ -1,9 +1,7 @@
 
 <!-- Add badges here -->
 
-\[![codecov.io](https://app.codecov.io/gh/hta-pharma/ramnog/coverage.svg?branch=main)\]
-(<https://app.codecov.io/gh/hta-pharma/ramnog?branch=main>)
-
+[![codecov.io](https://app.codecov.io/gh/hta-pharma/ramnog/coverage.svg?branch=main)](https://app.codecov.io/gh/hta-pharma/ramnog?branch=main)
 [![Check Package
 📦](https://github.com/hta-pharma/ramnog/actions/workflows/Check-package.yaml/badge.svg)](https://github.com/hta-pharma/ramnog/actions/workflows/Check-package.yaml)
 [![Release Package
