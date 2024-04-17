@@ -123,8 +123,165 @@
 whether the endpoint upon completion in the {chef} framework will
 include all strata levels or only those levels that contain events. By
 default, all levels will be included in the endpoint.</p>
+<p>This feature is useful in cases where the endpoint specification
+contains groups and strata that result in many 100s or 1000s of
+combinations and where only the combinations with events are of
+interest. In this case <code>only_strata_with_events</code> should be
+set to <code>TRUE</code>, which may significantly reduce the number of
+combinations.</p>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mk_adae</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">study_metadata</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/main/reference/adae.html" class="external-link">adae</a></span><span class="op">)</span></span>
+<span>  <span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/main/reference/adsl.html" class="external-link">adsl</a></span><span class="op">)</span></span>
+<span>  <span class="va">adsl</span><span class="op">[</span>, <span class="va">AGEGR2</span> <span class="op">:=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fcase.html" class="external-link">fcase</a></span><span class="op">(</span></span>
+<span>    <span class="va">AGE</span> <span class="op">&lt;</span> <span class="fl">70</span>, <span class="st">"AGE &lt; 70"</span>,</span>
+<span>    <span class="va">AGE</span> <span class="op">&gt;=</span> <span class="fl">70</span>, <span class="st">"AGE &gt;= 70"</span></span>
+<span>  <span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">adae_out</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">adsl</span>, <span class="va">adae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span><span class="op">)</span>, <span class="st">"USUBJID"</span><span class="op">)</span>,</span>
+<span>      with <span class="op">=</span></span>
+<span>        <span class="cn">F</span></span>
+<span>    <span class="op">]</span>, by <span class="op">=</span> <span class="st">"USUBJID"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">adae_out</span><span class="op">[</span><span class="op">]</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<div class="section level6">
+<h6 id="ex-7-1">Ex 7.1<a class="anchor" aria-label="anchor" href="#ex-7-1"></a>
+</h6>
+<p>Let us consider the following endpoint specification, where
+<code>mk_adae</code> is defined as in the <a href="ramnog.html">Quick
+Start</a>, and grouping is performed on SOC (System Organ Class) and
+stratification is performed on race. By default, all strata levels are
+included, i.e. <code>only_strata_with_events = FALSE</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ep_spec_ex7_1</span> <span class="op">&lt;-</span> <span class="fu">chef</span><span class="fu">::</span><span class="fu"><a href="https://hta-pharma.github.io/chef/reference/mk_endpoint_str.html" class="external-link">mk_endpoint_str</a></span><span class="op">(</span></span>
+<span>  data_prepare <span class="op">=</span> <span class="va">mk_adae</span>,</span>
+<span>  study_metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  pop_var <span class="op">=</span> <span class="st">"SAFFL"</span>,</span>
+<span>  pop_value <span class="op">=</span> <span class="st">"Y"</span>,</span>
+<span>  custom_pop_filter <span class="op">=</span> <span class="st">"TRT01A %in% c('Placebo', 'Xanomeline High Dose') &amp; !is.na(AESOC)"</span>,</span>
+<span>  treatment_var <span class="op">=</span> <span class="st">"TRT01A"</span>,</span>
+<span>  treatment_refval <span class="op">=</span> <span class="st">"Xanomeline High Dose"</span>,</span>
+<span>  group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>AESOC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  stratify_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  stat_by_strata_by_trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>N <span class="op">=</span> <span class="fu">chefStats</span><span class="fu">::</span><span class="va"><a href="https://hta-pharma.github.io/chefStats/reference/n_subj.html" class="external-link">n_subj</a></span>, n <span class="op">=</span> <span class="fu">chefStats</span><span class="fu">::</span><span class="va"><a href="https://hta-pharma.github.io/chefStats/reference/n_subj_event.html" class="external-link">n_subj_event</a></span><span class="op">)</span>,</span>
+<span>  endpoint_label <span class="op">=</span> <span class="st">"AESOC: &lt;AESOC&gt;"</span>,</span>
+<span>  only_strata_with_events <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>In this setup we note:</p>
+<ul>
+<li>
+<code>TRT01A</code> has 2 treatment arms in the analysis data due to
+<code>custom_pop_filter</code>
+</li>
+<li>
+<code>group_by</code>: <code>AESOC</code> has 23 levels</li>
+<li>
+<code>stratify_by</code>: <code>RACE</code> has 4 levels</li>
+<li>
+<code>stat_by_strata_by_trt</code>: 2 statistics per combination of
+group level and strata level</li>
+</ul>
+<p>For each strata this implies:</p>
+<ul>
+<li>
+<code>TOTAL</code>: 2 treatment arms x 2 statistics = 4
+combinations</li>
+<li>
+<code>RACE</code>: 2 treatment arms x 3 races x 2 statistics = 12
+combinations</li>
+</ul>
+<p>Thus we have 23 SOCs x (4 + 12) = 368 combinations, i.e. 368 rows in
+the output data. Specifically, let us consider SOC “Eye Disorder” and
+print the the subset of the output data that covers that SOC (see
+below). As expected 4 + 12 = 16 rows are provided.</p>
+<pre><code><span><span class="co">#&gt;                                                                       stat_filter</span></span>
+<span><span class="co">#&gt;                                                                            &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:                                       TOTAL_ == "total" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt;  2:                                       TOTAL_ == "total" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt;  3:                          TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt;  4:                          TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt;  5:                                         RACE == "WHITE" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt;  6:                                         RACE == "WHITE" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt;  7:                     RACE == "BLACK OR AFRICAN AMERICAN" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt;  8:                     RACE == "BLACK OR AFRICAN AMERICAN" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt;  9:              RACE == "AMERICAN INDIAN OR ALASKA NATIVE" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt; 10:              RACE == "AMERICAN INDIAN OR ALASKA NATIVE" &amp; TRT01A == "Placebo"</span></span>
+<span><span class="co">#&gt; 11:                            RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt; 12:                            RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt; 13:        RACE == "BLACK OR AFRICAN AMERICAN" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt; 14:        RACE == "BLACK OR AFRICAN AMERICAN" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt; 15: RACE == "AMERICAN INDIAN OR ALASKA NATIVE" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt; 16: RACE == "AMERICAN INDIAN OR ALASKA NATIVE" &amp; TRT01A == "Xanomeline High Dose"</span></span>
+<span><span class="co">#&gt;     fn_name stat_result_value</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;             &lt;num&gt;</span></span>
+<span><span class="co">#&gt;  1:       n                 4</span></span>
+<span><span class="co">#&gt;  2:       N                69</span></span>
+<span><span class="co">#&gt;  3:       n                 1</span></span>
+<span><span class="co">#&gt;  4:       N                70</span></span>
+<span><span class="co">#&gt;  5:       n                 4</span></span>
+<span><span class="co">#&gt;  6:       N                63</span></span>
+<span><span class="co">#&gt;  7:       n                 0</span></span>
+<span><span class="co">#&gt;  8:       N                 6</span></span>
+<span><span class="co">#&gt;  9:       n                 0</span></span>
+<span><span class="co">#&gt; 10:       N                 0</span></span>
+<span><span class="co">#&gt; 11:       n                 1</span></span>
+<span><span class="co">#&gt; 12:       N                61</span></span>
+<span><span class="co">#&gt; 13:       n                 0</span></span>
+<span><span class="co">#&gt; 14:       N                 8</span></span>
+<span><span class="co">#&gt; 15:       n                 0</span></span>
+<span><span class="co">#&gt; 16:       N                 1</span></span></code></pre>
+</div>
+<div class="section level6">
+<h6 id="ex-7-2">Ex 7.2<a class="anchor" aria-label="anchor" href="#ex-7-2"></a>
+</h6>
+<p>Now suppose that we are only interested in the combinations of group
+levels and strata levels in example 7.1 that have events. To accomplish
+this we may specify <code>only_strata_with_events = TRUE</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ep_spec_ex7_2</span> <span class="op">&lt;-</span> <span class="fu">chef</span><span class="fu">::</span><span class="fu"><a href="https://hta-pharma.github.io/chef/reference/mk_endpoint_str.html" class="external-link">mk_endpoint_str</a></span><span class="op">(</span></span>
+<span>  data_prepare <span class="op">=</span> <span class="va">mk_adae</span>,</span>
+<span>  study_metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  pop_var <span class="op">=</span> <span class="st">"SAFFL"</span>,</span>
+<span>  pop_value <span class="op">=</span> <span class="st">"Y"</span>,</span>
+<span>  custom_pop_filter <span class="op">=</span> <span class="st">"TRT01A %in% c('Placebo', 'Xanomeline High Dose') &amp; !is.na(AESOC)"</span>,</span>
+<span>  treatment_var <span class="op">=</span> <span class="st">"TRT01A"</span>,</span>
+<span>  treatment_refval <span class="op">=</span> <span class="st">"Xanomeline High Dose"</span>,</span>
+<span>  group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>AESOC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  stratify_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RACE"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  stat_by_strata_by_trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>N <span class="op">=</span> <span class="fu">chefStats</span><span class="fu">::</span><span class="va"><a href="https://hta-pharma.github.io/chefStats/reference/n_subj.html" class="external-link">n_subj</a></span>, n <span class="op">=</span> <span class="fu">chefStats</span><span class="fu">::</span><span class="va"><a href="https://hta-pharma.github.io/chefStats/reference/n_subj_event.html" class="external-link">n_subj_event</a></span><span class="op">)</span>,</span>
+<span>  endpoint_label <span class="op">=</span> <span class="st">"AESOC: &lt;AESOC&gt;"</span>,</span>
+<span>  only_strata_with_events <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Now the number of combination in the output has been reduced to
+256.</p>
+<pre><code><span><span class="co">#&gt;                                             stat_filter fn_name</span></span>
+<span><span class="co">#&gt;                                                  &lt;char&gt;  &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       n</span></span>
+<span><span class="co">#&gt; 2:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       N</span></span>
+<span><span class="co">#&gt; 3: TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"       n</span></span>
+<span><span class="co">#&gt; 4: TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"       N</span></span>
+<span><span class="co">#&gt; 5:                RACE == "WHITE" &amp; TRT01A == "Placebo"       n</span></span>
+<span><span class="co">#&gt; 6:                RACE == "WHITE" &amp; TRT01A == "Placebo"       N</span></span>
+<span><span class="co">#&gt; 7:   RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"       n</span></span>
+<span><span class="co">#&gt; 8:   RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"       N</span></span>
+<span><span class="co">#&gt;    stat_result_value</span></span>
+<span><span class="co">#&gt;                &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:                 4</span></span>
+<span><span class="co">#&gt; 2:                69</span></span>
+<span><span class="co">#&gt; 3:                 1</span></span>
+<span><span class="co">#&gt; 4:                70</span></span>
+<span><span class="co">#&gt; 5:                 4</span></span>
+<span><span class="co">#&gt; 6:                63</span></span>
+<span><span class="co">#&gt; 7:                 1</span></span>
+<span><span class="co">#&gt; 8:                61</span></span></code></pre>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
