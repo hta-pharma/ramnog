@@ -121,8 +121,12 @@
 </h2>
 <p>The <code>only_strata_with_events</code> endpoint parameter specifies
 whether the endpoint upon completion in the {chef} framework will
-include all strata levels or only those levels that contain events. By
-default, all levels will be included in the endpoint.</p>
+include all strata levels or only those levels that contain events.By
+default, all levels will be included in the endpoint</p>
+<p>If there is at least one event in one of the treatment arms for a
+given strata level, then that strata level with be included in the
+endpoint for both treatment arms regardsless of whether one of the
+treatment arms has no events in that stratum.</p>
 <p>This feature is useful in cases where the endpoint specification
 contains groups and strata that result in many 100s or 1000s of
 combinations and where only the combinations with events are of
@@ -197,7 +201,9 @@ combinations</li>
 <p>Thus we have 23 SOCs x (4 + 12) = 368 combinations, i.e. 368 rows in
 the output data. Specifically, let us consider SOC “Eye Disorder” and
 print the the subset of the output data that covers that SOC (see
-below). As expected 4 + 12 = 16 rows are provided.</p>
+below). As expected 4 + 12 = 16 rows are provided. We also notice that
+two of the strata levels for <code>RACE</code> has no event
+(<code>n</code> = 0), which leads to the next example.</p>
 <pre><code><span><span class="co">#&gt;                                                                       stat_filter</span></span>
 <span><span class="co">#&gt;                                                                            &lt;char&gt;</span></span>
 <span><span class="co">#&gt;  1:                                       TOTAL_ == "total" &amp; TRT01A == "Placebo"</span></span>
@@ -256,8 +262,13 @@ this we may specify <code>only_strata_with_events = TRUE</code>.</p>
 <span>  endpoint_label <span class="op">=</span> <span class="st">"AESOC: &lt;AESOC&gt;"</span>,</span>
 <span>  only_strata_with_events <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Now the number of combination in the output has been reduced to
-256.</p>
+<p>Now the number of combination in the output has been reduced to 256.
+Let us revisit the SOC “Eye Disorder” and print all rows in the output
+that related to that SOC (see below). We notice that 2 strata levels for
+<code>RACE</code> are not present anymore (“BLACK OR AFRICAN AMERICAN”,
+“AMERICAN INDIAN OR ALASKA NATIVE”) since they have no events c.f.
+example 7.1., which effectively reducing the number of rows/combinations
+to 8.</p>
 <pre><code><span><span class="co">#&gt;                                             stat_filter fn_name</span></span>
 <span><span class="co">#&gt;                                                  &lt;char&gt;  &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       n</span></span>
