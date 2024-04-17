@@ -17,17 +17,17 @@ knitr::opts_chunk$set(
 # Overview
 
 The `only_strata_with_events` endpoint parameter specifies whether the endpoint upon completion in the {chef} framework 
-will include all strata levels or only those levels that contain events.By default, all levels will be included in the endpoint
+will include all strata levels or only those levels that contain events. By default, all levels will be included in the endpoint
 
 If there is at least one event in one of the treatment arms for a given strata level, then that strata level with be included in the 
 endpoint for both treatment arms regardsless of whether one of the treatment arms has no events in that stratum.
 
 This feature is useful in cases where the endpoint specification contains groups and strata that result in many 100s or 1000s of combinations and where only the combinations with events are of interest.
-In this case `only_strata_with_events` should be set to `TRUE`, which may significantly reduce the number of combinations. 
+In this case `only_strata_with_events` can be set to `TRUE` to remove the irrelevant combinations and save computation time. 
 
 # Examples
 
-```{r}
+```{r, echo=FALSE}
 mk_adae <- function(study_metadata) {
   adae <- data.table::as.data.table(pharmaverseadam::adae)
   adsl <- data.table::as.data.table(pharmaverseadam::adsl)
@@ -142,10 +142,12 @@ ep_spec_ex7_2 <- chef::mk_endpoint_str(
 ```
 
 
-Now the number of combination in the output has been reduced to 256. Let us revisit the SOC "Eye Disorder" and 
+Now the number of combination in the output has been reduced to 256. 
+
+Let us revisit the SOC "Eye Disorder" and 
 print all rows in the output that related to that SOC (see below).
 We notice that 2 strata levels for `RACE` are not present anymore ("BLACK OR AFRICAN AMERICAN", "AMERICAN INDIAN OR ALASKA NATIVE") 
-since they have no events c.f. example 7.1., which effectively reducing the number of rows/combinations to 8.
+since they have no events c.f. example 7.1., which effectively reduces the number of rows/combinations to 8.
 
 ```{r, include=FALSE}
 
