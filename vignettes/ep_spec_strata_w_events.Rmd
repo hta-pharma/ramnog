@@ -1,8 +1,8 @@
 ---
-title: "Processing of strata without events"
+title: "Processing of Strata without Events"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Processing of strata without events}
+  %\VignetteIndexEntry{Processing of Strata without Events}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

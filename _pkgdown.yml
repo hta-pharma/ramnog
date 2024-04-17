@@ -40,6 +40,8 @@ navbar:
         href: articles/ep_spec_strata_def.html
       - text: Endpoint Label
         href: articles/ep_spec_label.html
+      - text: Processing of Strata without Events
+        href: articles/ep_spec_strata_w_events.html
       - text: ----
       - text: Methods
       - text: Criteria Methods
