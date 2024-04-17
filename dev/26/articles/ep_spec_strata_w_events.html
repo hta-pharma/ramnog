@@ -121,7 +121,7 @@
 </h2>
 <p>The <code>only_strata_with_events</code> endpoint parameter specifies
 whether the endpoint upon completion in the {chef} framework will
-include all strata levels or only those levels that contain events.By
+include all strata levels or only those levels that contain events. By
 default, all levels will be included in the endpoint</p>
 <p>If there is at least one event in one of the treatment arms for a
 given strata level, then that strata level with be included in the
@@ -130,28 +130,13 @@ treatment arms has no events in that stratum.</p>
 <p>This feature is useful in cases where the endpoint specification
 contains groups and strata that result in many 100s or 1000s of
 combinations and where only the combinations with events are of
-interest. In this case <code>only_strata_with_events</code> should be
-set to <code>TRUE</code>, which may significantly reduce the number of
-combinations.</p>
+interest. In this case <code>only_strata_with_events</code> can be set
+to <code>TRUE</code> to remove the irrelevant combinations and save
+computation time.</p>
 </div>
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mk_adae</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">study_metadata</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/main/reference/adae.html" class="external-link">adae</a></span><span class="op">)</span></span>
-<span>  <span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/main/reference/adsl.html" class="external-link">adsl</a></span><span class="op">)</span></span>
-<span>  <span class="va">adsl</span><span class="op">[</span>, <span class="va">AGEGR2</span> <span class="op">:=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fcase.html" class="external-link">fcase</a></span><span class="op">(</span></span>
-<span>    <span class="va">AGE</span> <span class="op">&lt;</span> <span class="fl">70</span>, <span class="st">"AGE &lt; 70"</span>,</span>
-<span>    <span class="va">AGE</span> <span class="op">&gt;=</span> <span class="fl">70</span>, <span class="st">"AGE &gt;= 70"</span></span>
-<span>  <span class="op">)</span><span class="op">]</span></span>
-<span>  <span class="va">adae_out</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">adsl</span>, <span class="va">adae</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">)</span><span class="op">)</span>, <span class="st">"USUBJID"</span><span class="op">)</span>,</span>
-<span>      with <span class="op">=</span></span>
-<span>        <span class="cn">F</span></span>
-<span>    <span class="op">]</span>, by <span class="op">=</span> <span class="st">"USUBJID"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="va">adae_out</span><span class="op">[</span><span class="op">]</span></span>
-<span><span class="op">}</span></span></code></pre></div>
 <div class="section level6">
 <h6 id="ex-7-1">Ex 7.1<a class="anchor" aria-label="anchor" href="#ex-7-1"></a>
 </h6>
@@ -160,7 +145,7 @@ combinations.</p>
 Start</a>, and grouping is performed on SOC (System Organ Class) and
 stratification is performed on race. By default, all strata levels are
 included, i.e. <code>only_strata_with_events = FALSE</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ep_spec_ex7_1</span> <span class="op">&lt;-</span> <span class="fu">chef</span><span class="fu">::</span><span class="fu"><a href="https://hta-pharma.github.io/chef/reference/mk_endpoint_str.html" class="external-link">mk_endpoint_str</a></span><span class="op">(</span></span>
 <span>  data_prepare <span class="op">=</span> <span class="va">mk_adae</span>,</span>
 <span>  study_metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -247,7 +232,7 @@ two of the strata levels for <code>RACE</code> has no event
 <p>Now suppose that we are only interested in the combinations of group
 levels and strata levels in example 7.1 that have events. To accomplish
 this we may specify <code>only_strata_with_events = TRUE</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ep_spec_ex7_2</span> <span class="op">&lt;-</span> <span class="fu">chef</span><span class="fu">::</span><span class="fu"><a href="https://hta-pharma.github.io/chef/reference/mk_endpoint_str.html" class="external-link">mk_endpoint_str</a></span><span class="op">(</span></span>
 <span>  data_prepare <span class="op">=</span> <span class="va">mk_adae</span>,</span>
 <span>  study_metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -262,13 +247,14 @@ this we may specify <code>only_strata_with_events = TRUE</code>.</p>
 <span>  endpoint_label <span class="op">=</span> <span class="st">"AESOC: &lt;AESOC&gt;"</span>,</span>
 <span>  only_strata_with_events <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Now the number of combination in the output has been reduced to 256.
-Let us revisit the SOC “Eye Disorder” and print all rows in the output
-that related to that SOC (see below). We notice that 2 strata levels for
-<code>RACE</code> are not present anymore (“BLACK OR AFRICAN AMERICAN”,
-“AMERICAN INDIAN OR ALASKA NATIVE”) since they have no events c.f.
-example 7.1., which effectively reducing the number of rows/combinations
-to 8.</p>
+<p>Now the number of combination in the output has been reduced to
+256.</p>
+<p>Let us revisit the SOC “Eye Disorder” and print all rows in the
+output that related to that SOC (see below). We notice that 2 strata
+levels for <code>RACE</code> are not present anymore (“BLACK OR AFRICAN
+AMERICAN”, “AMERICAN INDIAN OR ALASKA NATIVE”) since they have no events
+c.f. example 7.1., which effectively reduces the number of
+rows/combinations to 8.</p>
 <pre><code><span><span class="co">#&gt;                                             stat_filter fn_name</span></span>
 <span><span class="co">#&gt;                                                  &lt;char&gt;  &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       n</span></span>
