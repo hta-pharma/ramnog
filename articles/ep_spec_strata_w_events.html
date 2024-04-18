@@ -211,22 +211,22 @@ which leads to the next example.</p>
 <span><span class="co">#&gt; 16: RACE == "AMERICAN INDIAN OR ALASKA NATIVE" &amp; TRT01A == "Xanomeline High Dose"</span></span>
 <span><span class="co">#&gt;     fn_name stat_result_value</span></span>
 <span><span class="co">#&gt;      &lt;char&gt;             &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:       n                 4</span></span>
-<span><span class="co">#&gt;  2:       N                69</span></span>
-<span><span class="co">#&gt;  3:       n                 1</span></span>
-<span><span class="co">#&gt;  4:       N                70</span></span>
-<span><span class="co">#&gt;  5:       n                 4</span></span>
-<span><span class="co">#&gt;  6:       N                63</span></span>
-<span><span class="co">#&gt;  7:       n                 0</span></span>
-<span><span class="co">#&gt;  8:       N                 6</span></span>
-<span><span class="co">#&gt;  9:       n                 0</span></span>
-<span><span class="co">#&gt; 10:       N                 0</span></span>
-<span><span class="co">#&gt; 11:       n                 1</span></span>
-<span><span class="co">#&gt; 12:       N                61</span></span>
-<span><span class="co">#&gt; 13:       n                 0</span></span>
-<span><span class="co">#&gt; 14:       N                 8</span></span>
-<span><span class="co">#&gt; 15:       n                 0</span></span>
-<span><span class="co">#&gt; 16:       N                 1</span></span></code></pre></div>
+<span><span class="co">#&gt;  1:       N                69</span></span>
+<span><span class="co">#&gt;  2:       n                 4</span></span>
+<span><span class="co">#&gt;  3:       N                70</span></span>
+<span><span class="co">#&gt;  4:       n                 1</span></span>
+<span><span class="co">#&gt;  5:       N                63</span></span>
+<span><span class="co">#&gt;  6:       n                 4</span></span>
+<span><span class="co">#&gt;  7:       N                 6</span></span>
+<span><span class="co">#&gt;  8:       n                 0</span></span>
+<span><span class="co">#&gt;  9:       N                 0</span></span>
+<span><span class="co">#&gt; 10:       n                 0</span></span>
+<span><span class="co">#&gt; 11:       N                61</span></span>
+<span><span class="co">#&gt; 12:       n                 1</span></span>
+<span><span class="co">#&gt; 13:       N                 8</span></span>
+<span><span class="co">#&gt; 14:       n                 0</span></span>
+<span><span class="co">#&gt; 15:       N                 1</span></span>
+<span><span class="co">#&gt; 16:       n                 0</span></span></code></pre></div>
 </div>
 <div class="section level6">
 <h6 id="ex-7-2">Ex 7.2<a class="anchor" aria-label="anchor" href="#ex-7-2"></a>
@@ -261,24 +261,24 @@ rows/combinations to 8 for this SOC.</p>
 <code class="sourceCode R"><span><span class="va">ep_stat</span><span class="op">[</span><span class="va">endpoint_label</span> <span class="op">==</span> <span class="st">"AESOC: EYE DISORDERS"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stat_filter"</span>, <span class="st">"fn_name"</span>, <span class="st">"stat_result_value"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                             stat_filter fn_name</span></span>
 <span><span class="co">#&gt;                                                  &lt;char&gt;  &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       n</span></span>
-<span><span class="co">#&gt; 2:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       N</span></span>
-<span><span class="co">#&gt; 3: TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"       n</span></span>
-<span><span class="co">#&gt; 4: TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"       N</span></span>
-<span><span class="co">#&gt; 5:                RACE == "WHITE" &amp; TRT01A == "Placebo"       n</span></span>
-<span><span class="co">#&gt; 6:                RACE == "WHITE" &amp; TRT01A == "Placebo"       N</span></span>
-<span><span class="co">#&gt; 7:   RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"       n</span></span>
-<span><span class="co">#&gt; 8:   RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"       N</span></span>
+<span><span class="co">#&gt; 1:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       N</span></span>
+<span><span class="co">#&gt; 2:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       n</span></span>
+<span><span class="co">#&gt; 3: TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"       N</span></span>
+<span><span class="co">#&gt; 4: TOTAL_ == "total" &amp; TRT01A == "Xanomeline High Dose"       n</span></span>
+<span><span class="co">#&gt; 5:                RACE == "WHITE" &amp; TRT01A == "Placebo"       N</span></span>
+<span><span class="co">#&gt; 6:                RACE == "WHITE" &amp; TRT01A == "Placebo"       n</span></span>
+<span><span class="co">#&gt; 7:   RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"       N</span></span>
+<span><span class="co">#&gt; 8:   RACE == "WHITE" &amp; TRT01A == "Xanomeline High Dose"       n</span></span>
 <span><span class="co">#&gt;    stat_result_value</span></span>
 <span><span class="co">#&gt;                &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:                 4</span></span>
-<span><span class="co">#&gt; 2:                69</span></span>
-<span><span class="co">#&gt; 3:                 1</span></span>
-<span><span class="co">#&gt; 4:                70</span></span>
-<span><span class="co">#&gt; 5:                 4</span></span>
-<span><span class="co">#&gt; 6:                63</span></span>
-<span><span class="co">#&gt; 7:                 1</span></span>
-<span><span class="co">#&gt; 8:                61</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:                69</span></span>
+<span><span class="co">#&gt; 2:                 4</span></span>
+<span><span class="co">#&gt; 3:                70</span></span>
+<span><span class="co">#&gt; 4:                 1</span></span>
+<span><span class="co">#&gt; 5:                63</span></span>
+<span><span class="co">#&gt; 6:                 4</span></span>
+<span><span class="co">#&gt; 7:                61</span></span>
+<span><span class="co">#&gt; 8:                 1</span></span></code></pre></div>
 <p>Similarly, the number of combinations for many of the other 22 SOCs
 are also less than the full 16 combinations:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
