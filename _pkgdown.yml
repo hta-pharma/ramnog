@@ -24,7 +24,7 @@ navbar:
       text: Articles
       menu:
       - text: Overview
-      - text: Endpoint specification
+      - text: Endpoint Specification
         href: articles/ep_overview.html
       - text: "----"
       - text: Population and outcome
