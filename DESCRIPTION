@@ -22,7 +22,7 @@ Suggests:
     usethis,
     rmarkdown,
     testthat (>= 3.0.0),
-    kableExtra (>= 1.4),
+    kableExtra,
     testr,
     tidyr,
     pharmaverseadam
