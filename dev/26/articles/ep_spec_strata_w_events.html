@@ -124,13 +124,13 @@
 whether the output data will include all strata levels or only those
 levels that contain events. By default, all levels will be included in
 the endpoint</p>
-<p>If there is at least one event in one of the treatment arms for a
-given strata level, then that strata level with be included in the
-endpoint for both treatment arms regardsless of whether one of the
+<p>Note: If there is a minimum of one event present in any treatment arm
+within a specific strata level, that level will be incorporated into the
+endpoint for all treatment arms regardsless of whether one of the
 treatment arms has no events in that stratum.</p>
-<p>This feature is useful in cases where the endpoint specification
-contains groups and strata that result in many 100s or 1000s of
-combinations and where only the combinations with events are of
+<p>This functionality is useful in cases where the endpoint
+specification contains groups and strata that result in many 100s or
+1000s of combinations and where only the combinations with events are of
 interest. In this case <code>only_strata_with_events</code> can be set
 to <code>TRUE</code> to remove the irrelevant combinations and save
 computation time.</p>
@@ -183,11 +183,12 @@ combinations</li>
 statistics = 12 combinations</li>
 </ul>
 <p>Thus we have 23 SOCs x (4 + 12) = 368 combinations, i.e. 368 rows in
-the output data. Specifically, let us consider the SOC “Eye Disorder”
-and print the the subset of the output data that covers that SOC (see
-below). As expected 4 + 12 = 16 rows are provided. We also notice that
-two of the strata levels for <code>RACE</code> has no event
-(<code>n</code> = 0), which leads to the next example.</p>
+the output data.</p>
+<p>Specifically, let us consider the SOC “Eye Disorder” and print the
+the subset of the output data that covers that SOC (see below). As
+expected 4 + 12 = 16 rows are provided. We also notice that two of the
+strata levels for <code>RACE</code> has no event (<code>n</code> = 0),
+which leads to the next example.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ep_stat</span><span class="op">[</span><span class="va">endpoint_label</span> <span class="op">==</span> <span class="st">"AESOC: EYE DISORDERS"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stat_filter"</span>, <span class="st">"fn_name"</span>, <span class="st">"stat_result_value"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                                                       stat_filter</span></span>
