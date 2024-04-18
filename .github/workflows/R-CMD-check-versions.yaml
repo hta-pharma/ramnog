@@ -51,7 +51,7 @@
           shell: bash
 
         - name: Install R dependencies (custom)
-          uses: hta-pharma/ramnog/setup-r-dependencies@main
+          uses: hta-pharma/ramnog/.github/actions/setup-r-dependencies@main
           with:
             cache: true
             dependency_repo: ${{ steps.cran-image.outputs.image }}
