@@ -1,8 +1,6 @@
 ---
 title: "Endpoint Specification"
-output:
-  rmarkdown::html_vignette:
-  toc: true
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Endpoint Specification}
   %\VignetteEncoding{UTF-8}

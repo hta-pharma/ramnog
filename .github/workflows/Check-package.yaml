@@ -10,6 +10,10 @@ on:
   workflow_dispatch:
   workflow_call:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 name: Check Package 📦
 
 jobs:
@@ -23,10 +27,15 @@ jobs:
     name: License Check 🃏
     uses: insightsengineering/r.pkg.template/.github/workflows/licenses.yaml@main
 
-  # Runs R CMD check using the local R-CMD-check.yaml workflow
-  check:
-    name: RMD check 📦
-    uses: ./.github/workflows/R-CMD-check.yaml
+  # # Runs R CMD check using the local R-CMD-check.yaml workflow
+  # check:
+  #   name: RMD check 📦
+  #   uses: ./.github/workflows/R-CMD-check.yaml
+
+  # Runs R CMD check with specific version(s) of R and cran-snapshot
+  check-versions:
+    name: RMD check versions 📜
+    uses: ./.github/workflows/R-CMD-check-versions.yaml
 
   # Runs unittests while capturing code:cov and uploads to Codecov io. See local subflow
   test:
