@@ -54,7 +54,7 @@ or inferences for each endpoint/outcome
 </tr>
 <tr>
 <td style="text-align:left;">
-[chefCriteria]((https://hta-pharma.github.io/chefCriteria/))
+[chefCriteria](https://hta-pharma.github.io/chefCriteria/)
 </td>
 <td style="text-align:left;">
 Collection of criteria that are used in AMNOG dossiers to determin when
