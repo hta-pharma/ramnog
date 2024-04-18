@@ -3,6 +3,18 @@ template:
   bootstrap: 5
   bootswatch: flatly
 
+home:
+  links:
+  - text: HTA-R openstatsware workstream
+    href: https://www.openstatsware.org/hta_page.html
+  - text: ramnog
+    href: https://hta-pharma.github.io/ramnog/
+  - text: chefStats
+    href: https://hta-pharma.github.io/chefStats/
+  - text: chefCriteria
+    href: https://hta-pharma.github.io/chefCriteria
+
+
 navbar:
   structure:
     left: [intro, articles, contributing]
