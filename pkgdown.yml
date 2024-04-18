@@ -11,6 +11,7 @@ articles:
   ep_spec_label: ep_spec_label.html
   ep_spec_population_def: ep_spec_population_def.html
   ep_spec_strata_def: ep_spec_strata_def.html
+  ep_spec_strata_w_events: ep_spec_strata_w_events.html
   ep_spec_treatment_arms: ep_spec_treatment_arms.html
   example_ep_spec: example_ep_spec.html
   methods_criteria: methods_criteria.html
@@ -19,7 +20,7 @@ articles:
   ramnog: ramnog.html
   results_datamodel: results_datamodel.html
   results_datamodel2tfl: results_datamodel2tfl.html
-last_built: 2024-04-16T11:37Z
+last_built: 2024-04-18T07:24Z
 urls:
   reference: https://hta-pharma.github.io/ramnog/reference
   article: https://hta-pharma.github.io/ramnog/articles
