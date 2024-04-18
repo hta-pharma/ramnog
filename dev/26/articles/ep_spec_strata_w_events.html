@@ -121,9 +121,9 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>The <code>only_strata_with_events</code> endpoint parameter specifies
-whether the endpoint upon completion in the {chef} framework will
-include all strata levels or only those levels that contain events. By
-default, all levels will be included in the endpoint</p>
+whether the output data will include all strata levels or only those
+levels that contain events. By default, all levels will be included in
+the endpoint</p>
 <p>If there is at least one event in one of the treatment arms for a
 given strata level, then that strata level with be included in the
 endpoint for both treatment arms regardsless of whether one of the
@@ -175,22 +175,22 @@ included, i.e. <code>only_strata_with_events = FALSE</code>.</p>
 <code>stat_by_strata_by_trt</code>: 2 statistics per combination of
 group level and strata level</li>
 </ul>
-<p>For each strata this implies:</p>
+<p>For each SOC this implies:</p>
 <ul>
-<li>
-<code>TOTAL</code>: 2 treatment arms x 2 statistics = 4
+<li>Strata = <code>TOTAL</code>: 2 treatment arms x 2 statistics = 4
 combinations</li>
-<li>
-<code>RACE</code>: 2 treatment arms x 3 races x 2 statistics = 12
-combinations</li>
+<li>Strata = <code>RACE</code>: 2 treatment arms x 3 races x 2
+statistics = 12 combinations</li>
 </ul>
 <p>Thus we have 23 SOCs x (4 + 12) = 368 combinations, i.e. 368 rows in
-the output data. Specifically, let us consider SOC “Eye Disorder” and
-print the the subset of the output data that covers that SOC (see
+the output data. Specifically, let us consider the SOC “Eye Disorder”
+and print the the subset of the output data that covers that SOC (see
 below). As expected 4 + 12 = 16 rows are provided. We also notice that
 two of the strata levels for <code>RACE</code> has no event
 (<code>n</code> = 0), which leads to the next example.</p>
-<pre><code><span><span class="co">#&gt;                                                                       stat_filter</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ep_stat</span><span class="op">[</span><span class="va">endpoint_label</span> <span class="op">==</span> <span class="st">"AESOC: EYE DISORDERS"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stat_filter"</span>, <span class="st">"fn_name"</span>, <span class="st">"stat_result_value"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;                                                                       stat_filter</span></span>
 <span><span class="co">#&gt;                                                                            &lt;char&gt;</span></span>
 <span><span class="co">#&gt;  1:                                       TOTAL_ == "total" &amp; TRT01A == "Placebo"</span></span>
 <span><span class="co">#&gt;  2:                                       TOTAL_ == "total" &amp; TRT01A == "Placebo"</span></span>
@@ -225,12 +225,12 @@ two of the strata levels for <code>RACE</code> has no event
 <span><span class="co">#&gt; 13:       n                 0</span></span>
 <span><span class="co">#&gt; 14:       N                 8</span></span>
 <span><span class="co">#&gt; 15:       n                 0</span></span>
-<span><span class="co">#&gt; 16:       N                 1</span></span></code></pre>
+<span><span class="co">#&gt; 16:       N                 1</span></span></code></pre></div>
 </div>
 <div class="section level6">
 <h6 id="ex-7-2">Ex 7.2<a class="anchor" aria-label="anchor" href="#ex-7-2"></a>
 </h6>
-<p>Now suppose that we are only interested in the combinations of group
+<p>Suppose that we are only interested in the combinations of group
 levels and strata levels in example 7.1 that have events. To accomplish
 this we may specify <code>only_strata_with_events = TRUE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -251,12 +251,14 @@ this we may specify <code>only_strata_with_events = TRUE</code>.</p>
 <p>Now the number of combination in the output has been reduced to
 256.</p>
 <p>Let us revisit the SOC “Eye Disorder” and print all rows in the
-output that related to that SOC (see below). We notice that 2 strata
+output that relate to that SOC (see below). We notice that 2 strata
 levels for <code>RACE</code> are not present anymore (“BLACK OR AFRICAN
 AMERICAN”, “AMERICAN INDIAN OR ALASKA NATIVE”) since they have no events
 c.f. example 7.1., which effectively reduces the number of
-rows/combinations to 8.</p>
-<pre><code><span><span class="co">#&gt;                                             stat_filter fn_name</span></span>
+rows/combinations to 8 for this SOC.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ep_stat</span><span class="op">[</span><span class="va">endpoint_label</span> <span class="op">==</span> <span class="st">"AESOC: EYE DISORDERS"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stat_filter"</span>, <span class="st">"fn_name"</span>, <span class="st">"stat_result_value"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;                                             stat_filter fn_name</span></span>
 <span><span class="co">#&gt;                                                  &lt;char&gt;  &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       n</span></span>
 <span><span class="co">#&gt; 2:              TOTAL_ == "total" &amp; TRT01A == "Placebo"       N</span></span>
@@ -275,7 +277,58 @@ rows/combinations to 8.</p>
 <span><span class="co">#&gt; 5:                 4</span></span>
 <span><span class="co">#&gt; 6:                63</span></span>
 <span><span class="co">#&gt; 7:                 1</span></span>
-<span><span class="co">#&gt; 8:                61</span></span></code></pre>
+<span><span class="co">#&gt; 8:                61</span></span></code></pre></div>
+<p>Similarly, the number of combinations for many of the other 22 SOCs
+are also less than the full 16 combinations:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">ep_stat</span><span class="op">$</span><span class="va">endpoint_label</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                                                   AESOC: CARDIAC DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                          AESOC: CONGENITAL, FAMILIAL AND GENETIC DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                                         AESOC: EAR AND LABYRINTH DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                                                       AESOC: EYE DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                                          AESOC: GASTROINTESTINAL DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         16 </span></span>
+<span><span class="co">#&gt;                AESOC: GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                                             AESOC: HEPATOBILIARY DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                                             AESOC: IMMUNE SYSTEM DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                                         AESOC: INFECTIONS AND INFESTATIONS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                      AESOC: INJURY, POISONING AND PROCEDURAL COMPLICATIONS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                                                      AESOC: INVESTIGATIONS </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                                  AESOC: METABOLISM AND NUTRITION DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                     AESOC: MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt; AESOC: NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS) </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                                            AESOC: NERVOUS SYSTEM DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         16 </span></span>
+<span><span class="co">#&gt;                                               AESOC: PSYCHIATRIC DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                                         AESOC: RENAL AND URINARY DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                            AESOC: REPRODUCTIVE SYSTEM AND BREAST DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                     AESOC: RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         16 </span></span>
+<span><span class="co">#&gt;                              AESOC: SKIN AND SUBCUTANEOUS TISSUE DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                         16 </span></span>
+<span><span class="co">#&gt;                                                AESOC: SOCIAL CIRCUMSTANCES </span></span>
+<span><span class="co">#&gt;                                                                          8 </span></span>
+<span><span class="co">#&gt;                                     AESOC: SURGICAL AND MEDICAL PROCEDURES </span></span>
+<span><span class="co">#&gt;                                                                         12 </span></span>
+<span><span class="co">#&gt;                                                  AESOC: VASCULAR DISORDERS </span></span>
+<span><span class="co">#&gt;                                                                          8</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
