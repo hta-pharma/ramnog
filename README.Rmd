@@ -32,7 +32,7 @@ To get started, check out the [Quick Start](articles/ramnog.html) guide
 library(kableExtra)
 library(data.table)
 dt <- data.table::data.table(
-  Package = c("[chef](https://hta-pharma.github.io/chef/)", "[chefStats](https://hta-pharma.github.io/chefStats/)", "[chefCriteria]((https://hta-pharma.github.io/chefCriteria/))", "[ramnog]((https://hta-pharma.github.io/ramnog/))"),
+  Package = c("[chef](https://hta-pharma.github.io/chef/)", "[chefStats](https://hta-pharma.github.io/chefStats/)", "[chefCriteria](https://hta-pharma.github.io/chefCriteria/)", "[ramnog]((https://hta-pharma.github.io/ramnog/))"),
   Description = c(
     "Core package that aids in creating endpoint specifications, builds the analysis pipeline, and coordinates the execution of the ananlyses",
     "Collection of statistical methods that are used to make summarizations or inferences for each endpoint/outcome",
@@ -44,7 +44,7 @@ dt <- data.table::data.table(
 dt |>
   kable(format = "html", table.attr = "class='table table-bordered'") |>
   kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |>
-  row_spec(0, background = "#2C3E50", color="white")
+  row_spec(0, background = "#2C3E50", color = "white")
 ```
 
 # Aim

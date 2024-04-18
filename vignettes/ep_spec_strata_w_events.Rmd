@@ -1,0 +1,192 @@
+---
+title: "Processing of Strata without Events"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Processing of Strata without Events}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+
+The `only_strata_with_events` endpoint parameter specifies whether the output data will include all strata levels or only those levels that contain events. 
+By default, all levels will be included in the endpoint
+
+Note: If there is a minimum of one event present in any treatment arm within a specific strata level, that level will be incorporated into the endpoint for all 
+treatment arms regardsless of whether one of the treatment arms has no events in that stratum.
+
+This functionality is useful in cases where the endpoint specification contains groups and strata that result in many 100s or 1000s of combinations and where only the combinations with events are of interest.
+In this case `only_strata_with_events` can be set to `TRUE` to remove the irrelevant combinations and save computation time. 
+
+# Examples
+
+```{r, echo=FALSE}
+mk_adae <- function(study_metadata) {
+  adae <- data.table::as.data.table(pharmaverseadam::adae)
+  adsl <- data.table::as.data.table(pharmaverseadam::adsl)
+  adsl[, AGEGR2 := data.table::fcase(
+    AGE < 70, "AGE < 70",
+    AGE >= 70, "AGE >= 70"
+  )]
+  adae_out <-
+    merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"),
+      with =
+        F
+    ], by = "USUBJID", all = TRUE)
+  adae_out[]
+}
+```
+
+##### Ex 7.1
+
+Let us consider the following endpoint specification, where `mk_adae` is defined as in the [Quick Start](ramnog.html),
+and grouping is performed on SOC (System Organ Class) and stratification is performed on race.
+By default, all strata levels are included, i.e. `only_strata_with_events = FALSE`.
+
+```{r}
+ep_spec_ex7_1 <- chef::mk_endpoint_str(
+  data_prepare = mk_adae,
+  study_metadata = list(),
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  custom_pop_filter = "TRT01A %in% c('Placebo', 'Xanomeline High Dose') & !is.na(AESOC)",
+  treatment_var = "TRT01A",
+  treatment_refval = "Xanomeline High Dose",
+  group_by = list(list(AESOC = c())),
+  stratify_by = list(c("RACE")),
+  stat_by_strata_by_trt = list(N = chefStats::n_subj, n = chefStats::n_subj_event),
+  endpoint_label = "AESOC: <AESOC>",
+  only_strata_with_events = FALSE
+)
+```
+
+In this setup we note: 
+
+* `TRT01A` has 2 treatment arms in the analysis data due to `custom_pop_filter`
+* `group_by`: `AESOC` has 23 levels
+* `stratify_by`: `RACE` has 4 levels
+* `stat_by_strata_by_trt`: 2 statistics per combination of group level and strata level 
+
+For each SOC this implies:
+
+* Strata = `TOTAL`: 2 treatment arms x 2 statistics = 4 combinations
+* Strata = `RACE`: 2 treatment arms x  3 races x 2 statistics = 12 combinations
+
+Thus we have 23 SOCs x (4 + 12) = 368 combinations, i.e. 368 rows in the output data. 
+
+Specifically, let us consider the SOC "Eye Disorder" and print the the subset of the output data that covers that SOC (see below). 
+As expected 4 + 12 = 16 rows are provided. We also notice that two of the strata levels for `RACE` has no event (`n` = 0), which leads to the next example.
+
+```{r, include=FALSE}
+
+mk_endpoint_def <- function(){
+  chef::mk_endpoint_str(
+  data_prepare = mk_adae,
+  study_metadata = list(),
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  custom_pop_filter = "TRT01A %in% c('Placebo', 'Xanomeline High Dose') & !is.na(AESOC)",
+  treatment_var = "TRT01A",
+  treatment_refval = "Xanomeline High Dose",
+  group_by = list(list(AESOC = c())),
+  stratify_by = list(c("RACE")),
+  stat_by_strata_by_trt = list(N = chefStats::n_subj, n = chefStats::n_subj_event),
+  endpoint_label = "AESOC: <AESOC>",
+  only_strata_with_events = FALSE
+)
+}
+
+wd_old <- getwd()
+prj_old <- suppressMessages(usethis::proj_get())
+suppressMessages(testr::create_local_project())
+tmp_dir <- getwd()
+
+chef::use_chef(pipeline_id = "01", mk_endpoint_def_fn = mk_endpoint_def, mk_adam_fn = list(mk_adae))
+
+setwd(tmp_dir)
+targets::tar_make()
+targets::tar_load(ep_stat)
+```
+
+```{r}
+ep_stat[endpoint_label == "AESOC: EYE DISORDERS", c("stat_filter", "fn_name", "stat_result_value")]
+```
+
+
+##### Ex 7.2
+
+Suppose that we are only interested in the combinations of group levels and strata levels in example 7.1 that have events.
+To accomplish this we may specify `only_strata_with_events = TRUE`.
+
+```{r}
+ep_spec_ex7_2 <- chef::mk_endpoint_str(
+  data_prepare = mk_adae,
+  study_metadata = list(),
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  custom_pop_filter = "TRT01A %in% c('Placebo', 'Xanomeline High Dose') & !is.na(AESOC)",
+  treatment_var = "TRT01A",
+  treatment_refval = "Xanomeline High Dose",
+  group_by = list(list(AESOC = c())),
+  stratify_by = list(c("RACE")),
+  stat_by_strata_by_trt = list(N = chefStats::n_subj, n = chefStats::n_subj_event),
+  endpoint_label = "AESOC: <AESOC>",
+  only_strata_with_events = TRUE
+)
+```
+
+
+Now the number of combination in the output has been reduced to 256. 
+
+Let us revisit the SOC "Eye Disorder" and print all rows in the output that relate to that SOC (see below).
+We notice that 2 strata levels for `RACE` are not present anymore ("BLACK OR AFRICAN AMERICAN", "AMERICAN INDIAN OR ALASKA NATIVE") 
+since they have no events c.f. example 7.1., which effectively reduces the number of rows/combinations to 8 for this SOC. 
+
+```{r, include=FALSE}
+
+mk_endpoint_def <- function(){
+  chef::mk_endpoint_str(
+  data_prepare = mk_adae,
+  study_metadata = list(),
+  pop_var = "SAFFL",
+  pop_value = "Y",
+  custom_pop_filter = "TRT01A %in% c('Placebo', 'Xanomeline High Dose') & !is.na(AESOC)",
+  treatment_var = "TRT01A",
+  treatment_refval = "Xanomeline High Dose",
+  group_by = list(list(AESOC = c())),
+  stratify_by = list(c("RACE")),
+  stat_by_strata_by_trt = list(N = chefStats::n_subj, n = chefStats::n_subj_event),
+  endpoint_label = "AESOC: <AESOC>",
+  only_strata_with_events = TRUE
+)
+}
+
+wd_old <- getwd()
+prj_old <- suppressMessages(usethis::proj_get())
+suppressMessages(testr::create_local_project())
+tmp_dir <- getwd()
+
+chef::use_chef(pipeline_id = "01", mk_endpoint_def_fn = mk_endpoint_def, mk_adam_fn = list(mk_adae))
+
+setwd(tmp_dir)
+targets::tar_make()
+targets::tar_load(ep_stat)
+```
+
+```{r}
+ep_stat[endpoint_label == "AESOC: EYE DISORDERS", c("stat_filter", "fn_name", "stat_result_value")]
+```
+
+Similarly, the number of combinations for many of the other 22 SOCs are also less than the full 16 combinations:
+
+```{r}
+table(ep_stat$endpoint_label)
+```
+
