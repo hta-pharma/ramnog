@@ -19,7 +19,7 @@ library(ramnog)
 library(testthat)
 library(data.table)
 library(chef)
-library(testr)
+library(withr)
 library(chefStats)
 ```
 
@@ -51,7 +51,10 @@ For example, below is the unit test to ensure the results of an endpoint definit
 testthat::test_that("Valide stats when one strata level is not found",
           {
             # SETUP -------------------------------------------------------------------
-            testr::create_local_project()
+            tmp <- withr::local_tempdir()
+            dir.create(file.path(tmp, "R"))
+            withr::local_dir(tmp)
+            usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
             mk_adae <- function(study_metadata) {
               adsl <- pharmaverseadam::adsl |> data.table::setDT()
               adae <- pharmaverseadam::adae |> data.table::setDT()

@@ -1,6 +1,10 @@
+.datatable.aware <- TRUE
 test_that("Demographics work with other endpoints", {
   # SETUP -------------------------------------------------------------------
-  testr::create_local_project()
+  tmp <- withr::local_tempdir()
+  dir.create(file.path(tmp, "R"))
+  withr::local_dir(tmp)
+  usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
 
   mk_ep_def <- function() {
     ep <- chef::mk_endpoint_str(
@@ -47,6 +51,7 @@ test_that("Demographics work with other endpoints", {
 
   targets::tar_make()
   targets::tar_load(ep_stat)
+  ep_stat <- data.table::as.data.table(ep_stat)
 
   # EXPECT ------------------------------------------------------------------
 

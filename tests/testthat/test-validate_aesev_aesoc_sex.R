@@ -1,7 +1,11 @@
+.datatable.aware <- TRUE
 test_that("Validate statistics - complex endpoint specification",
           {
             # SETUP -------------------------------------------------------------------
-            testr::create_local_project()
+            tmp <- withr::local_tempdir()
+            dir.create(file.path(tmp, "R"))
+            withr::local_dir(tmp)
+            usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
             crit_endpoint <- function(...) {
               return(T)
             }
@@ -47,6 +51,7 @@ test_that("Validate statistics - complex endpoint specification",
             # ACT ---------------------------------------------------------------------
             targets::tar_make()
             targets::tar_load(ep_stat)
+            ep_stat <- data.table::as.data.table(ep_stat)
             # EXPECT ------------------------------------------------------------------
 
             x <- mk_adae()
@@ -79,7 +84,10 @@ test_that("Validate statistics - complex endpoint specification",
 test_that("Valide stats when one strata level is not found",
           {
             # SETUP -------------------------------------------------------------------
-            testr::create_local_project()
+            tmp <- withr::local_tempdir()
+            dir.create(file.path(tmp, "R"))
+            withr::local_dir(tmp)
+            usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
             crit_endpoint <- function(...) {
               return(T)
             }
@@ -125,6 +133,7 @@ test_that("Valide stats when one strata level is not found",
             # ACT ---------------------------------------------------------------------
             targets::tar_make()
             targets::tar_load(ep_stat)
+            ep_stat <- data.table::as.data.table(ep_stat)
             # EXPECT ------------------------------------------------------------------
             x <- mk_adae()
             # Relative Risk

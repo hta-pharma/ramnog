@@ -1,3 +1,5 @@
+.datatable.aware <- TRUE
+
 mk_adae <- function(study_metadata) {
 
   adsl <- pharmaverseadam::adsl |> data.table::setDT()
@@ -8,5 +10,5 @@ mk_adae <- function(study_metadata) {
     merge(adsl, adae[, c(setdiff(names(adae), names(adsl)), "USUBJID"), with =
                        F], by = "USUBJID", all = TRUE)
 
-  adae_out[TRT01A %in% c('Placebo', 'Xanomeline High Dose'), ]
+  adae_out[adae_out$TRT01A %in% c('Placebo', 'Xanomeline High Dose'), ]
 }

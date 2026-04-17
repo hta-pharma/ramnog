@@ -126,10 +126,10 @@ mk_adae <- function(study_metadata) {
 # Set up temporary project for vignette
 library(chef)
 library(chefStats)
-wd_old <- getwd()
-prj_old <- suppressMessages(usethis::proj_get())
-suppressMessages(testr::create_local_project())
-tmp_dir <- getwd()
+tmp_dir <- withr::local_tempdir()
+dir.create(file.path(tmp_dir, "R"))
+withr::local_dir(tmp_dir)
+usethis::local_project(tmp_dir, force = TRUE, setwd = FALSE, quiet = TRUE)
 
 chef::use_chef(pipeline_id = "01", mk_endpoint_def_fn = mk_endpoint_def, mk_adam_fn = list(mk_adae))
 ```

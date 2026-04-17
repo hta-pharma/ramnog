@@ -1,6 +1,10 @@
+.datatable.aware <- TRUE
 test_that("Complex pipeline runs without errors", {
   # SETUP -------------------------------------------------------------------
-  testr::create_local_project()
+  tmp <- withr::local_tempdir()
+  dir.create(file.path(tmp, "R"))
+  withr::local_dir(tmp)
+  usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
   mk_ep_def <- function() {
     ep <- chef::mk_endpoint_str(
       study_metadata = list(),
@@ -42,8 +46,10 @@ test_that("Complex pipeline runs without errors", {
   expect_true(all(is.na(x$error)))
   
   targets::tar_load(ep_stat)
-  
-  ep_stat |> setorder(
+  ep_stat <- data.table::as.data.table(ep_stat)
+
+  data.table::setorder(
+    ep_stat,
     endpoint_id,
     strata_var,
     fn_type,
@@ -52,7 +58,7 @@ test_that("Complex pipeline runs without errors", {
     stat_result_label,
     stat_result_description
   )
-  
+
   actual <- ep_stat[, .(
     stat_filter,
     endpoint_group_filter,
@@ -60,7 +66,7 @@ test_that("Complex pipeline runs without errors", {
     stat_result_description,
     stat_result_qualifiers,
     stat_result_value
-  )] 
+  )]
   
   expect_snapshot_value(x = as.data.frame(actual), tolerance = 1e-6, style = "json2")
 })

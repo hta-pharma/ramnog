@@ -1,39 +1,40 @@
 Package: ramnog
-Title: Facilitating AMNOG style analysis pipelines
-Version: 0.1.2
-Authors@R: 
+Title: Documentation Hub for the 'chef' Ecosystem
+Version: 0.2.0
+Authors@R:
     c(person("Matthew David Phelps", , , "mewp@novonordisk.com", role = c("aut")),
     person("Nicolai Skov Johnsen",, , "nosj@novonordisk.com", role = c("aut")),
     person("Henrik Sparre Spiegelhauer",, , "hspu@novonordisk.com", role = c("aut")),
     person("Christian Haargaard Olsen",, , "cino@novonordisk.com", role = c("aut", "cre")))
-Description: What the package does (one paragraph).
+Description: A documentation hub for the 'chef' ecosystem of R packages for
+    clinical trial evidence generation following AMNOG
+    (Arzneimittelmarktneuordnungsgesetz) guidelines. Provides vignettes
+    covering endpoint specification, statistical methods, criteria functions,
+    and result data models used in healthcare technology assessments. The core
+    functionality is provided by the companion packages 'chef', 'chefStats',
+    and 'chefCriteria'.
 License: MIT + file LICENSE
+BugReports: https://github.com/hta-pharma/ramnog/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Imports:
-    data.table (>= 1.14.2),
+RoxygenNote: 7.3.3
 Suggests:
     chef,
     chefCriteria,
     chefStats,
+    data.table,
     knitr,
+    tarchetypes,
     targets,
+    qs2,
     usethis,
     rmarkdown,
     testthat (>= 3.0.0),
     kableExtra,
-    testr,
+    withr,
     tidyr,
     pharmaverseadam
 Config/testthat/edition: 3
-Remotes:
-    hta-pharma/chefStats,
-    hta-pharma/chef,
-    hta-pharma/chefCriteria,
-    matthew-phelps/testr
 VignetteBuilder: knitr
-URL: 
-    https://hta-pharma.github.io/ramnog/,
-    https://github.com/hta-pharma/ramnog,
-    https://app.codecov.io/gh/hta-pharma/ramnog
+URL: https://hta-pharma.github.io/ramnog/,
+    https://github.com/hta-pharma/ramnog
