@@ -30,7 +30,6 @@ Suggests:
     knitr,
     tarchetypes,
     targets,
-    qs2,
     usethis,
     rmarkdown,
     testthat (>= 3.0.0),
