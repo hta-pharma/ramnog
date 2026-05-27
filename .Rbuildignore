@@ -15,3 +15,4 @@
 ^shared-pre-commit-config\.yaml$
 ^ramnog\.png$
 ^cran-plan\.md$
+^tools$
