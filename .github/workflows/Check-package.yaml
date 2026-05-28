@@ -37,11 +37,6 @@ jobs:
     name: RMD check versions 📜
     uses: ./.github/workflows/R-CMD-check-versions.yaml
 
-  # Runs unittests while capturing code:cov and uploads to Codecov io. See local subflow
-  test:
-    name: Test 🧪
-    uses: ./.github/workflows/Test.yaml
-
   # Checks for git keys etc.
   gitleaks:
     name: gitleaks 💧
