@@ -180,23 +180,23 @@ long each step took:
     ##     %notin%
     ## 
     ## + ep dispatched
-    ## ✔ ep completed [28ms, 514 B]
+    ## ✔ ep completed [27ms, 514 B]
     ## + ep_id dispatched
-    ## ✔ ep_id completed [8ms, 548 B]
+    ## ✔ ep_id completed [9ms, 548 B]
     ## + ep_fn_map declared [1 branches]
-    ## ✔ ep_fn_map completed [37ms, 326 B]
+    ## ✔ ep_fn_map completed [35ms, 326 B]
     ## + user_def_fn dispatched
-    ## ✔ user_def_fn completed [4ms, 4.58 kB]
+    ## ✔ user_def_fn completed [3ms, 4.58 kB]
     ## + study_data dispatched
     ## ✔ study_data completed [45ms, 90.39 kB]
     ## + fn_map_tibble dispatched
-    ## ✔ fn_map_tibble completed [5ms, 4.63 kB]
+    ## ✔ fn_map_tibble completed [4ms, 4.63 kB]
     ## + ep_and_data declared [1 branches]
-    ## ✔ ep_and_data completed [18ms, 55.79 kB]
+    ## ✔ ep_and_data completed [13ms, 55.79 kB]
     ## + fn_map declared [1 branches]
-    ## ✔ fn_map completed [0ms, 4.60 kB]
+    ## ✔ fn_map completed [1ms, 4.60 kB]
     ## + analysis_data_container declared [1 branches]
-    ## ✔ analysis_data_container completed [0ms, 55.16 kB]
+    ## ✔ analysis_data_container completed [1ms, 55.16 kB]
     ## + ep_with_data_key declared [1 branches]
     ## ✔ ep_with_data_key completed [0ms, 653 B]
     ## + ep_expanded declared [1 branches]
@@ -204,30 +204,30 @@ long each step took:
     ## + ep_event_index declared [1 branches]
     ## ✔ ep_event_index completed [5ms, 2.08 kB]
     ## + ep_crit_endpoint declared [1 branches]
-    ## ✔ ep_crit_endpoint completed [5ms, 2.10 kB]
+    ## ✔ ep_crit_endpoint completed [9ms, 2.10 kB]
     ## + ep_crit_by_strata_by_trt declared [1 branches]
-    ## ✔ ep_crit_by_strata_by_trt completed [12ms, 2.23 kB]
+    ## ✔ ep_crit_by_strata_by_trt completed [10ms, 2.23 kB]
     ## + ep_crit_by_strata_across_trt declared [1 branches]
-    ## ✔ ep_crit_by_strata_across_trt completed [6ms, 2.25 kB]
+    ## ✔ ep_crit_by_strata_across_trt completed [5ms, 2.25 kB]
     ## + ep_prep_by_strata_across_trt declared [1 branches]
     ## ✔ ep_prep_by_strata_across_trt completed [2ms, 155 B]
     ## + ep_prep_across_strata_across_trt declared [1 branches]
-    ## ✔ ep_prep_across_strata_across_trt completed [2ms, 155 B]
+    ## ✔ ep_prep_across_strata_across_trt completed [1ms, 155 B]
     ## + ep_prep_by_strata_by_trt declared [1 branches]
-    ## ✔ ep_prep_by_strata_by_trt completed [43ms, 7.83 kB]
+    ## ✔ ep_prep_by_strata_by_trt completed [44ms, 7.83 kB]
     ## + ep_rejected dispatched
     ## ✔ ep_rejected completed [0ms, 412 B]
     ## + ep_stat_by_strata_across_trt declared [1 branches]
     ## ✔ ep_stat_by_strata_across_trt completed [1ms, 136 B]
     ## + ep_stat_across_strata_across_trt declared [1 branches]
-    ## ✔ ep_stat_across_strata_across_trt completed [0ms, 136 B]
+    ## ✔ ep_stat_across_strata_across_trt completed [1ms, 136 B]
     ## + ep_stat_by_strata_by_trt declared [1 branches]
-    ## ✔ ep_stat_by_strata_by_trt completed [21ms, 3.41 kB]
+    ## ✔ ep_stat_by_strata_by_trt completed [15ms, 3.41 kB]
     ## + ep_stat_nested dispatched
     ## ✔ ep_stat_nested completed [1ms, 3.37 kB]
     ## + ep_stat dispatched
-    ## ✔ ep_stat completed [5ms, 3.31 kB]
-    ## ✔ ended pipeline [1.1s, 24 completed, 0 skipped]
+    ## ✔ ep_stat completed [4ms, 3.31 kB]
+    ## ✔ ended pipeline [956ms, 24 completed, 0 skipped]
     ## Warning messages:
     ## 1: A shallow copy of this data.table was taken so that := can add or remove 1 columns by reference. At an earlier point, this data.table was copied by R (or was created manually using structure() or similar). Avoid names<- and attr<- which in R currently (and oddly) may copy the whole data.table. Use set* syntax instead to avoid copying: ?set, ?setnames and ?setattr. It's also not unusual for data.table-agnostic packages to produce tables affected by this issue. If this message doesn't help, please report your use case to the data.table issue tracker so the root cause can be fixed or this message improved. 
     ## 2: 1 targets produced warnings. Run targets::tar_meta(fields = warnings, complete_only = TRUE) for the messages.

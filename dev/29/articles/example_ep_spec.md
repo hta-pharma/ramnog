@@ -91,14 +91,14 @@ ep_spec <- chef::mk_endpoint_str(
   stat_by_strata_by_trt = list(
     chefStats::n_subj,
     chefStats::n_subj_event,
-    cheStats::p_subj_event
+    chefStats::p_subj_event
   ),
   stat_by_strata_across_trt = list(
     chefStats::RR,
     chefStats::OR,
     chefStats::p_val
   ),
-  stat_across_strata_across_trt = list(chefStats::pval_interaction),
+  stat_across_strata_across_trt = list(chefStats::p_val_interaction),
   endpoint_label = "Adverse events - <treatment_var>"
 )
 ```
@@ -118,14 +118,14 @@ ep_spec <- chef::mk_endpoint_str(
   stat_by_strata_by_trt = list(
     chefStats::n_subj,
     chefStats::n_subj_event,
-    cheStats::p_subj_event
+    chefStats::p_subj_event
   ),
   stat_by_strata_across_trt = list(
     chefStats::RR,
     chefStats::OR,
     chefStats::p_val
   ),
-  stat_across_strata_across_trt = list(chefStats::pval_interaction),
+  stat_across_strata_across_trt = list(chefStats::p_val_interaction),
   crit_endpoint = list(
     c(
       ep_crit_min_subev_by_trt,
@@ -153,14 +153,14 @@ ep_spec <- chef::mk_endpoint_str(
   stat_by_strata_by_trt = list(
     chefStats::n_subj,
     chefStats::n_subj_event,
-    cheStats::p_subj_event
+    chefStats::p_subj_event
   ),
   stat_by_strata_across_trt = list(
     chefStats::RR,
     chefStats::OR,
     chefStats::p_val
   ),
-  stat_across_strata_across_trt = list(chefStats::pval_interaction),
+  stat_across_strata_across_trt = list(chefStats::p_val_interaction),
   crit_endpoint = list(
     c(
       ep_crit_min_subev_by_trt,
@@ -187,14 +187,14 @@ ep_spec <- chef::mk_endpoint_str(
   stat_by_strata_by_trt = list(
     chefStats::n_subj,
     chefStats::n_subj_event,
-    cheStats::p_subj_event
+    chefStats::p_subj_event
   ),
   stat_by_strata_across_trt = list(
     chefStats::RR,
     chefStats::OR,
     chefStats::p_val
   ),
-  stat_across_strata_across_trt = list(chefStats::pval_interaction),
+  stat_across_strata_across_trt = list(chefStats::p_val_interaction),
   crit_endpoint = list(
     c(
       ep_crit_min_subev_by_trt,
