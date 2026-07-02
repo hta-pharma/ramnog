@@ -1,6 +1,10 @@
+.datatable.aware <- TRUE
 test_that("Demographics work with other endpoints", {
   # SETUP -------------------------------------------------------------------
-  testr::create_local_project()
+  tmp <- withr::local_tempdir()
+  dir.create(file.path(tmp, "R"))
+  withr::local_dir(tmp)
+  usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
 
   mk_ep_def <- function() {
     ep <- chef::mk_endpoint_str(
@@ -8,7 +12,7 @@ test_that("Demographics work with other endpoints", {
       pop_var = "SAFFL",
       pop_value = "Y",
       treatment_var = "TRT01A",
-      treatment_refval = "Xanomeline High Dose",
+      treatment_refval = "Placebo",
       stratify_by = list(c("SEX", "AGEGR1")),
       data_prepare = mk_adae,
       endpoint_label = "A",
@@ -25,7 +29,7 @@ test_that("Demographics work with other endpoints", {
     ep2 <-  chef::mk_endpoint_str(
       data_prepare = mk_advs,
       treatment_var = "TRT01A",
-      treatment_refval = "Xanomeline High Dose",
+      treatment_refval = "Placebo",
       pop_var = "SAFFL",
       pop_value = "Y",
       stratify_by = list(c("AGEGR1", "SEX")),
@@ -47,6 +51,7 @@ test_that("Demographics work with other endpoints", {
 
   targets::tar_make()
   targets::tar_load(ep_stat)
+  ep_stat <- data.table::as.data.table(ep_stat)
 
   # EXPECT ------------------------------------------------------------------
 

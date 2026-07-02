@@ -171,10 +171,10 @@ Failed to EVALUATE function with error:
  Error in fn_callable[[1]](dat = dat[[1]], treatment_var = treatment_var,  : 
   Calculation impossible!
 
----
+===
 Debugging session created: Launch with:
  chef::load_debug_session('/tmp/RtmpCiXPPf/testproj275bcd76287e8d/debug/n_sub.Rdata')
----
+===
 ```
 You can see that the pipeline failed during the evaluation of the target-step `ep_stat_by_strata_by_trt`. Furthermore, you can view the `Last error` to get a meaningful error message.
 Here it shows that it failed to evaluate the function aliased `n_sub` and an error with the message `Calculation impossible`

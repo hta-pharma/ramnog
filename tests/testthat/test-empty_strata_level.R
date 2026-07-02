@@ -1,7 +1,11 @@
+.datatable.aware <- TRUE
 test_that("stat funtion that produces a 0 returns result ",
           {
             # SETUP -------------------------------------------------------------------
-            testr::create_local_project()
+            tmp <- withr::local_tempdir()
+            dir.create(file.path(tmp, "R"))
+            withr::local_dir(tmp)
+            usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
             crit_endpoint <- function(...) {
               return(T)
             }
@@ -43,7 +47,8 @@ test_that("stat funtion that produces a 0 returns result ",
             # EXPECT ------------------------------------------------------------------
 
 
+            ep_stat <- data.table::as.data.table(ep_stat)
             actual <-
-              ep_stat[grepl("Placebo", stat_filter), stat_result_value]
+              ep_stat[grepl("Placebo", ep_stat$stat_filter), stat_result_value]
             expect_equal(actual, 0)
           })

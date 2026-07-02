@@ -1,6 +1,9 @@
 test_that("multiplication works", {
   # SETUP -------------------------------------------------------------------
-  testr::create_local_project()
+  tmp <- withr::local_tempdir()
+  dir.create(file.path(tmp, "R"))
+  withr::local_dir(tmp)
+  usethis::local_project(tmp, force = TRUE, setwd = FALSE, quiet = TRUE)
 
   mk_ep_def <- function() {
     chef::mk_endpoint_str(

@@ -8,5 +8,6 @@
 
 library(testthat)
 library(ramnog)
+library(data.table)
 
-test_check("ramnog", reporter = JunitReporter$new(file = "junit_result.xml"))
+test_check("ramnog")
