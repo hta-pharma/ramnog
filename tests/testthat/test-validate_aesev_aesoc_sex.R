@@ -22,7 +22,7 @@ test_that("Validate statistics - complex endpoint specification",
                 pop_var = "SAFFL",
                 pop_value = "Y",
                 treatment_var = "TRT01A",
-                treatment_refval = "Xanomeline High Dose",
+                treatment_refval = "Placebo",
                 stratify_by = list(c("SEX", "AGEGR1")),
                 data_prepare = mk_adae,
                 endpoint_label = "A",
@@ -104,7 +104,7 @@ test_that("Valide stats when one strata level is not found",
                 pop_var = "SAFFL",
                 pop_value = "Y",
                 treatment_var = "TRT01A",
-                treatment_refval = "Xanomeline High Dose",
+                treatment_refval = "Placebo",
                 stratify_by = list(c("SEX")),
                 data_prepare = mk_adae,
                 endpoint_label = "A",
@@ -168,7 +168,7 @@ test_that("Valide stats when one strata level is not found",
             actual <-
               ep_stat[ep_stat$endpoint_group_filter == "AESEV == \"SEVERE\"" &
                         ep_stat$fn_name == "E" &
-                        ep_stat$strata_var == "SEX"]
+                        ep_stat$strata_var == "SEX"][order(treatment_value)]
             expected <-
               x1[(event), .N, by = .(TRT01A)][order(TRT01A)][, as.double(N)]
             expect_identical(actual$stat_result_value, expected)

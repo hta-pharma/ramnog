@@ -11,7 +11,7 @@ test_that("Complex pipeline runs without errors", {
       pop_var = "SAFFL",
       pop_value = "Y",
       treatment_var = "TRT01A",
-      treatment_refval = "Xanomeline High Dose",
+      treatment_refval = "Placebo",
       stratify_by = list(c("SEX", "AGEGR1")),
       data_prepare = mk_adae,
       endpoint_label = "A",

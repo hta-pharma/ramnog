@@ -69,7 +69,7 @@ testthat::test_that("Valide stats when one strata level is not found",
                 pop_var = "SAFFL",
                 pop_value = "Y",
                 treatment_var = "TRT01A",
-                treatment_refval = "Xanomeline High Dose",
+                treatment_refval = "Placebo",
                 stratify_by = list(c("SEX")),
                 data_prepare = mk_adae,
                 endpoint_label = "A",
@@ -139,7 +139,7 @@ testthat::test_that("Valide stats when one strata level is not found",
             actual <-
               ep_stat[endpoint_group_filter == "AESEV == \"SEVERE\"" &
                         fn_name == "E" &
-                        strata_var == "SEX"]
+                        strata_var == "SEX"][order(treatment_value)]
             expected <-
               x1[(event), .N, by = .(TRT01A)][order(TRT01A)][, as.double(N)]
             expect_identical(actual$stat_result_value, expected)
